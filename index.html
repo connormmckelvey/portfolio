@@ -1,213 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connor McKelvey</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://kit.fontawesome.com/bbd7c57c9f.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <title>Your Name — Engineer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div id="header">
-    <div class="container">
-        <nav>
-            <h1 class="logo">Connor McKelvey</h1>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#portfolio">Projects</a></li>
-                <li><a href="connor-mckelvey-resume.pdf" download>Resume</a></li>
-                <li><a href="https://discord.gg/QVRXrZTN" target="_blank">Contact</a></li>
-            </ul>
-        </nav>
-        <div class="header-text">
-            <p>Software Developer</p>
-            <h1>Hi, I am <span>Connor McKelvey</span><br>from Houston, TX</h1>
-        </div>
+  <div class="gradient-bg"></div>
+
+  <header class="hero">
+    <h1>Your Name</h1>
+    <p>Robotics • Software • Game Systems</p>
+    <div class="buttons">
+      <a href="#projects">Projects</a>
+      <a href="#about" class="outline">About</a>
     </div>
-</div>
+  </header>
 
-<!---------------------about------------------>
-<div id="about">
-    <div class="container">
-        <div class="row">
-            <div class="about-col-1">
-                <img src="images/user.jpg">
-            </div>
-            <div class="about-col-2">
-                <h1 class="abt-title">About Me</h1>
-                <p>I am <span>Connor McKelvey</span>, a sixteen year old high school student from Houston TX. In my free time I enjoy <span>scouting, software development, and soccer.</span> I am hoping to explore as many areas of computure science and engineering as I can before I leave to college.</p>
-                <div class="tab-titles">
-                    <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
-                    <p class="tab-links" onclick="opentab('expirence')">Experience</p>
-                    <p class="tab-links" onclick="opentab('education')">Education</p>
-                </div>
-                <div class="tab-contents active-tab" id="skills">
-                    <ul>
-                        <li><span>UI/UX</span><br>Designing Web & App interfaces</li>
-                        <li><span>Python</span><br>Application & Bot Development</li>
-                        <li><span>Discord.py</span><br>Using the library to create bots</li>
-                    </ul>
-                </div>
-                <div class="tab-contents" id="expirence">
-                    <ul>
-                        <li><span>2020-Present</span><br>Discord App Development @ Krazy Studios</li>
-                        <li><span>2023</span><br>Finishing a Auto Clicker App for the desktop</li>
-                        <li><span>2023</span><br>Finishing a desktop app to calculate server costs for PCI</li>
-                    </ul>
-                </div>
-                <div class="tab-contents" id="education">
-                    <ul>
-                        <li><span>Concordia Lutheran HS</span><br>4.35 GPA, Top student in AP World History, Advanced Stem Classes</li>
-                        <li><span>Boy Scouts of America</span><br>National Leadership Development Course</li>
-                        <li><span>CS1 @CLHS</span><br>Program Design with Java</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+  <section id="projects" class="section">
+    <h2>Projects</h2>
+    <div class="grid">
+      <div class="card">Wildfire Strategy Simulator</div>
+      <div class="card">Autonomous Robot Platform</div>
+      <div class="card">Godot Game Engine Tools</div>
+      <div class="card">Embedded Systems Lab</div>
+      <div class="card">AI Pathfinding</div>
+      <div class="card">3D Printed Robotics</div>
     </div>
-</div>
+  </section>
 
-<!------------services--------------->
-<div id="services">
-    <div class="container">
-        <h1 class="sub-title">My Services</h1>
-        <div class="services-list">
-            <div class="service-item">
-                <i class="fa-solid fa-code"></i>
-                <h2>Discord Bot Development</h2>
-                <p>I will develop a custom discord bot for your community using the discord.py module. to inquire please open a ticket in the Krazy Studios Server by clicking "Learn More"</p>
-                <a href="https://discord.gg/QVRXrZTN" target="_blank">Learn More</a>
-            </div>
-            <div class="service-item">
-                <i class="fa-regular fa-object-group"></i>
-                <h2>Server Design</h2>
-                <p>I will create a custom discord server for your growing community that is designed around your needs. This could include members only channels, pay to access content, complex moderation tools, and much more.</p>
-                <a href="https://discord.gg/QVRXrZTN" target="_blank">Learn More</a>
-            </div>
-            <div class="service-item">
-                <i class="fa-solid fa-brush"></i>
-                <h2>Graphic and Concept Art</h2>
-                <p>The lead artist of the Krazy Studio Development Group will help you in designing a logo for your business, concept art for a product, or a commisioned piece </p>
-                <a href="https://discord.gg/QVRXrZTN" target="_blank">Learn More</a>
-            </div>
-        </div>
+  <section id="about" class="section">
+    <h2>Timeline</h2>
+    <div class="timeline">
+      <div class="event">High School CS Club Leader</div>
+      <div class="event">Robotics & Embedded Systems</div>
+      <div class="event">UT Austin — ECE Honors</div>
+      <div class="event">Research & Internships</div>
     </div>
-</div>
+  </section>
 
-<!---------------portfolio------->
-<div id="portfolio">
-    <div class="container">
-        <h1 class="sub-title">My Projects</h1>
-        <div class="worklist">
-            <div class="work">
-                <img src="images/fireball_logo_warring.jpg">
-                <div class="layer">
-                    <h3>Fireball Dice Roller Bot</h3>
-                    <p>This is a Discord bot used in ~100 unique servers with thousands of users. It includes many polished embeded commands for simulating dice roles. This bot was developed during the pandemic when many rpg groups moved to online tools like Discord to hold their games.</p>
-                    <a href="https://discord.com/api/oauth2/authorize?client_id=900109473933328444&permissions=414129179729&scope=bot"><i class="fa-solid fa-link"></i></a>
-                </div>
-            </div>
-            <div class="work">
-                <img src="images/krazystudio.png">
-                <div class="layer">
-                    <h3>Krazy Studios</h3>
-                    <p>This is an organization that I run that offers different discord services. We are a team of programmers, artists, and music producers, who help build both servers and applications for our clients. The process of running this org. has given me exprience in leadership, advertisement, and monitazation stratagys.</p>
-                    <a href="https://discord.gg/rzHSg8E8SE"><i class="fa-solid fa-link"></i></a>
-                </div>
-            </div>
-            <div class="work">
-                <img src="images/password_logo.png">
-                <div class="layer">
-                    <h3>Password Tool</h3>
-                    <p>This is a desktop application built in python using customtkinter. This tool allows you to save and generate passwords for all of your websites or other needs. The passwords are saved locally on an exel sheet.</p>
-                    <a href="https://github.com/Connor-McKelvey/Fireball-Dbot"><i class="fa-solid fa-link"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+  <footer>
+    <p>© Your Name — Built with code & caffeine</p>
+  </footer>
 
-
-<!---------- Contact Me ------------>
-<div id="contact">
-    <div class="container">
-        <div class="row">
-            <div class="col-lef">
-                <h1 class="sub-title">Contact Me</h1>
-                <p><i class="fa-solid fa-paper-plane"></i>connormmckelvey@gmail.com</p>
-                <p><i class="fa-solid fa-phone"></i>346-225-6981</p>
-                <div class="social-icons">
-                    <a href="https://discord.gg/rzHSg8E8SE"><i class="fa-brands fa-discord"></i></a>
-                    <a href="https://github.com/Connor-McKelvey/Connor-McKelvey"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://www.instagram.com/krazy.studios/"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/in/connor-mckelvey-8591a6201/"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="https://twitter.com/KrazyStudios9"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.buymeacoffee.com/krazystudios"><i class="fa-solid fa-hand-holding-dollar"></i></a>
-                    <a href="connor-mckelvey-resume.pdf" download><i class="fa-solid fa-file-arrow-down"></i></a>
-                </div>
-                <a href="connor-mckelvey-resume.pdf" download class="btn">Download Resume</a>
-            </div>
-            <div class="col-right">
-                <form name="submit-to-google-sheet">
-                    <input type="text" name="Name" placeholder="Your Name" required>
-                    <input type="email" name="Email" placeholder="Your Email" required>
-                    <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
-                    <button type="submit" class="btn btn2">Submit</button>
-                </form>
-                <span id="msg"></span>
-            </div>
-        </div>
-        
-
-    </div>
-
-    <div class="copyright">
-        <p>Copyright @ Connor McKelvey. Made with <i class="fa-solid fa-heart"></i> by Connor McKelvey</p>
-    </div>
-</div>
-
-
-
-<script>
-     var tablinks = document.getElementsByClassName("tab-links");
-     var tabcontents = document.getElementsByClassName("tab-contents");
-
-    function opentab(tabname){
-        for(tablink of tablinks){
-            tablink.classList.remove("active-link")
-        }
-        for(tabcontent of tabcontents){
-            tabcontent.classList.remove("active-tab")
-        }
-        event.currentTarget.classList.add("active-link");
-        document.getElementById(tabname).classList.add("active-tab")
-    }
-</script>
-
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyX97j_K8P3Vjv2XwJGgtgJv75tHHd6lSUEzk6IjfwaoFMqW9Vo5xl8ZXtIDrAaQc1__w/exec'
-    const form = document.forms['submit-to-google-sheet']
-    const msg = document.getElementById("msg")
-  
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {msg.innerHTML = "Message Sent!"
-        setTimeout(function(){
-            msg.innerHTML = ""
-        },5000)
-        form.reset()
-    })
-        .catch(error => {msg.innerHTML = "Error message not sent, please contact me another way!"
-        setTimeout(function(){
-            msg.innerHTML=""
-        },5000)
-        form.reset()
-    })})
-  </script>
 </body>
-
 </html>
