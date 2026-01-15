@@ -1,50 +1,979 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Your Name — Engineer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Connor McKelvey — Engineer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Connor McKelvey — Electrical & Computer Engineer focused on robotics, systems design, and real-world engineering." />
+  <meta name="theme-color" content="#06150e" />
+
+  <meta property="og:title" content="Connor McKelvey — Engineer" />
+  <meta property="og:description" content="Robotics · Systems Design · Real-world engineering inspired by nature." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="images/Headshot.JPG" />
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <div class="gradient-bg"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="hero">
-    <h1>Your Name</h1>
-    <p>Robotics • Software • Game Systems</p>
-    <div class="buttons">
-      <a href="#projects">Projects</a>
-      <a href="#about" class="outline">About</a>
+  <header class="hero" id="top">
+    <div class="overlay" aria-hidden="true"></div>
+
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="#top">CM</a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#leadership">Leadership</a>
+        <a href="#skills">Skills</a>
+        <a href="#github">GitHub</a>
+        <a href="#about">About</a>
+        <a href="#journey">Journey</a>
+        <a href="#contact">Contact</a>
+        <a href="blog.html">Blog</a>
+        <button class="nav-fun" type="button" data-fun-toggle aria-pressed="false" title="Toggle Fun Mode">Fun</button>
+        <a class="nav-cta" href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener">Resume</a>
+      </div>
+    </nav>
+    <div class="hero-content">
+      <h1>Connor McKelvey</h1>
+      <p>Electrical &amp; Computer Engineer · Honors Robotics @ UT Austin · Embedded + autonomy + tools</p>
+      <ul class="hero-highlights" aria-label="At a glance">
+        <li>UT Austin ECE (Expected 2029)</li>
+        <li>Robotics + embedded systems</li>
+        <li>Built Discord bot (10,000+ users)</li>
+      </ul>
+      <div class="hero-actions">
+        <a href="#projects" class="btn">Explore My Work</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+      <p class="subtle">Built like a machine, inspired by nature — field-tested thinking for complex environments.</p>
     </div>
   </header>
 
+  <main id="main">
+
   <section id="projects" class="section">
-    <h2>Projects</h2>
-    <div class="grid">
-      <div class="card">Wildfire Strategy Simulator</div>
-      <div class="card">Autonomous Robot Platform</div>
-      <div class="card">Godot Game Engine Tools</div>
-      <div class="card">Embedded Systems Lab</div>
-      <div class="card">AI Pathfinding</div>
-      <div class="card">3D Printed Robotics</div>
+    <h2>Featured Projects</h2>
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="filter" type="button" data-filter="robotics" aria-pressed="false">Robotics</button>
+      <button class="filter" type="button" data-filter="embedded" aria-pressed="false">Embedded</button>
+      <button class="filter" type="button" data-filter="tooling" aria-pressed="false">Tooling</button>
+      <button class="filter" type="button" data-filter="education" aria-pressed="false">Education</button>
+    </div>
+    <div class="card-grid">
+      <article class="card project-card" data-project="fireball" data-tags="tooling automation python">
+        <h3>Fireball Dice Roller (Discord Bot)</h3>
+        <p>Verified Discord bot with 10,000+ users across 150 servers.</p>
+        <div class="tags"><span>tooling</span><span>python</span><span>discord api</span></div>
+        <div class="card-actions">
+          <button class="card-action" type="button" data-open-project="fireball">Details</button>
+        </div>
+      </article>
+
+      <article class="card project-card" data-project="logic" data-tags="tooling education ece godot">
+        <h3>Circuit Board Digital Logic Simulator</h3>
+        <p>Grid-based educational simulator for visualizing gates, signals, and logic flow.</p>
+        <div class="tags"><span>tooling</span><span>education</span><span>godot</span></div>
+        <div class="card-actions">
+          <button class="card-action" type="button" data-open-project="logic">Details</button>
+        </div>
+      </article>
+
+      <article class="card project-card" data-project="curriculum" data-tags="education systems teaching">
+        <h3>High School CS Curriculum (Bavaria)</h3>
+        <p>Project-based game-dev curriculum teaching OOP + composition in 14 lessons.</p>
+        <div class="tags"><span>education</span><span>systems</span><span>writing</span></div>
+        <div class="card-actions">
+          <button class="card-action" type="button" data-open-project="curriculum">Details</button>
+        </div>
+      </article>
+
+      <article class="card project-card" data-project="arm" data-tags="robotics embedded mechatronics">
+        <h3>Drawing Robot Arm</h3>
+        <p>Two-jointed drawing arm: inverse kinematics, image simplification, serial comms.</p>
+        <div class="tags"><span>robotics</span><span>embedded</span><span>controls</span></div>
+        <div class="card-actions">
+          <button class="card-action" type="button" data-open-project="arm">Details</button>
+        </div>
+      </article>
+
+      <article class="card project-card" data-project="itbridge" data-tags="embedded education leadership">
+        <h3>IEEE Hardware Program (IT Bridge)</h3>
+        <p>Built a long-term hardware project program to teach EE careers through hands-on builds.</p>
+        <div class="tags"><span>embedded</span><span>education</span><span>leadership</span></div>
+        <div class="card-actions">
+          <button class="card-action" type="button" data-open-project="itbridge">Details</button>
+        </div>
+      </article>
+
+      <article class="card project-card" data-project="krazy" data-tags="tooling leadership systems">
+        <h3>Krazy Studios</h3>
+        <p>Founded a small team publishing chatbots + Discord games for clients and communities.</p>
+        <div class="tags"><span>leadership</span><span>platform</span><span>dx</span></div>
+        <div class="card-actions">
+          <button class="card-action" type="button" data-open-project="krazy">Details</button>
+        </div>
+      </article>
+    </div>
+    <p class="subtle" id="projects-status" aria-live="polite"></p>
+  </section>
+
+  <section id="education" class="section dark">
+    <h2>Education</h2>
+    <div class="split">
+      <div>
+        <p class="wide">
+          University of Texas at Austin — B.S. in Electrical &amp; Computer Engineering
+        </p>
+        <ul class="facts" aria-label="Education details">
+          <li>Honors Robotics Program, Robotics Minor</li>
+          <li>Expected graduation: 2029</li>
+          <li>Related coursework: Multivariable Calculus, Electrical Engineering, Embedded Systems</li>
+        </ul>
+      </div>
+
+      <article class="card" aria-label="Current focus">
+        <h3>Current focus</h3>
+        <p>Building rugged real-world systems: embedded + autonomy + clean tools.</p>
+        <div class="tags">
+          <span>robotics</span>
+          <span>embedded</span>
+          <span>systems</span>
+        </div>
+      </article>
     </div>
   </section>
 
-  <section id="about" class="section">
-    <h2>Timeline</h2>
-    <div class="timeline">
-      <div class="event">High School CS Club Leader</div>
-      <div class="event">Robotics & Embedded Systems</div>
-      <div class="event">UT Austin — ECE Honors</div>
-      <div class="event">Research & Internships</div>
+  <section id="leadership" class="section">
+    <h2>Experience &amp; Leadership</h2>
+    <div class="card-grid">
+      <article class="card">
+        <h3>Software Developer &amp; Founder — Krazy Studios</h3>
+        <p>Established and led a team publishing chatbots + Discord-based games.</p>
+        <ul class="card-bullets">
+          <li>Delivered private client bots and community experiences</li>
+          <li>Built team workflows around shipping and reliability</li>
+        </ul>
+        <div class="tags"><span>leadership</span><span>tooling</span><span>delivery</span></div>
+      </article>
+
+      <article class="card">
+        <h3>IEEE Assistant Officer — External Activities &amp; Events</h3>
+        <p>Created a long-term hardware project program for the non-profit IT Bridge.</p>
+        <ul class="card-bullets">
+          <li>Planned and executed events for the entire chapter</li>
+          <li>Focused on approachable, repeatable hands-on builds</li>
+        </ul>
+        <div class="tags"><span>embedded</span><span>education</span><span>leadership</span></div>
+      </article>
+
+      <article class="card">
+        <h3>Eagle Scout — Boy Scouts of America</h3>
+        <p>Servant leadership and high-accountability execution.</p>
+        <ul class="card-bullets">
+          <li>Led 1,000+ hours of service and major community projects</li>
+          <li>Mentored new youth leaders as Junior Assistant Scoutmaster</li>
+        </ul>
+        <div class="tags"><span>public speaking</span><span>leadership</span><span>reliability</span></div>
+      </article>
+
+      <article class="card">
+        <h3>President &amp; Founder — Computer Science Club</h3>
+        <p>Built a team and a culture from zero.</p>
+        <ul class="card-bullets">
+          <li>Grew membership from 0 to ~15 committed members</li>
+          <li>Organized and trained teams for HPE CodeWars (novice + advanced)</li>
+        </ul>
+        <div class="tags"><span>teaching</span><span>systems</span><span>teamwork</span></div>
+      </article>
     </div>
   </section>
+
+  <section id="skills" class="section dark">
+    <h2>Technical Skills</h2>
+    <div class="card-grid">
+      <article class="card">
+        <h3>Software / Programming</h3>
+        <p>Tools-first engineering with clean interfaces and predictable behavior.</p>
+        <div class="tags">
+          <span>python</span><span>c</span><span>c++</span><span>java</span><span>git</span><span>discord api</span><span>godot</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Hardware / Tools</h3>
+        <p>Hands-on build + debug: electronics, integration, and real constraints.</p>
+        <div class="tags">
+          <span>arduino</span><span>stm32</span><span>circuit design</span><span>soldering</span><span>robotics systems</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Soft Skills</h3>
+        <p>Leadership that translates into shipped, reliable systems.</p>
+        <div class="tags">
+          <span>public speaking</span><span>servant leadership</span><span>reliability</span><span>delegation</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="github" class="section">
+    <h2>Recent on GitHub</h2>
+    <div class="github" id="github-repos" data-username="connormmckelvey" data-source="recent">
+      <p class="wide">
+        A snapshot of what I’ve been shipping lately. Full profile: <a class="inline-link" data-profile href="https://github.com/connormmckelvey" target="_blank" rel="noopener">github.com/connormmckelvey</a>.
+      </p>
+      <p class="subtle" data-status>Loading repositories…</p>
+      <div class="lang-summary" aria-label="Top languages" data-langs hidden></div>
+      <div class="card-grid" data-grid aria-live="polite"></div>
+      <div class="github-actions">
+        <a class="btn btn-ghost" href="https://github.com/connormmckelvey?tab=repositories" target="_blank" rel="noopener">View all repos</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section dark">
+    <h2>Engineering Philosophy</h2>
+    <div class="split">
+      <div>
+        <p class="wide">
+          I build systems that interact with the real world — from fire behavior models and robotics to digital logic
+          and human-centered AI. My work blends engineering precision with respect for complex natural systems.
+        </p>
+        <p class="wide">
+          I’m happiest where software meets hardware, and where a good model meets field reality.
+        </p>
+        <ul class="facts" aria-label="Highlights">
+          <li>Focus: autonomy, embedded systems, and decision support</li>
+          <li>Style: pragmatic engineering, clean interfaces, and rigorous testing</li>
+          <li>North star: build tools that hold up outside the lab</li>
+        </ul>
+      </div>
+      <figure class="portrait">
+        <img src="images/Headshot.JPG" alt="Portrait photo of Connor McKelvey" loading="lazy" />
+      </figure>
+    </div>
+  </section>
+
+  <section id="journey" class="section">
+    <h2>Journey</h2>
+    <div class="timeline">
+      <div class="event">Eagle Scout — 1,000+ hours of service</div>
+      <div class="event">Founder — Computer Science Club (grew from 0 to ~15)</div>
+      <div class="event">Founder — Krazy Studios (chatbots + Discord games)</div>
+      <div class="event">IEEE — Built the IT Bridge hardware program</div>
+      <div class="event">UT Austin — ECE, Honors Robotics (Expected 2029)</div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <h2>Contact</h2>
+    <div class="contact">
+      <p class="wide">If you’re building something rugged, real-world, and reliability-focused, I’d love to connect.</p>
+      <div class="contact-actions">
+          <a class="btn" href="mailto:connormckelvey@utexas.edu">Email me</a>
+          <a class="btn btn-ghost" href="tel:+13462256981">Call / text</a>
+        <a class="btn btn-ghost" href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener">Open resume</a>
+      </div>
+      <div class="socials" aria-label="Social links">
+        <a class="social" href="https://github.com/connormmckelvey" target="_blank" rel="noopener">GitHub</a>
+          <a class="social" href="https://www.linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+        <p class="subtle">Best way to reach me: email or LinkedIn.</p>
+    </div>
+  </section>
+
+  </main>
 
   <footer>
-    <p>© Your Name — Built with code & caffeine</p>
+    <p>© Connor McKelvey · Built like a machine, inspired by nature</p>
   </footer>
+
+  <a class="to-top" href="#top" aria-label="Back to top">Back to top</a>
+
+  <div class="compass" data-compass aria-hidden="true" hidden>
+    <div class="compass-face"></div>
+    <div class="compass-needle" data-needle></div>
+    <div class="compass-center"></div>
+    <div class="compass-label" data-label>NE</div>
+  </div>
+
+  <div class="modal" id="project-modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+      <button class="modal-close" type="button" data-close aria-label="Close dialog">×</button>
+      <h3 id="project-modal-title">Project</h3>
+      <p class="subtle" id="project-modal-subtitle"></p>
+      <p class="wide" id="project-modal-desc"></p>
+      <ul class="modal-bullets" id="project-modal-bullets"></ul>
+      <div class="tags" id="project-modal-tags" aria-label="Project tags"></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const root = document.getElementById('github-repos');
+      if (!root) return;
+
+      const username = root.dataset.username;
+      const source = root.dataset.source || 'recent';
+      const statusEl = root.querySelector('[data-status]');
+      const gridEl = root.querySelector('[data-grid]');
+      const profileEl = root.querySelector('[data-profile]');
+      const langsEl = root.querySelector('[data-langs]');
+
+      if (!username || !statusEl || !gridEl || !profileEl) return;
+
+      profileEl.href = `https://github.com/${username}`;
+      profileEl.textContent = `github.com/${username}`;
+
+      const fmtUpdated = (iso) => {
+        try {
+          const date = new Date(iso);
+          return new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short' }).format(date);
+        } catch {
+          return '';
+        }
+      };
+
+      const normalizeRepo = (repo) => {
+        const name = repo?.repo || repo?.name || '';
+        const htmlUrl = repo?.link || repo?.html_url || (name ? `https://github.com/${username}/${name}` : `https://github.com/${username}`);
+
+        return {
+          name,
+          html_url: htmlUrl,
+          description: repo?.description || '',
+          language: repo?.language || '',
+          stargazers_count: repo?.stars ?? repo?.stargazers_count ?? 0,
+          updated_at: repo?.updated_at || ''
+        };
+      };
+
+      const makeRepoCard = (repo) => {
+        const normalized = normalizeRepo(repo);
+
+        const a = document.createElement('a');
+        a.className = 'card repo-card';
+        a.href = normalized.html_url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+
+        const name = document.createElement('h3');
+        name.textContent = normalized.name || 'Repository';
+
+        const desc = document.createElement('p');
+        desc.textContent = normalized.description || 'A project with details on GitHub.';
+
+        const meta = document.createElement('div');
+        meta.className = 'repo-meta';
+
+        const lang = document.createElement('span');
+        lang.className = 'chip';
+        lang.textContent = normalized.language || 'Code';
+
+        const stars = document.createElement('span');
+        stars.className = 'chip';
+        stars.textContent = `★ ${normalized.stargazers_count ?? 0}`;
+
+        const updated = document.createElement('span');
+        updated.className = 'chip chip-muted';
+        updated.textContent = normalized.updated_at ? `Updated ${fmtUpdated(normalized.updated_at)}` : 'Pinned';
+
+        meta.append(lang, stars, updated);
+        a.append(name, desc, meta);
+        return a;
+      };
+
+      const loadRecent = async () => {
+        const url = new URL(`https://api.github.com/users/${username}/repos`);
+        url.searchParams.set('per_page', '12');
+        url.searchParams.set('sort', 'updated');
+
+        const res = await fetch(url, {
+          headers: { 'Accept': 'application/vnd.github+json' }
+        });
+        if (!res.ok) throw new Error(`GitHub API returned ${res.status}`);
+        const repos = await res.json();
+
+        return repos
+          .filter(r => !r.fork && !r.archived)
+          .slice(0, 6);
+      };
+
+      const renderLangSummary = (repos) => {
+        if (!langsEl) return;
+
+        const counts = new Map();
+        for (const repo of repos) {
+          const lang = repo?.language;
+          if (!lang) continue;
+          counts.set(lang, (counts.get(lang) || 0) + 1);
+        }
+
+        const entries = [...counts.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5);
+
+        if (!entries.length) {
+          langsEl.hidden = true;
+          langsEl.textContent = '';
+          return;
+        }
+
+        const total = entries.reduce((sum, [, v]) => sum + v, 0);
+        langsEl.hidden = false;
+        langsEl.replaceChildren(
+          ...entries.map(([name, value]) => {
+            const row = document.createElement('div');
+            row.className = 'lang-row';
+
+            const label = document.createElement('div');
+            label.className = 'lang-label';
+            label.textContent = name;
+
+            const bar = document.createElement('div');
+            bar.className = 'lang-bar';
+
+            const fill = document.createElement('div');
+            fill.className = 'lang-fill';
+            fill.style.width = `${Math.round((value / total) * 100)}%`;
+
+            bar.append(fill);
+            row.append(label, bar);
+            return row;
+          })
+        );
+      };
+
+      const loadPinned = async () => {
+        const url = new URL('https://gh-pinned-repos.egoist.dev/');
+        url.searchParams.set('username', username);
+
+        const res = await fetch(url, {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!res.ok) throw new Error(`Pinned repos service returned ${res.status}`);
+        const repos = await res.json();
+        return Array.isArray(repos) ? repos.slice(0, 6) : [];
+      };
+
+      const load = async () => {
+        statusEl.textContent = 'Loading repositories…';
+
+        try {
+          const repos = source === 'pinned' ? await loadPinned() : await loadRecent();
+          if (repos.length) {
+            gridEl.replaceChildren(...repos.map(makeRepoCard));
+            statusEl.textContent = source === 'pinned' ? 'Pinned repos:' : 'Recently updated public repos:';
+            if (source !== 'pinned') renderLangSummary(repos);
+            return;
+          }
+
+          if (source === 'pinned') {
+            const fallback = await loadRecent();
+            if (fallback.length) {
+              gridEl.replaceChildren(...fallback.map(makeRepoCard));
+              statusEl.textContent = 'Pinned repos unavailable — showing recent repos:';
+              return;
+            }
+          }
+
+          statusEl.textContent = 'No public repositories found.';
+        } catch (err) {
+          console.warn('GitHub repos failed to load:', err);
+          statusEl.textContent = source === 'pinned'
+            ? 'Pinned repos can’t be fetched without GitHub GraphQL auth; using a public pinned-repos service. It may be blocked/limited — try again later.'
+            : 'Could not load repositories (GitHub rate limit or network).';
+          gridEl.innerHTML = '';
+          if (langsEl) langsEl.hidden = true;
+        }
+      };
+
+      load();
+    })();
+
+    (() => {
+      const nav = document.querySelector('.nav');
+      const navLinks = nav ? [...nav.querySelectorAll('a[href^="#"]')] : [];
+      const sections = navLinks
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      const setActive = (id) => {
+        for (const a of navLinks) {
+          const isActive = a.getAttribute('href') === `#${id}`;
+          a.classList.toggle('is-active', isActive);
+          if (isActive) a.setAttribute('aria-current', 'page');
+          else a.removeAttribute('aria-current');
+        }
+      };
+
+      if (sections.length && 'IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible?.target?.id) setActive(visible.target.id);
+        }, { rootMargin: `-${Math.round(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '68', 10) + 24)}px 0px -70% 0px`, threshold: [0.15, 0.3, 0.6] });
+
+        sections.forEach(s => obs.observe(s));
+      }
+
+      const toTop = document.querySelector('.to-top');
+      const onScroll = () => {
+        const show = window.scrollY > 600;
+        if (toTop) toTop.classList.toggle('is-visible', show);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      const filterButtons = [...document.querySelectorAll('[data-filter]')];
+      const projectCards = [...document.querySelectorAll('.project-card')];
+      const projectsStatus = document.getElementById('projects-status');
+
+      const applyFilter = (tag) => {
+        for (const btn of filterButtons) {
+          const isOn = btn.dataset.filter === tag;
+          btn.setAttribute('aria-pressed', String(isOn));
+          btn.classList.toggle('is-active', isOn);
+        }
+
+        let shown = 0;
+        for (const card of projectCards) {
+          const tags = (card.dataset.tags || '').split(/\s+/).filter(Boolean);
+          const matches = tag === 'all' || tags.includes(tag);
+          card.hidden = !matches;
+          if (matches) shown += 1;
+        }
+
+        if (projectsStatus) {
+          projectsStatus.textContent = tag === 'all' ? '' : `Showing ${shown} project${shown === 1 ? '' : 's'} tagged “${tag}”.`;
+        }
+      };
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => applyFilter(btn.dataset.filter || 'all'));
+      });
+
+      const modal = document.getElementById('project-modal');
+      const modalTitle = document.getElementById('project-modal-title');
+      const modalSubtitle = document.getElementById('project-modal-subtitle');
+      const modalDesc = document.getElementById('project-modal-desc');
+      const modalBullets = document.getElementById('project-modal-bullets');
+      const modalTags = document.getElementById('project-modal-tags');
+      let lastFocus = null;
+
+      const PROJECTS = {
+        fireball: {
+          title: 'Fireball Dice Roller — Discord Bot',
+          subtitle: 'Verified bot at real scale',
+          desc: 'Built and published a verified Discord bot with 10,000+ users across 150 servers. Focused on reliability, clarity, and flexible dice mechanics.',
+          bullets: [
+            'Python + Discord API implementation with production-minded event handling',
+            'Customizable randomization algorithm for complex dice + modifiers across systems',
+            'Designed for predictable behavior under real user load'
+          ],
+          tags: ['tooling', 'python', 'discord api']
+        },
+        logic: {
+          title: 'Circuit Board Digital Logic Simulator',
+          subtitle: 'Interactive logic education',
+          desc: 'Developed a grid-based graphical simulator for teaching digital logic gates in Godot, with interactive visualization of circuit behavior and logic flow.',
+          bullets: [
+            'Grid-based editor for building circuits quickly',
+            'Boolean algebra operators implemented as interactive components',
+            'Visualization-first UX for learning and debugging logic'
+          ],
+          tags: ['tooling', 'education', 'godot']
+        },
+        curriculum: {
+          title: 'High School CS Curriculum (Bavaria)',
+          subtitle: '14-lesson, project-based sequence',
+          desc: 'Collaborated with a teacher to design a game-development curriculum that teaches Object Oriented Programming and Composition through hands-on projects.',
+          bullets: [
+            'Structured 14 lessons with progressive project difficulty',
+            'Teaches OOP + composition through game-dev work',
+            'Optimized for classroom pacing and student engagement'
+          ],
+          tags: ['education', 'systems', 'writing']
+        },
+        arm: {
+          title: 'Drawing Robot Arm',
+          subtitle: 'From pixels to motion',
+          desc: 'Built a two-jointed drawing arm that converts a digital image into a physical drawing. Used to standardize stimuli in research on bias against AI creativity in artwork.',
+          bullets: [
+            'Inverse kinematics for a two-jointed arm',
+            'Image simplification pipeline for drawable paths',
+            'Serial communication + data buffering for smooth execution'
+          ],
+          tags: ['robotics', 'embedded', 'controls']
+        },
+        itbridge: {
+          title: 'IEEE Hardware Program (IT Bridge)',
+          subtitle: 'Hands-on engineering education',
+          desc: 'Created a long-term project program to develop hardware used by the non-profit IT Bridge to teach underprivileged youth about careers in Electrical Engineering.',
+          bullets: [
+            'Built an ongoing program (not a one-off demo) for repeatable impact',
+            'Planned and executed chapter-wide events and build sessions',
+            'Focused on approachable hardware learning through real tools'
+          ],
+          tags: ['embedded', 'education', 'leadership']
+        },
+        krazy: {
+          title: 'Krazy Studios',
+          subtitle: 'Founder + builder',
+          desc: 'Established and led a team to publish chatbots and Discord-based games, delivering private client bots and building community engagement.',
+          bullets: [
+            'Led delivery for private client bots and games',
+            'Built community engagement through interactive experiences',
+            'Practiced real-world leadership: delegation, reliability, and shipping'
+          ],
+          tags: ['leadership', 'tooling', 'systems']
+        }
+      };
+
+      const openModal = (key) => {
+        const data = PROJECTS[key];
+        if (!modal || !data) return;
+        lastFocus = document.activeElement;
+
+        if (modalTitle) modalTitle.textContent = data.title;
+        if (modalSubtitle) modalSubtitle.textContent = data.subtitle;
+        if (modalDesc) modalDesc.textContent = data.desc;
+
+        if (modalBullets) {
+          modalBullets.replaceChildren(
+            ...data.bullets.map(t => {
+              const li = document.createElement('li');
+              li.textContent = t;
+              return li;
+            })
+          );
+        }
+
+        if (modalTags) {
+          modalTags.replaceChildren(
+            ...data.tags.map(t => {
+              const s = document.createElement('span');
+              s.textContent = t;
+              return s;
+            })
+          );
+        }
+
+        modal.hidden = false;
+        document.body.classList.add('modal-open');
+
+        const focusable = modal.querySelector('button,[href],[tabindex]:not([tabindex="-1"])');
+        focusable?.focus?.();
+      };
+
+      const closeModal = () => {
+        if (!modal || modal.hidden) return;
+        modal.hidden = true;
+        document.body.classList.remove('modal-open');
+        if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+      };
+
+      document.addEventListener('click', (e) => {
+        const openBtn = e.target?.closest?.('[data-open-project]');
+        if (openBtn) {
+          openModal(openBtn.getAttribute('data-open-project'));
+          return;
+        }
+
+        const closeBtn = e.target?.closest?.('[data-close]');
+        if (closeBtn) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+      });
+
+      // Cursor-following spotlight for cards (tiny JS, big feel).
+      const grids = document.querySelectorAll('.card-grid');
+      grids.forEach(grid => {
+        grid.addEventListener('pointermove', (e) => {
+          const card = e.target?.closest?.('.card');
+          if (!card) return;
+          const r = card.getBoundingClientRect();
+          const x = Math.round(e.clientX - r.left);
+          const y = Math.round(e.clientY - r.top);
+          card.style.setProperty('--mx', `${x}px`);
+          card.style.setProperty('--my', `${y}px`);
+        });
+      });
+
+      applyFilter('all');
+    })();
+
+    (() => {
+      const toggle = document.querySelector('[data-fun-toggle]');
+      const compass = document.querySelector('[data-compass]');
+      const needle = document.querySelector('[data-needle]');
+      const label = document.querySelector('[data-label]');
+      if (!toggle) return;
+
+      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const storageKey = 'cm_fun_mode';
+
+      let canvas = null;
+      let ctx = null;
+      let rafId = 0;
+      let w = 0;
+      let h = 0;
+
+      const pointer = { x: 0.5, y: 0.35, vx: 0, vy: 0, has: false };
+      const particles = [];
+      const maxParticles = 28;
+
+      const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+
+      const headingLabel = (deg) => {
+        const d = (deg + 360) % 360;
+        if (d >= 337.5 || d < 22.5) return 'E';
+        if (d < 67.5) return 'NE';
+        if (d < 112.5) return 'N';
+        if (d < 157.5) return 'NW';
+        if (d < 202.5) return 'W';
+        if (d < 247.5) return 'SW';
+        if (d < 292.5) return 'S';
+        return 'SE';
+      };
+
+      const ensureCanvas = () => {
+        if (canvas) return;
+        canvas = document.createElement('canvas');
+        canvas.className = 'fun-canvas';
+        canvas.setAttribute('aria-hidden', 'true');
+        canvas.style.pointerEvents = 'none';
+        document.body.append(canvas);
+        ctx = canvas.getContext('2d', { alpha: true });
+      };
+
+      const resize = () => {
+        if (!canvas) return;
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        w = Math.floor(window.innerWidth);
+        h = Math.floor(window.innerHeight);
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = `${w}px`;
+        canvas.style.height = `${h}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      };
+
+      const spawnParticle = (x, y) => {
+        if (!particles.length) {
+          for (let i = 0; i < maxParticles; i++) {
+            particles.push({ x, y, vx: 0, vy: 0, a: 0, life: 0, hue: 0, r: 0 });
+          }
+        }
+
+        const p = particles.shift();
+        p.x = x;
+        p.y = y;
+        p.vx = (Math.random() - 0.5) * 1.2;
+        p.vy = (Math.random() - 0.5) * 1.2;
+        p.a = 0.95;
+        p.life = 1;
+        p.hue = 150 + Math.random() * 40;
+        p.r = 1.6 + Math.random() * 2.4;
+        particles.push(p);
+      };
+
+      const tick = () => {
+        rafId = window.requestAnimationFrame(tick);
+        if (!ctx || !canvas) return;
+
+        ctx.clearRect(0, 0, w, h);
+
+        if (pointer.has) {
+          const px = pointer.x * w;
+          const py = pointer.y * h;
+          const speed = Math.hypot(pointer.vx, pointer.vy);
+          const rate = clamp(Math.round(speed * 1.6), 1, 6);
+          for (let i = 0; i < rate; i++) spawnParticle(px + (Math.random() - 0.5) * 10, py + (Math.random() - 0.5) * 10);
+        }
+
+        for (const p of particles) {
+          p.life *= 0.94;
+          p.a *= 0.965;
+          p.vx *= 0.985;
+          p.vy *= 0.985;
+          p.x += p.vx;
+          p.y += p.vy;
+
+          const alpha = clamp(p.a * p.life, 0, 1);
+          if (alpha < 0.02) continue;
+
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 14);
+          g.addColorStop(0, `hsla(${p.hue}, 90%, 70%, ${alpha})`);
+          g.addColorStop(1, `hsla(${p.hue}, 90%, 70%, 0)`);
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = `rgba(231, 246, 238, ${alpha * 0.55})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      };
+
+      const onPointerMove = (e) => {
+        const x = clamp(e.clientX / Math.max(1, window.innerWidth), 0, 1);
+        const y = clamp(e.clientY / Math.max(1, window.innerHeight), 0, 1);
+        pointer.vx = x - pointer.x;
+        pointer.vy = y - pointer.y;
+        pointer.x = x;
+        pointer.y = y;
+        pointer.has = true;
+
+        if (needle && compass) {
+          const cx = window.innerWidth * 0.5;
+          const cy = window.innerHeight * 0.5;
+          const dx = e.clientX - cx;
+          const dy = e.clientY - cy;
+          const deg = (Math.atan2(-dy, dx) * 180) / Math.PI;
+          needle.style.transform = `rotate(${deg}deg)`;
+          if (label) label.textContent = headingLabel(deg);
+        }
+      };
+
+      const enable = () => {
+        document.body.classList.add('fun-on');
+        toggle.setAttribute('aria-pressed', 'true');
+        try { localStorage.setItem(storageKey, '1'); } catch { }
+
+        if (compass) compass.hidden = false;
+
+        // Always track pointer for compass; only animate particles if motion is allowed.
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        if (!prefersReducedMotion()) {
+          ensureCanvas();
+          resize();
+          window.addEventListener('resize', resize, { passive: true });
+          if (!rafId) rafId = window.requestAnimationFrame(tick);
+        }
+      };
+
+      const disable = () => {
+        document.body.classList.remove('fun-on');
+        toggle.setAttribute('aria-pressed', 'false');
+        try { localStorage.setItem(storageKey, '0'); } catch { }
+
+        if (compass) compass.hidden = true;
+
+        window.removeEventListener('resize', resize);
+        window.removeEventListener('pointermove', onPointerMove);
+
+        if (rafId) {
+          window.cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+        if (canvas) {
+          canvas.remove();
+          canvas = null;
+          ctx = null;
+        }
+        pointer.has = false;
+      };
+
+      const isOn = () => document.body.classList.contains('fun-on');
+
+      toggle.addEventListener('click', () => {
+        if (isOn()) disable();
+        else enable();
+      });
+
+      // Restore last setting.
+      let shouldEnable = false;
+      try { shouldEnable = localStorage.getItem(storageKey) === '1'; } catch { }
+      if (shouldEnable) enable();
+    })();
+
+    (() => {
+      // Tiny easter egg: type "TRAIL" to trigger a brief night-hike aurora shimmer.
+      const hintDelayMs = 7000;
+      const hintDismissMs = 5000;
+      const code = 'trail';
+      const maxLen = 10;
+      let buffer = '';
+      let hintEl = null;
+      let idleTimer = 0;
+      let hintTimer = 0;
+      let lastActivity = Date.now();
+
+      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const markActivity = () => {
+        lastActivity = Date.now();
+        if (hintEl) hintEl.remove();
+        hintEl = null;
+        if (hintTimer) {
+          window.clearTimeout(hintTimer);
+          hintTimer = 0;
+        }
+      };
+
+      const ensureHint = () => {
+        if (hintEl) return;
+        hintEl = document.createElement('div');
+        hintEl.className = 'easter-hint';
+        hintEl.textContent = 'psst… type TRAIL';
+        document.body.append(hintEl);
+
+        hintTimer = window.setTimeout(() => {
+          if (hintEl) hintEl.remove();
+          hintEl = null;
+          hintTimer = 0;
+        }, hintDismissMs);
+      };
+
+      const tickIdle = () => {
+        if (idleTimer) window.clearTimeout(idleTimer);
+        idleTimer = window.setTimeout(() => {
+          if (Date.now() - lastActivity >= hintDelayMs) ensureHint();
+          tickIdle();
+        }, 1000);
+      };
+
+      const trigger = () => {
+        document.body.classList.add('night-hike');
+        window.setTimeout(() => document.body.classList.remove('night-hike'), prefersReducedMotion() ? 2500 : 6500);
+      };
+
+      const onKeyDown = (e) => {
+        // Don't hijack typing in inputs.
+        const tag = (e.target && e.target.tagName) ? String(e.target.tagName).toLowerCase() : '';
+        if (tag === 'input' || tag === 'textarea') return;
+
+        if (typeof e.key !== 'string' || e.key.length !== 1) return;
+        markActivity();
+        buffer = (buffer + e.key.toLowerCase()).slice(-maxLen);
+        if (buffer.endsWith(code)) trigger();
+      };
+
+      window.addEventListener('mousemove', markActivity, { passive: true });
+      window.addEventListener('pointerdown', markActivity, { passive: true });
+      window.addEventListener('scroll', markActivity, { passive: true });
+      window.addEventListener('keydown', onKeyDown);
+      tickIdle();
+    })();
+  </script>
 
 </body>
 </html>

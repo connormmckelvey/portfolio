@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Connor McKelvey — Field Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Field Notes — short posts on robotics, systems design, and engineering lessons from the real world." />
+  <meta name="theme-color" content="#06150e" />
+
+  <meta property="og:title" content="Connor McKelvey — Field Notes" />
+  <meta property="og:description" content="Short posts on robotics, systems design, and engineering lessons from the real world." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="images/Headshot.JPG" />
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="hero" id="top">
+    <div class="overlay" aria-hidden="true"></div>
+
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="index.html#top">CM</a>
+      <div class="nav-links">
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#github">GitHub</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="is-active" href="blog.html" aria-current="page">Blog</a>
+        <button class="nav-fun" type="button" data-fun-toggle aria-pressed="false" title="Toggle Fun Mode">Fun</button>
+        <a class="nav-cta" href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener">Resume</a>
+      </div>
+    </nav>
+
+    <div class="hero-content">
+      <h1>Field Notes</h1>
+      <p>Short posts on robotics, systems design, and lessons from building real-world systems.</p>
+      <ul class="hero-highlights" aria-label="Topics">
+        <li>Design decisions</li>
+        <li>Debugging stories</li>
+        <li>Practical takeaways</li>
+      </ul>
+      <div class="hero-actions">
+        <a href="#posts" class="btn">Read posts</a>
+        <a href="index.html#projects" class="btn btn-ghost">Back to portfolio</a>
+      </div>
+      <p class="subtle">Professional writing, field-tested thinking.</p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section id="posts" class="section">
+      <h2>Posts</h2>
+      <p class="wide">Click a post to read the full entry. Use tags to filter topics.</p>
+
+      <div class="tabs" role="tablist" aria-label="Blog views">
+        <button class="tab is-active" type="button" role="tab" aria-selected="true" aria-controls="panel-posts" id="tab-posts" data-tab="posts">Posts</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="panel-topics" id="tab-topics" data-tab="topics">Topics</button>
+      </div>
+
+      <div class="tab-panels">
+        <div class="tab-panel" role="tabpanel" id="panel-posts" aria-labelledby="tab-posts">
+          <div class="filters" role="group" aria-label="Filter posts">
+            <button class="filter" type="button" data-post-filter="all" aria-pressed="true">All</button>
+            <button class="filter" type="button" data-post-filter="robotics" aria-pressed="false">Robotics</button>
+            <button class="filter" type="button" data-post-filter="embedded" aria-pressed="false">Embedded</button>
+            <button class="filter" type="button" data-post-filter="simulation" aria-pressed="false">Simulation</button>
+            <button class="filter" type="button" data-post-filter="systems" aria-pressed="false">Systems</button>
+            <button class="filter" type="button" data-post-filter="meta" aria-pressed="false">Meta</button>
+          </div>
+
+          <div class="card-grid" data-post-grid>
+            <article class="card post-card" data-post-id="welcome" data-tags="meta systems writing">
+              <h3>Welcome to Field Notes</h3>
+              <p class="subtle">January 14, 2026 · 2 min read</p>
+              <p>
+                Short, practical engineering notes — what worked, what failed, and what I learned.
+              </p>
+              <div class="tags"><span>meta</span><span>systems</span><span>writing</span></div>
+              <div class="card-actions">
+                <button class="card-action" type="button" data-open-post="welcome">Read</button>
+              </div>
+            </article>
+
+            <article class="card post-card" data-post-id="template" data-tags="meta">
+              <h3>Post template</h3>
+              <p class="subtle">YYYY-MM-DD · N min read</p>
+              <p>
+                Copy this card, then edit the full content in the script block at the bottom.
+              </p>
+              <div class="tags"><span>meta</span></div>
+              <div class="card-actions">
+                <button class="card-action" type="button" data-open-post="template">Read</button>
+              </div>
+            </article>
+          </div>
+
+          <p class="subtle" id="posts-status" aria-live="polite"></p>
+        </div>
+
+        <div class="tab-panel" role="tabpanel" id="panel-topics" aria-labelledby="tab-topics" hidden>
+          <p class="wide">Pick a topic and I’ll filter posts automatically.</p>
+          <div class="topic-cloud" data-topic-cloud aria-label="Topics"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark">
+      <h2>Subscribe (optional)</h2>
+      <p class="wide">
+        If you want, we can add an RSS feed later or a simple email subscribe link. For now, this page stays static and fast.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© Connor McKelvey · Built like a machine, inspired by nature</p>
+  </footer>
+
+  <a class="to-top" href="#top" aria-label="Back to top">Back to top</a>
+
+  <div class="compass" data-compass aria-hidden="true" hidden>
+    <div class="compass-face"></div>
+    <div class="compass-needle" data-needle></div>
+    <div class="compass-center"></div>
+    <div class="compass-label" data-label>NE</div>
+  </div>
+
+  <div class="modal" id="post-modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-dialog modal-note" role="dialog" aria-modal="true" aria-labelledby="post-modal-title">
+      <div class="read-progress" aria-hidden="true"><div class="read-progress-fill" data-progress></div></div>
+      <button class="modal-close" type="button" data-close aria-label="Close dialog">×</button>
+      <h3 id="post-modal-title">Post</h3>
+      <p class="subtle" id="post-modal-meta"></p>
+      <div class="tags" id="post-modal-tags" aria-label="Post tags"></div>
+      <div class="post-content" id="post-modal-content"></div>
+      <div class="modal-actions">
+        <button class="card-action" type="button" data-copy-link>Copy link</button>
+        <a class="card-action" href="#posts" data-close>Back to list</a>
+      </div>
+      <p class="subtle" id="post-modal-status" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const toTop = document.querySelector('.to-top');
+      const onScroll = () => {
+        const show = window.scrollY > 600;
+        if (toTop) toTop.classList.toggle('is-visible', show);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    (() => {
+      const tabs = [...document.querySelectorAll('[data-tab]')];
+      const panels = {
+        posts: document.getElementById('panel-posts'),
+        topics: document.getElementById('panel-topics')
+      };
+
+      const showTab = (key) => {
+        for (const btn of tabs) {
+          const isOn = btn.dataset.tab === key;
+          btn.classList.toggle('is-active', isOn);
+          btn.setAttribute('aria-selected', String(isOn));
+        }
+        for (const [k, panel] of Object.entries(panels)) {
+          if (!panel) continue;
+          panel.hidden = k !== key;
+        }
+      };
+
+      tabs.forEach(btn => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
+      showTab('posts');
+
+      const filterButtons = [...document.querySelectorAll('[data-post-filter]')];
+      const cards = [...document.querySelectorAll('.post-card')];
+      const statusEl = document.getElementById('posts-status');
+      const topicCloud = document.querySelector('[data-topic-cloud]');
+
+      const getCardTags = (card) => (card.dataset.tags || '').split(/\s+/).filter(Boolean);
+
+      const applyFilter = (tag) => {
+        for (const btn of filterButtons) {
+          const isOn = btn.dataset.postFilter === tag;
+          btn.setAttribute('aria-pressed', String(isOn));
+          btn.classList.toggle('is-active', isOn);
+        }
+
+        let shown = 0;
+        for (const card of cards) {
+          const tags = getCardTags(card);
+          const matches = tag === 'all' || tags.includes(tag);
+          card.hidden = !matches;
+          if (matches) shown += 1;
+        }
+
+        if (statusEl) {
+          statusEl.textContent = tag === 'all' ? '' : `Showing ${shown} post${shown === 1 ? '' : 's'} tagged “${tag}”.`;
+        }
+      };
+
+      filterButtons.forEach(btn => btn.addEventListener('click', () => applyFilter(btn.dataset.postFilter || 'all')));
+
+      const buildTopics = () => {
+        if (!topicCloud) return;
+
+        const counts = new Map();
+        for (const card of cards) {
+          for (const tag of getCardTags(card)) {
+            counts.set(tag, (counts.get(tag) || 0) + 1);
+          }
+        }
+
+        const entries = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+        topicCloud.replaceChildren(
+          ...entries.map(([tag, count]) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'topic';
+            b.textContent = `${tag} (${count})`;
+            b.addEventListener('click', () => {
+              showTab('posts');
+              applyFilter(tag);
+              document.getElementById('posts')?.scrollIntoView?.({ behavior: 'smooth' });
+            });
+            return b;
+          })
+        );
+      };
+
+      buildTopics();
+      applyFilter('all');
+
+      const modal = document.getElementById('post-modal');
+      const modalTitle = document.getElementById('post-modal-title');
+      const modalMeta = document.getElementById('post-modal-meta');
+      const modalTags = document.getElementById('post-modal-tags');
+      const modalContent = document.getElementById('post-modal-content');
+      const modalStatus = document.getElementById('post-modal-status');
+      const progressFill = document.querySelector('[data-progress]');
+      const copyBtn = document.querySelector('[data-copy-link]');
+      let lastFocus = null;
+
+      const POSTS = {
+        welcome: {
+          title: 'Welcome to Field Notes',
+          date: 'January 14, 2026',
+          read: '2 min read',
+          tags: ['meta', 'systems', 'writing'],
+          html: `
+            <p class="wide">This is where I share short, practical engineering notes — what worked, what failed, and what I learned.</p>
+            <p class="wide">Expect posts on autonomy, embedded systems, simulation, and the “boring” reliability details that make systems hold up.</p>
+            <h4>What you’ll find here</h4>
+            <ul>
+              <li>Design decisions (tradeoffs, constraints, and why one approach won)</li>
+              <li>Debugging stories (signals, failure modes, and how I got unstuck)</li>
+              <li>Field-ready patterns (repeatability, interfaces, and robustness)</li>
+            </ul>
+            <p class="wide">If you’re reading this as a hiring manager: I care about building systems that don’t crumble outside the lab.</p>
+          `
+        },
+        template: {
+          title: 'Post template',
+          date: 'YYYY-MM-DD',
+          read: 'N min read',
+          tags: ['meta'],
+          html: `
+            <p class="wide">Copy an existing post card in the Posts grid and give it a new <code>data-post-id</code> and <code>data-tags</code>.</p>
+            <p class="wide">Then add the matching entry in the <code>POSTS</code> object (near the bottom of this file) with:</p>
+            <ul>
+              <li><code>title</code>, <code>date</code>, <code>read</code></li>
+              <li><code>tags</code> (array)</li>
+              <li><code>html</code> (the full content, as a template string)</li>
+            </ul>
+            <p class="wide">Bonus: because posts are deep-linkable, you can share <code>blog.html#post-your-id</code>.</p>
+          `
+        }
+      };
+
+      const updateProgress = () => {
+        if (!modalContent || !progressFill) return;
+        const el = modalContent;
+        const max = Math.max(1, el.scrollHeight - el.clientHeight);
+        const pct = Math.max(0, Math.min(1, el.scrollTop / max));
+        progressFill.style.width = `${Math.round(pct * 100)}%`;
+      };
+
+      const openPost = (id) => {
+        const data = POSTS[id];
+        if (!modal || !data) return;
+
+        lastFocus = document.activeElement;
+        modal.hidden = false;
+        document.body.classList.add('modal-open');
+
+        if (modalTitle) modalTitle.textContent = data.title;
+        if (modalMeta) modalMeta.textContent = `${data.date} · ${data.read}`;
+        if (modalTags) {
+          modalTags.replaceChildren(
+            ...data.tags.map(t => {
+              const s = document.createElement('span');
+              s.textContent = t;
+              return s;
+            })
+          );
+        }
+        if (modalContent) {
+          modalContent.innerHTML = data.html;
+          modalContent.scrollTop = 0;
+        }
+        if (modalStatus) modalStatus.textContent = '';
+
+        history.replaceState(null, '', `#post-${id}`);
+
+        updateProgress();
+        const focusable = modal.querySelector('button,[href],[tabindex]:not([tabindex="-1"])');
+        focusable?.focus?.();
+      };
+
+      const closePost = () => {
+        if (!modal || modal.hidden) return;
+        modal.hidden = true;
+        document.body.classList.remove('modal-open');
+        if (location.hash.startsWith('#post-')) history.replaceState(null, '', '#posts');
+        if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+      };
+
+      document.addEventListener('click', (e) => {
+        const openBtn = e.target?.closest?.('[data-open-post]');
+        if (openBtn) {
+          openPost(openBtn.getAttribute('data-open-post'));
+          return;
+        }
+        const closeBtn = e.target?.closest?.('[data-close]');
+        if (closeBtn) closePost();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closePost();
+      });
+
+      modalContent?.addEventListener?.('scroll', updateProgress, { passive: true });
+
+      copyBtn?.addEventListener?.('click', async () => {
+        const hash = location.hash;
+        const url = `${location.origin}${location.pathname}${hash}`;
+        try {
+          await navigator.clipboard.writeText(url);
+          if (modalStatus) modalStatus.textContent = 'Link copied.';
+        } catch {
+          if (modalStatus) modalStatus.textContent = 'Copy failed — you can copy from the address bar.';
+        }
+      });
+
+      // Deep-link support: blog.html#post-<id>
+      if (location.hash.startsWith('#post-')) {
+        const id = location.hash.replace('#post-', '');
+        if (POSTS[id]) openPost(id);
+      }
+    })();
+
+    (() => {
+      const toggle = document.querySelector('[data-fun-toggle]');
+      const compass = document.querySelector('[data-compass]');
+      const needle = document.querySelector('[data-needle]');
+      const label = document.querySelector('[data-label]');
+      if (!toggle) return;
+
+      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const storageKey = 'cm_fun_mode';
+
+      let canvas = null;
+      let ctx = null;
+      let rafId = 0;
+      let w = 0;
+      let h = 0;
+
+      const pointer = { x: 0.5, y: 0.35, vx: 0, vy: 0, has: false };
+      const particles = [];
+      const maxParticles = 28;
+
+      const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+
+      const headingLabel = (deg) => {
+        const d = (deg + 360) % 360;
+        if (d >= 337.5 || d < 22.5) return 'E';
+        if (d < 67.5) return 'NE';
+        if (d < 112.5) return 'N';
+        if (d < 157.5) return 'NW';
+        if (d < 202.5) return 'W';
+        if (d < 247.5) return 'SW';
+        if (d < 292.5) return 'S';
+        return 'SE';
+      };
+
+      const ensureCanvas = () => {
+        if (canvas) return;
+        canvas = document.createElement('canvas');
+        canvas.className = 'fun-canvas';
+        canvas.setAttribute('aria-hidden', 'true');
+        canvas.style.pointerEvents = 'none';
+        document.body.append(canvas);
+        ctx = canvas.getContext('2d', { alpha: true });
+      };
+
+      const resize = () => {
+        if (!canvas) return;
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        w = Math.floor(window.innerWidth);
+        h = Math.floor(window.innerHeight);
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = `${w}px`;
+        canvas.style.height = `${h}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      };
+
+      const spawnParticle = (x, y) => {
+        if (!particles.length) {
+          for (let i = 0; i < maxParticles; i++) {
+            particles.push({ x, y, vx: 0, vy: 0, a: 0, life: 0, hue: 0, r: 0 });
+          }
+        }
+
+        const p = particles.shift();
+        p.x = x;
+        p.y = y;
+        p.vx = (Math.random() - 0.5) * 1.2;
+        p.vy = (Math.random() - 0.5) * 1.2;
+        p.a = 0.95;
+        p.life = 1;
+        p.hue = 150 + Math.random() * 40;
+        p.r = 1.6 + Math.random() * 2.4;
+        particles.push(p);
+      };
+
+      const tick = () => {
+        rafId = window.requestAnimationFrame(tick);
+        if (!ctx || !canvas) return;
+
+        ctx.clearRect(0, 0, w, h);
+
+        if (pointer.has) {
+          const px = pointer.x * w;
+          const py = pointer.y * h;
+          const speed = Math.hypot(pointer.vx, pointer.vy);
+          const rate = clamp(Math.round(speed * 1.6), 1, 6);
+          for (let i = 0; i < rate; i++) spawnParticle(px + (Math.random() - 0.5) * 10, py + (Math.random() - 0.5) * 10);
+        }
+
+        for (const p of particles) {
+          p.life *= 0.94;
+          p.a *= 0.965;
+          p.vx *= 0.985;
+          p.vy *= 0.985;
+          p.x += p.vx;
+          p.y += p.vy;
+
+          const alpha = clamp(p.a * p.life, 0, 1);
+          if (alpha < 0.02) continue;
+
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 14);
+          g.addColorStop(0, `hsla(${p.hue}, 90%, 70%, ${alpha})`);
+          g.addColorStop(1, `hsla(${p.hue}, 90%, 70%, 0)`);
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = `rgba(231, 246, 238, ${alpha * 0.55})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      };
+
+      const onPointerMove = (e) => {
+        const x = clamp(e.clientX / Math.max(1, window.innerWidth), 0, 1);
+        const y = clamp(e.clientY / Math.max(1, window.innerHeight), 0, 1);
+        pointer.vx = x - pointer.x;
+        pointer.vy = y - pointer.y;
+        pointer.x = x;
+        pointer.y = y;
+        pointer.has = true;
+
+        if (needle && compass) {
+          const cx = window.innerWidth * 0.5;
+          const cy = window.innerHeight * 0.5;
+          const dx = e.clientX - cx;
+          const dy = e.clientY - cy;
+          const deg = (Math.atan2(-dy, dx) * 180) / Math.PI;
+          needle.style.transform = `rotate(${deg}deg)`;
+          if (label) label.textContent = headingLabel(deg);
+        }
+      };
+
+      const enable = () => {
+        document.body.classList.add('fun-on');
+        toggle.setAttribute('aria-pressed', 'true');
+        try { localStorage.setItem(storageKey, '1'); } catch { }
+
+        if (compass) compass.hidden = false;
+
+        // Always track pointer for compass; only animate particles if motion is allowed.
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        if (!prefersReducedMotion()) {
+          ensureCanvas();
+          resize();
+          window.addEventListener('resize', resize, { passive: true });
+          if (!rafId) rafId = window.requestAnimationFrame(tick);
+        }
+      };
+
+      const disable = () => {
+        document.body.classList.remove('fun-on');
+        toggle.setAttribute('aria-pressed', 'false');
+        try { localStorage.setItem(storageKey, '0'); } catch { }
+
+        if (compass) compass.hidden = true;
+
+        window.removeEventListener('resize', resize);
+        window.removeEventListener('pointermove', onPointerMove);
+
+        if (rafId) {
+          window.cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+        if (canvas) {
+          canvas.remove();
+          canvas = null;
+          ctx = null;
+        }
+        pointer.has = false;
+      };
+
+      const isOn = () => document.body.classList.contains('fun-on');
+
+      toggle.addEventListener('click', () => {
+        if (isOn()) disable();
+        else enable();
+      });
+
+      // Restore last setting.
+      let shouldEnable = false;
+      try { shouldEnable = localStorage.getItem(storageKey) === '1'; } catch { }
+      if (shouldEnable) enable();
+    })();
+
+    (() => {
+      // Tiny easter egg: type "TRAIL" to trigger a brief night-hike aurora shimmer.
+      const hintDelayMs = 7000;
+      const hintDismissMs = 5000;
+      const code = 'trail';
+      const maxLen = 10;
+      let buffer = '';
+      let hintEl = null;
+      let idleTimer = 0;
+      let hintTimer = 0;
+      let lastActivity = Date.now();
+
+      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const markActivity = () => {
+        lastActivity = Date.now();
+        if (hintEl) hintEl.remove();
+        hintEl = null;
+        if (hintTimer) {
+          window.clearTimeout(hintTimer);
+          hintTimer = 0;
+        }
+      };
+
+      const ensureHint = () => {
+        if (hintEl) return;
+        hintEl = document.createElement('div');
+        hintEl.className = 'easter-hint';
+        hintEl.textContent = 'psst… type TRAIL';
+        document.body.append(hintEl);
+
+        hintTimer = window.setTimeout(() => {
+          if (hintEl) hintEl.remove();
+          hintEl = null;
+          hintTimer = 0;
+        }, hintDismissMs);
+      };
+
+      const tickIdle = () => {
+        if (idleTimer) window.clearTimeout(idleTimer);
+        idleTimer = window.setTimeout(() => {
+          if (Date.now() - lastActivity >= hintDelayMs) ensureHint();
+          tickIdle();
+        }, 1000);
+      };
+
+      const trigger = () => {
+        document.body.classList.add('night-hike');
+        window.setTimeout(() => document.body.classList.remove('night-hike'), prefersReducedMotion() ? 2500 : 6500);
+      };
+
+      const onKeyDown = (e) => {
+        // Don't hijack typing in inputs.
+        const tag = (e.target && e.target.tagName) ? String(e.target.tagName).toLowerCase() : '';
+        if (tag === 'input' || tag === 'textarea') return;
+
+        if (typeof e.key !== 'string' || e.key.length !== 1) return;
+        markActivity();
+        buffer = (buffer + e.key.toLowerCase()).slice(-maxLen);
+        if (buffer.endsWith(code)) trigger();
+      };
+
+      window.addEventListener('mousemove', markActivity, { passive: true });
+      window.addEventListener('pointerdown', markActivity, { passive: true });
+      window.addEventListener('scroll', markActivity, { passive: true });
+      window.addEventListener('keydown', onKeyDown);
+      tickIdle();
+    })();
+  </script>
+
+</body>
+</html>
