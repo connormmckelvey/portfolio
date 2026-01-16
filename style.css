@@ -80,8 +80,8 @@ body.night-hike::after {
 
 .easter-hint {
   position: fixed;
-  left: 18px;
-  bottom: 118px;
+  left: calc(18px + env(safe-area-inset-left, 0px));
+  bottom: calc(172px + env(safe-area-inset-bottom, 0px));
   z-index: 22;
   padding: 10px 12px;
   border-radius: 999px;
@@ -170,10 +170,48 @@ body.fun-on::before {
   outline-offset: 4px;
 }
 
+.fun-fab {
+  position: fixed;
+  left: calc(18px + env(safe-area-inset-left, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  z-index: 22;
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(10px);
+  color: rgba(231, 246, 238, 0.88);
+  padding: 12px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+}
+
+/* When Fun Mode is on, make space for the compass widget. */
+body.fun-on .fun-fab {
+  bottom: calc(118px + env(safe-area-inset-bottom, 0px));
+}
+
+.fun-fab:hover {
+  color: var(--text);
+  border-color: rgba(45, 212, 191, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.fun-fab[aria-pressed="true"] {
+  color: var(--text);
+  border-color: rgba(45, 212, 191, 0.28);
+  background: rgba(45, 212, 191, 0.10);
+}
+
+.fun-fab:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
 .compass {
   position: fixed;
-  left: 18px;
-  bottom: 18px;
+  left: calc(18px + env(safe-area-inset-left, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
   width: 84px;
   height: 84px;
   border-radius: 999px;
@@ -236,6 +274,169 @@ body.fun-on::before {
   font-size: 0.78rem;
   letter-spacing: 0.18em;
   color: rgba(231, 246, 238, 0.75);
+}
+
+/* Trail HUD (scroll minimap) */
+.trail-hud {
+  position: fixed;
+  right: 18px;
+  bottom: 78px;
+  width: 120px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  z-index: 21;
+  padding: 12px 12px 10px;
+}
+
+.trail-hud-title {
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(231, 246, 238, 0.75);
+  margin-bottom: 10px;
+}
+
+.trail-track {
+  position: relative;
+  height: 110px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+.trail-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0%;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  opacity: 0.92;
+}
+
+.trail-markers {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.trail-marker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(231, 246, 238, 0.88);
+  cursor: pointer;
+  text-align: left;
+}
+
+.trail-marker .trail-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.trail-marker.is-active {
+  border-color: rgba(45, 212, 191, 0.28);
+  background: rgba(45, 212, 191, 0.10);
+}
+
+.trail-marker.is-active .trail-dot {
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  border-color: rgba(45, 212, 191, 0.24);
+}
+
+.trail-marker:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+@media (max-width: 860px) {
+  .trail-hud {
+    display: none;
+  }
+}
+
+/* Command palette */
+.modal-dialog.cmdk {
+  width: min(720px, 100%);
+}
+
+.cmdk-input {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.22);
+  color: rgba(231, 246, 238, 0.95);
+}
+
+.cmdk-input::placeholder {
+  color: rgba(231, 246, 238, 0.55);
+}
+
+.cmdk-input:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.cmdk-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+  max-height: min(45vh, 380px);
+  overflow: auto;
+  padding-right: 6px;
+}
+
+.cmdk-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(231, 246, 238, 0.92);
+  cursor: pointer;
+}
+
+.cmdk-item .cmdk-kbd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.88rem;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.18);
+  color: rgba(231, 246, 238, 0.82);
+}
+
+.cmdk-item.is-active {
+  border-color: rgba(45, 212, 191, 0.28);
+  background: rgba(45, 212, 191, 0.10);
+  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.12), 0 14px 36px rgba(0, 0, 0, 0.25);
+}
+
+.cmdk-item:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.cmdk-hint {
+  margin-top: 12px;
 }
 
 body.modal-open {
@@ -365,6 +566,17 @@ a {
 .nav a:hover {
   color: var(--text);
   background: rgba(255, 255, 255, 0.06);
+}
+
+.nav a.nav-blog {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.16);
+  color: rgba(231, 246, 238, 0.9);
+}
+
+.nav a.nav-blog:hover {
+  border-color: rgba(45, 212, 191, 0.28);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .nav-cta {
@@ -980,7 +1192,12 @@ code {
   opacity: 0.55;
 }
 
+.event-item {
+  position: relative;
+}
+
 .event {
+  width: 100%;
   padding: 25px;
   background: rgba(255, 255, 255, 0.04);
   border-left: 4px solid var(--accent);
@@ -988,6 +1205,13 @@ code {
   transition: 0.3s;
   border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
+  text-align: left;
+
+  appearance: none;
+  display: block;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
 }
 
 .event::before {
@@ -1007,6 +1231,54 @@ code {
 .event:hover {
   background: rgba(34, 197, 94, 0.16);
   transform: translateX(12px);
+}
+
+.event-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+  font-size: 0.92rem;
+  color: rgba(231, 246, 238, 0.7);
+}
+
+.event-hint::after {
+  content: "▾";
+  display: inline-block;
+  transform: translateY(-1px);
+  opacity: 0.85;
+}
+
+.event[aria-expanded="true"] {
+  background: rgba(34, 197, 94, 0.18);
+  border-color: rgba(45, 212, 191, 0.18);
+}
+
+.event[aria-expanded="true"]:hover {
+  transform: translateX(0);
+}
+
+.event[aria-expanded="true"] .event-hint::after {
+  content: "▴";
+}
+
+.event-details {
+  margin-top: 10px;
+  margin-left: 14px;
+  padding: 18px 22px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.event-bullets {
+  margin-top: 12px;
+  padding-left: 18px;
+  color: rgba(231, 246, 238, 0.88);
+}
+
+.event-bullets li {
+  margin-top: 8px;
 }
 
 /* CONTACT */

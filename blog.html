@@ -31,8 +31,7 @@
         <a href="index.html#github">GitHub</a>
         <a href="index.html#about">About</a>
         <a href="index.html#contact">Contact</a>
-        <a class="is-active" href="blog.html" aria-current="page">Blog</a>
-        <button class="nav-fun" type="button" data-fun-toggle aria-pressed="false" title="Toggle Fun Mode">Fun</button>
+        <a class="nav-blog is-active" href="blog.html" aria-current="page">Blog</a>
         <a class="nav-cta" href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener">Resume</a>
       </div>
     </nav>
@@ -111,7 +110,7 @@
       </div>
     </section>
 
-    <section class="section dark">
+    <section id="subscribe" class="section dark">
       <h2>Subscribe (optional)</h2>
       <p class="wide">
         If you want, we can add an RSS feed later or a simple email subscribe link. For now, this page stays static and fast.
@@ -126,11 +125,33 @@
 
   <a class="to-top" href="#top" aria-label="Back to top">Back to top</a>
 
+  <button class="fun-fab" type="button" data-fun-toggle aria-pressed="false" title="Toggle Fun Mode" aria-label="Toggle Fun Mode">Fun</button>
+
   <div class="compass" data-compass aria-hidden="true" hidden>
     <div class="compass-face"></div>
     <div class="compass-needle" data-needle></div>
     <div class="compass-center"></div>
     <div class="compass-label" data-label>NE</div>
+  </div>
+
+  <div class="trail-hud" data-trail-hud aria-label="Trail progress" hidden>
+    <div class="trail-hud-title">Trail</div>
+    <div class="trail-track" aria-hidden="true">
+      <div class="trail-fill" data-trail-fill></div>
+    </div>
+    <div class="trail-markers" data-trail-markers aria-label="Waypoints"></div>
+  </div>
+
+  <div class="modal" id="cmdk" hidden>
+    <div class="modal-backdrop" data-cmdk-close></div>
+    <div class="modal-dialog cmdk" role="dialog" aria-modal="true" aria-labelledby="cmdk-title">
+      <button class="modal-close" type="button" data-cmdk-close aria-label="Close quick navigation">×</button>
+      <h3 id="cmdk-title">Quick navigation</h3>
+      <p class="subtle">Press <strong>K</strong> or <strong>Ctrl + K</strong>. Type to filter.</p>
+      <input class="cmdk-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="Go to… (posts, topics, subscribe)" aria-label="Search sections" data-cmdk-input />
+      <div class="cmdk-list" role="listbox" aria-label="Navigation results" data-cmdk-list></div>
+      <p class="subtle cmdk-hint">Tip: use ↑/↓ then Enter.</p>
+    </div>
   </div>
 
   <div class="modal" id="post-modal" hidden>
@@ -232,7 +253,7 @@
             b.addEventListener('click', () => {
               showTab('posts');
               applyFilter(tag);
-              document.getElementById('posts')?.scrollIntoView?.({ behavior: 'smooth' });
+              document.getElementById('posts')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
             });
             return b;
           })
@@ -500,7 +521,7 @@
           const dx = e.clientX - cx;
           const dy = e.clientY - cy;
           const deg = (Math.atan2(-dy, dx) * 180) / Math.PI;
-          needle.style.transform = `rotate(${deg}deg)`;
+          needle.style.transform = `rotate(${-deg}deg)`;
           if (label) label.textContent = headingLabel(deg);
         }
       };
@@ -569,6 +590,8 @@
       let hintTimer = 0;
       let lastActivity = Date.now();
 
+      const funIsOn = () => document.body.classList.contains('fun-on');
+
       const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       const markActivity = () => {
@@ -582,6 +605,7 @@
       };
 
       const ensureHint = () => {
+        if (!funIsOn()) return;
         if (hintEl) return;
         hintEl = document.createElement('div');
         hintEl.className = 'easter-hint';
@@ -598,7 +622,12 @@
       const tickIdle = () => {
         if (idleTimer) window.clearTimeout(idleTimer);
         idleTimer = window.setTimeout(() => {
-          if (Date.now() - lastActivity >= hintDelayMs) ensureHint();
+          if (!funIsOn()) {
+            if (hintEl) hintEl.remove();
+            hintEl = null;
+          } else if (Date.now() - lastActivity >= hintDelayMs) {
+            ensureHint();
+          }
           tickIdle();
         }, 1000);
       };
@@ -624,6 +653,205 @@
       window.addEventListener('scroll', markActivity, { passive: true });
       window.addEventListener('keydown', onKeyDown);
       tickIdle();
+    })();
+
+    (() => {
+      const hud = document.querySelector('[data-trail-hud]');
+      const fill = document.querySelector('[data-trail-fill]');
+      const markersRoot = document.querySelector('[data-trail-markers]');
+      if (!hud || !fill || !markersRoot) return;
+
+      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const tabs = {
+        posts: document.getElementById('tab-posts'),
+        topics: document.getElementById('tab-topics')
+      };
+
+      const toPosts = () => {
+        tabs.posts?.click?.();
+        document.getElementById('posts')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+      };
+
+      const toTopics = () => {
+        tabs.topics?.click?.();
+        document.getElementById('posts')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+      };
+
+      const waypoints = [
+        { label: 'Posts', id: 'posts' },
+        { label: 'Topics', action: toTopics },
+        { label: 'Subscribe', id: 'subscribe' }
+      ].map(w => ({ ...w, el: w.id ? document.getElementById(w.id) : null }));
+
+      hud.hidden = false;
+
+      const buttons = waypoints.map((w) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'trail-marker';
+        b.innerHTML = `<span>${w.label}</span><span class="trail-dot" aria-hidden="true"></span>`;
+        b.addEventListener('click', () => {
+          if (w.action) return w.action();
+          w.el?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+        });
+        markersRoot.append(b);
+        return b;
+      });
+
+      const update = () => {
+        const doc = document.documentElement;
+        const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+        const pct = Math.max(0, Math.min(1, (window.scrollY || doc.scrollTop || 0) / max));
+        fill.style.height = `${Math.round(pct * 100)}%`;
+
+        // Active marker based on which section is closest above the "reading line".
+        const targetY = (window.scrollY || 0) + window.innerHeight * 0.35;
+        const postsTop = document.getElementById('posts')?.getBoundingClientRect?.().top;
+
+        let activeIndex = 0;
+        const subscribeEl = document.getElementById('subscribe');
+        const subscribeTop = subscribeEl ? (subscribeEl.getBoundingClientRect().top + (window.scrollY || 0)) : Infinity;
+        if (subscribeTop <= targetY) activeIndex = 2;
+        else if (postsTop != null) activeIndex = 0;
+
+        buttons.forEach((b, i) => b.classList.toggle('is-active', i === activeIndex));
+      };
+
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update, { passive: true });
+      update();
+    })();
+
+    (() => {
+      const modal = document.getElementById('cmdk');
+      const input = modal?.querySelector?.('[data-cmdk-input]');
+      const list = modal?.querySelector?.('[data-cmdk-list]');
+      const closeEls = modal ? [...modal.querySelectorAll('[data-cmdk-close]')] : [];
+      if (!modal || !input || !list) return;
+
+      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const tabs = {
+        posts: document.getElementById('tab-posts'),
+        topics: document.getElementById('tab-topics')
+      };
+
+      const items = [
+        { title: 'Posts', keywords: 'posts field notes', run: () => { tabs.posts?.click?.(); document.getElementById('posts')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }); } },
+        { title: 'Topics', keywords: 'topics tags filter', run: () => { tabs.topics?.click?.(); document.getElementById('posts')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }); } },
+        { title: 'Subscribe', keywords: 'subscribe rss email', run: () => document.getElementById('subscribe')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }) },
+        { title: 'Back to portfolio', keywords: 'home index', run: () => { window.location.href = 'index.html#top'; } },
+        { title: 'Projects (portfolio)', keywords: 'projects work', run: () => { window.location.href = 'index.html#projects'; } },
+        { title: 'Open resume (PDF)', keywords: 'resume pdf', run: () => window.open('connor-mckelvey-resume.pdf', '_blank', 'noopener') }
+      ];
+
+      let isOpen = false;
+      let active = 0;
+      let results = items;
+      let lastFocus = null;
+
+      const choose = (item) => {
+        if (!item) return;
+        setOpen(false);
+        window.requestAnimationFrame(() => item.run?.());
+      };
+
+      const setOpen = (on) => {
+        isOpen = on;
+        modal.hidden = !on;
+        document.body.classList.toggle('modal-open', on);
+        if (on) {
+          lastFocus = document.activeElement;
+          input.value = '';
+          active = 0;
+          render();
+          input.focus();
+        } else {
+          if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+        }
+      };
+
+      const render = () => {
+        const q = input.value.trim().toLowerCase();
+        results = !q
+          ? items
+          : items.filter(i => (i.title + ' ' + (i.keywords || '')).toLowerCase().includes(q));
+
+        if (active >= results.length) active = Math.max(0, results.length - 1);
+        active = Math.min(active, Math.max(0, Math.min(9, results.length - 1)));
+
+        list.replaceChildren(
+          ...results.slice(0, 10).map((item, idx) => {
+            const el = document.createElement('div');
+            el.className = 'cmdk-item' + (idx === active ? ' is-active' : '');
+            el.tabIndex = 0;
+            el.setAttribute('role', 'option');
+            el.setAttribute('aria-selected', String(idx === active));
+
+            const name = document.createElement('div');
+            name.textContent = item.title;
+
+            const kbd = document.createElement('div');
+            kbd.className = 'cmdk-kbd';
+            kbd.textContent = '↵';
+
+            el.append(name, kbd);
+            el.addEventListener('mouseenter', () => {
+              active = idx;
+              render();
+            });
+            el.addEventListener('click', () => {
+              choose(item);
+            });
+            return el;
+          })
+        );
+      };
+
+      const open = () => setOpen(true);
+      const close = () => setOpen(false);
+
+      closeEls.forEach(el => el.addEventListener('click', close));
+
+      document.addEventListener('keydown', (e) => {
+        const tag = (e.target && e.target.tagName) ? String(e.target.tagName).toLowerCase() : '';
+        const inText = tag === 'input' || tag === 'textarea';
+
+        const isCtrlK = (e.key.toLowerCase?.() === 'k') && (e.ctrlKey || e.metaKey);
+        const isPlainK = (e.key.toLowerCase?.() === 'k') && !e.ctrlKey && !e.metaKey && !e.altKey;
+
+        if (!isOpen && (isCtrlK || (isPlainK && !inText))) {
+          e.preventDefault();
+          open();
+          return;
+        }
+
+        if (!isOpen) return;
+
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          close();
+          return;
+        }
+      });
+
+      input.addEventListener('input', render);
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          active = Math.min(active + 1, Math.max(0, Math.min(9, results.length - 1)));
+          render();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          active = Math.max(active - 1, 0);
+          render();
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          const chosen = results[active];
+          choose(chosen);
+        }
+      });
     })();
   </script>
 
