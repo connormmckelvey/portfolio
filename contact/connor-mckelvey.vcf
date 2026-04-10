@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:McKelvey;Connor;;;
+FN:Connor McKelvey
+TEL;TYPE=CELL:+13462256981
+EMAIL;TYPE=INTERNET:connormckelvey@utexas.edu
+ADR;TYPE=HOME:;;Austin;TX;;;;
+URL:https://connormckelvey.dev
+X-SOCIALPROFILE;TYPE=linkedin:https://linkedin.com/in/connor-mckelvey-8591a6201/
+END:VCARD
