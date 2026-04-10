@@ -62,13 +62,8 @@
       padding: 48px 32px;
       border-right: 0.5px solid var(--border);
       background: var(--off-white);
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transition: transform 0.4s ease;
       z-index: 100;
-    }
-
-    .sidebar.dissolved {
-      opacity: 0;
-      pointer-events: none;
     }
 
     .sidebar-logo {
@@ -162,48 +157,77 @@
     }
     .resume-btn:hover { background: var(--green-light); }
 
-    /* ─── Floating nav (post-dissolve) ─────────────────── */
-    .floating-nav {
+    /* ─── Mobile nav (hamburger + dropdown) ────────────── */
+    .mobile-nav-toggle {
+      display: none;
       position: fixed;
-      top: 36px;
-      right: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-      z-index: 200;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-    .floating-nav.visible {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .floating-nav a {
+      top: 18px;
+      left: 18px;
+      z-index: 250;
       font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink-muted);
-      letter-spacing: 0.07em;
-      padding: 4px 0;
-      transition: color 0.2s;
-    }
-    .floating-nav a:hover,
-    .floating-nav a.active { color: var(--green-deep); }
-    .floating-nav .f-resume {
-      margin-top: 8px;
-      font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: 11px;
       color: var(--green-deep);
-      border: 0.5px solid var(--green-mid);
-      padding: 8px 14px;
-      border-radius: 5px;
       letter-spacing: 0.09em;
-      transition: background 0.2s;
-      background: rgba(247,246,242,0.92);
-      backdrop-filter: blur(8px);
+      border: 0.5px solid var(--border);
+      background: var(--off-white);
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
     }
-    .floating-nav .f-resume:hover { background: var(--green-light); }
+
+    .mobile-nav-toggle:focus-visible {
+      outline: 2px solid var(--green-mid);
+      outline-offset: 4px;
+    }
+
+    .mobile-menu-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 240;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: default;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 245;
+      border-bottom: 0.5px solid var(--border);
+      background: var(--off-white);
+      padding: 72px 18px 18px;
+    }
+
+    .mobile-menu a {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-mid);
+      letter-spacing: 0.07em;
+      padding: 12px 6px;
+      border-bottom: 0.5px solid var(--border-light);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover,
+    .mobile-menu a.active { color: var(--green-deep); }
+
+    .mobile-menu .mobile-menu-meta {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .mobile-menu .mobile-menu-meta a {
+      border-bottom: none;
+      padding: 10px 6px;
+      color: var(--ink-muted);
+    }
+    .mobile-menu .mobile-menu-meta a:hover { color: var(--green-deep); }
 
     /* ─── Main Content ──────────────────────────────────── */
     .main {
@@ -225,7 +249,7 @@
     }
     .sec-label {
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 11px;
       color: var(--green-soft);
       letter-spacing: 0.16em;
       white-space: nowrap;
@@ -281,7 +305,7 @@
 
     .hero-eyebrow {
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 11px;
       color: var(--green-soft);
       letter-spacing: 0.18em;
       margin-bottom: 28px;
@@ -304,7 +328,7 @@
       font-weight: 500;
       line-height: 1.04;
       letter-spacing: -0.02em;
-      max-width: 640px;
+      max-width: 820px;
       margin-bottom: 28px;
       opacity: 0;
       animation: fadeUp 0.9s ease 0.25s forwards;
@@ -324,7 +348,7 @@
     }
     .byline-name {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 14px;
       color: var(--ink-mid);
       letter-spacing: 0.09em;
     }
@@ -335,16 +359,16 @@
     }
     .byline-disc {
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 11px;
       color: var(--ink-faint);
       letter-spacing: 0.08em;
     }
 
     .hero-sub {
-      font-size: 15px;
+      font-size: 16px;
       color: var(--ink-muted);
       line-height: 1.85;
-      max-width: 420px;
+      max-width: 560px;
       margin-bottom: 52px;
       opacity: 0;
       animation: fadeUp 0.8s ease 0.5s forwards;
@@ -359,7 +383,7 @@
     }
     .btn-primary {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
       color: var(--off-white);
       background: var(--green-deep);
       padding: 14px 28px;
@@ -371,7 +395,7 @@
     .btn-primary:hover { background: var(--green-mid); }
     .btn-ghost {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
       color: var(--ink-muted);
       letter-spacing: 0.09em;
       cursor: pointer;
@@ -923,7 +947,8 @@
     /* ─── Responsive ────────────────────────────────────── */
     @media (max-width: 900px) {
       .sidebar { display: none; }
-      .floating-nav { display: flex; opacity: 1 !important; pointer-events: all !important; }
+      .mobile-nav-toggle { display: inline-flex; align-items: center; }
+      body.mobile-menu-open .mobile-menu-backdrop { display: block; }
       .section, #hero, #building, #projects, #about, #skills, #experience, #education, #contact {
         padding-left: 32px;
         padding-right: 32px;
@@ -938,20 +963,41 @@
     @media (max-width: 600px) {
       .skills-grid { grid-template-columns: 1fr; }
       .hero-statement { font-size: 36px; }
+      .byline-name { font-size: 13px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating nav (appears after sidebar dissolves) -->
-  <nav class="floating-nav" id="floatingNav">
+  <button
+    class="mobile-nav-toggle"
+    id="mobileNavToggle"
+    type="button"
+    aria-controls="mobileMenu"
+    aria-label="menu"
+    aria-expanded="false"
+  >☰</button>
+
+  <button
+    class="mobile-menu-backdrop"
+    id="mobileMenuBackdrop"
+    type="button"
+    aria-hidden="true"
+    hidden
+  ></button>
+
+  <nav class="mobile-menu" id="mobileMenu" hidden>
     <a href="#hero">home</a>
     <a href="#projects">projects</a>
     <a href="#about">about</a>
     <a href="#skills">skills</a>
     <a href="#experience">experience</a>
     <a href="#contact">contact</a>
-    <a href="Professional_Resume_2026_.pdf" target="_blank" class="f-resume">résumé ↗</a>
+    <a href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener noreferrer">résumé ↗</a>
+    <div class="mobile-menu-meta" aria-label="external links">
+      <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer">github ↗</a>
+      <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
+    </div>
   </nav>
 
   <div class="layout">
@@ -978,10 +1024,10 @@
       </nav>
       <div class="sidebar-bottom">
         <div class="sidebar-links">
-          <a href="https://github.com/connormmckelvey" target="_blank">github ↗</a>
-          <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank">linkedin ↗</a>
+          <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer">github ↗</a>
+          <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
         </div>
-        <a href="Professional_Resume_2026_.pdf" target="_blank" class="resume-btn">résumé ↗</a>
+        <a href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-btn">résumé ↗</a>
       </div>
     </aside>
 
@@ -1160,24 +1206,25 @@
             <span class="sec-label">// about</span>
             <span class="sec-rule"></span>
           </div>
-          <h2 class="about-heading reveal">Engineer by trade,<br><em>outdoorsman</em> by nature.</h2>
+          <h2 class="about-heading reveal">Engineer by trade,<br><em>systems builder</em> by nature.</h2>
           <p class="about-body reveal reveal-delay-1">
-            I'm a first-year ECE student in the Honors Robotics Program at UT Austin — building hardware and software that sits at the edge of what's possible. I care deeply about two things: <em>leading</em> and <em>executing</em>. Whether that's guiding a research team, shipping a product used by thousands, or earning Eagle Scout through years of service leadership.
+            I'm a first-year ECE student in the Honors Robotics Program at UT Austin, focused on embedded systems, robotics, and autonomy. I care deeply about two things: <em>leading</em> and <em>executing</em> — turning ambitious ideas into working systems that ship.
           </p>
           <p class="about-body reveal reveal-delay-2">
-            When I'm not in the lab or writing firmware, I'm somewhere without cell service. 200+ nights camping, a decade of scouting, and a healthy obsession with being outside informs everything I build — including a trail sensor that runs for six months untouched in the backcountry.
+            I like working end-to-end: defining the problem, prototyping quickly, writing the firmware and software, then testing and iterating until it's reliable. A lot of my approach to building (and team leadership) comes from years of service and responsibility as an Eagle Scout.
           </p>
           <div class="about-values reveal reveal-delay-3">
             <span class="value-pill">leading</span>
             <span class="value-pill">executing</span>
-            <span class="value-pill">outdoor pursuits</span>
-            <span class="value-pill">hardware</span>
+            <span class="value-pill">embedded systems</span>
+            <span class="value-pill">robotics</span>
+            <span class="value-pill">reliability</span>
             <span class="value-pill">human impact</span>
             <span class="value-pill">Eagle Scout</span>
           </div>
           <div class="about-links reveal reveal-delay-4">
-            <a href="https://github.com/connormmckelvey" target="_blank">github ↗</a>
-            <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank">linkedin ↗</a>
+            <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer">github ↗</a>
+            <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
             <a href="mailto:connormckelvey@utexas.edu">email ↗</a>
           </div>
         </div>
@@ -1195,8 +1242,8 @@
             <div class="stat-label">HackTX 2025 · 5,000 participants</div>
           </div>
           <div class="stat reveal reveal-delay-3">
-            <div class="stat-num">200+</div>
-            <div class="stat-label">nights in the backcountry</div>
+            <div class="stat-num">UT</div>
+            <div class="stat-label">Honors Robotics · ECE</div>
           </div>
         </div>
       </section>
@@ -1363,13 +1410,13 @@
               connormckelvey@utexas.edu
               <span class="cl-arrow">→</span>
             </a>
-            <a href="https://github.com/connormmckelvey" target="_blank" class="contact-link">
+            <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer" class="contact-link">
               <span class="cl-label">github</span>
               <span class="cl-rule"></span>
               connormmckelvey
               <span class="cl-arrow">→</span>
             </a>
-            <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" class="contact-link">
+            <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer" class="contact-link">
               <span class="cl-label">linkedin</span>
               <span class="cl-rule"></span>
               connor-mckelvey
@@ -1388,27 +1435,45 @@
   </div>
 
   <script>
-    const sidebar = document.getElementById('sidebar');
-    const floatingNav = document.getElementById('floatingNav');
-    const allNavLinks = document.querySelectorAll('.sidebar-nav a, .floating-nav a');
+    const mobileNavToggle = document.getElementById('mobileNavToggle');
+    const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    const allNavLinks = document.querySelectorAll('.sidebar-nav a, .mobile-menu a');
     const sections = document.querySelectorAll('section[id]');
     const reveals = document.querySelectorAll('.reveal');
 
-    // Sidebar dissolve on scroll
-    window.addEventListener('scroll', () => {
+    function setMobileMenuOpen(open) {
+      document.body.classList.toggle('mobile-menu-open', open);
+      mobileMenu.hidden = !open;
+      mobileMenuBackdrop.hidden = !open;
+      mobileNavToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    mobileNavToggle.addEventListener('click', () => {
+      const isOpen = mobileNavToggle.getAttribute('aria-expanded') === 'true';
+      setMobileMenuOpen(!isOpen);
+    });
+
+    mobileMenuBackdrop.addEventListener('click', () => setMobileMenuOpen(false));
+
+    mobileMenu.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (!link) return;
+      setMobileMenuOpen(false);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) setMobileMenuOpen(false);
+    });
+
+    function updateActiveNav() {
       const scrollY = window.scrollY;
-      const heroH = document.getElementById('hero').offsetHeight;
-
-      if (scrollY > heroH * 0.72) {
-        sidebar.classList.add('dissolved');
-        floatingNav.classList.add('visible');
-      } else {
-        sidebar.classList.remove('dissolved');
-        floatingNav.classList.remove('visible');
-      }
-
-      // Active nav highlight
-      let current = '';
+      let current = sections[0]?.id || '';
       sections.forEach(sec => {
         if (scrollY >= sec.offsetTop - 120) current = sec.id;
       });
@@ -1416,7 +1481,10 @@
         link.classList.remove('active');
         if (link.getAttribute('href') === '#' + current) link.classList.add('active');
       });
-    });
+    }
+
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
 
     // Scroll reveal
     const observer = new IntersectionObserver((entries) => {
