@@ -1,1292 +1,1434 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Connor McKelvey — Electrical & Computer Engineer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Connor McKelvey — Electrical & Computer Engineer in Honors Robotics at UT Austin. Embedded systems, robotics, and utilizing data" />
-  <meta name="theme-color" content="#06150e" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connor McKelvey — ECE & Robotics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <meta property="og:title" content="Connor McKelvey — Engineer" />
-  <meta property="og:description" content="Embedded Systems · Robotics · Tools that ship." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="images/Headshot.JPG" />
+    :root {
+      --green-deep:   #1a3a2a;
+      --green-mid:    #2d6644;
+      --green-soft:   #3b6d11;
+      --green-light:  #eaf3de;
+      --green-pale:   #c0dd97;
+      --off-white:    #f7f6f2;
+      --white:        #ffffff;
+      --ink:          #1a1a18;
+      --ink-mid:      #4a4a46;
+      --ink-muted:    #888780;
+      --ink-faint:    #b4b2a9;
+      --border:       #dddbd4;
+      --border-light: #eceae4;
+      --sidebar-w:    210px;
+      --font-serif:   'Lora', Georgia, serif;
+      --font-mono:    'JetBrains Mono', monospace;
+      --font-sans:    'Inter', sans-serif;
+    }
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--off-white);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Layout ────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── Sidebar ───────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 48px 32px;
+      border-right: 0.5px solid var(--border);
+      background: var(--off-white);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      z-index: 100;
+    }
+
+    .sidebar.dissolved {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .sidebar-logo {
+      margin-bottom: 6px;
+    }
+    .sidebar-logo svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .sidebar-name {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--green-deep);
+      margin-bottom: 3px;
+    }
+
+    .sidebar-role {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green-soft);
+      letter-spacing: 0.12em;
+      margin-bottom: 52px;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex: 1;
+    }
+
+    .sidebar-nav a {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.07em;
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: color 0.2s;
+      border-bottom: 0.5px solid transparent;
+    }
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active { color: var(--green-deep); }
+    .sidebar-nav a.active .nav-dot { background: var(--green-mid); }
+
+    .nav-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .sidebar-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sidebar-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .sidebar-links a {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-faint);
+      letter-spacing: 0.07em;
+      transition: color 0.2s;
+    }
+    .sidebar-links a:hover { color: var(--green-deep); }
+
+    .resume-btn {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green-deep);
+      border: 0.5px solid var(--green-mid);
+      padding: 10px 16px;
+      border-radius: 5px;
+      letter-spacing: 0.09em;
+      transition: background 0.2s;
+      cursor: pointer;
+      align-self: flex-start;
+    }
+    .resume-btn:hover { background: var(--green-light); }
+
+    /* ─── Floating nav (post-dissolve) ─────────────────── */
+    .floating-nav {
+      position: fixed;
+      top: 36px;
+      right: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .floating-nav.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .floating-nav a {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-muted);
+      letter-spacing: 0.07em;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+    .floating-nav a:hover,
+    .floating-nav a.active { color: var(--green-deep); }
+    .floating-nav .f-resume {
+      margin-top: 8px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green-deep);
+      border: 0.5px solid var(--green-mid);
+      padding: 8px 14px;
+      border-radius: 5px;
+      letter-spacing: 0.09em;
+      transition: background 0.2s;
+      background: rgba(247,246,242,0.92);
+      backdrop-filter: blur(8px);
+    }
+    .floating-nav .f-resume:hover { background: var(--green-light); }
+
+    /* ─── Main Content ──────────────────────────────────── */
+    .main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ─── Section utility ───────────────────────────────── */
+    .section {
+      padding: 96px 80px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .sec-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 60px;
+    }
+    .sec-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green-soft);
+      letter-spacing: 0.16em;
+      white-space: nowrap;
+    }
+    .sec-rule {
+      flex: 1;
+      height: 0.5px;
+      background: var(--border);
+    }
+    .sec-count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+    }
+
+    /* ─── Fade-in on scroll ─────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── Hero ──────────────────────────────────────────── */
+    #hero {
+      padding: 96px 80px 104px;
+      border-bottom: 0.5px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-topo {
+      position: absolute;
+      right: -40px;
+      bottom: -60px;
+      width: 480px;
+      height: 480px;
+      opacity: 0.05;
+      pointer-events: none;
+    }
+    .topo-path { fill: none; stroke: var(--green-deep); stroke-width: 0.8; }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green-soft);
+      letter-spacing: 0.18em;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.1s forwards;
+    }
+    .eyebrow-line {
+      width: 22px;
+      height: 0.5px;
+      background: var(--green-soft);
+    }
+
+    .hero-statement {
+      font-family: var(--font-serif);
+      font-size: clamp(44px, 5.5vw, 68px);
+      color: var(--green-deep);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      max-width: 640px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.25s forwards;
+    }
+    .hero-statement em {
+      font-style: italic;
+      color: var(--green-mid);
+    }
+
+    .hero-byline {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+    .byline-name {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-mid);
+      letter-spacing: 0.09em;
+    }
+    .byline-rule {
+      width: 24px;
+      height: 0.5px;
+      background: var(--border);
+    }
+    .byline-disc {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: var(--ink-muted);
+      line-height: 1.85;
+      max-width: 420px;
+      margin-bottom: 52px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.5s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.62s forwards;
+    }
+    .btn-primary {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--off-white);
+      background: var(--green-deep);
+      padding: 14px 28px;
+      border-radius: 6px;
+      letter-spacing: 0.09em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--green-mid); }
+    .btn-ghost {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-muted);
+      letter-spacing: 0.09em;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--green-deep); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Currently Building ────────────────────────────── */
+    #building {
+      padding: 80px 80px;
+      border-bottom: 0.5px solid var(--border);
+      background: var(--off-white);
+    }
+
+    .building-card {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+      background: var(--white);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 40px 44px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .building-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--green-mid);
+      border-radius: 12px 0 0 12px;
+    }
+
+    .building-pulse {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green-soft);
+      letter-spacing: 0.14em;
+      margin-bottom: 14px;
+    }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green-soft);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .building-title {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      color: var(--green-deep);
+      font-weight: 500;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .building-title em { font-style: italic; color: var(--green-mid); }
+
+    .building-desc {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 20px;
+    }
+
+    .building-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .meta-item::before {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 0.5px;
+      background: var(--green-pale);
+    }
+
+    .building-right {
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .building-org {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green-soft);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .building-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green-deep);
+      background: var(--green-light);
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.06em;
+      display: inline-block;
+    }
+
+    /* ─── Projects ──────────────────────────────────────── */
+    #projects { padding: 96px 80px; border-bottom: 0.5px solid var(--border); }
+
+    .project-item {
+      display: flex;
+      gap: 32px;
+      padding: 40px 0;
+      border-bottom: 0.5px solid var(--border-light);
+      align-items: flex-start;
+      cursor: pointer;
+      transition: none;
+    }
+    .project-item:last-child { border-bottom: none; }
+    .project-item:hover .proj-arrow { color: var(--green-mid); transform: translateX(4px); }
+    .project-item:hover .proj-title { color: var(--green-mid); }
+
+    .proj-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      padding-top: 6px;
+      min-width: 26px;
+    }
+
+    .proj-body { flex: 1; }
+
+    .proj-top {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .proj-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      color: var(--green-deep);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .proj-award {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: #854f0b;
+      background: #faeeda;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.06em;
+    }
+
+    .proj-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green-soft);
+      background: var(--green-light);
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.06em;
+    }
+
+    .proj-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      max-width: 560px;
+    }
+
+    .proj-stack {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-mid);
+      background: #eeecea;
+      padding: 3px 9px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .proj-arrow {
+      font-size: 14px;
+      color: var(--ink-faint);
+      align-self: center;
+      transition: color 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    /* ─── About ─────────────────────────────────────────── */
+    #about {
+      padding: 96px 80px;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      gap: 80px;
+      align-items: flex-start;
+    }
+
+    .about-left { flex: 1.4; }
+
+    .about-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 3.5vw, 44px);
+      color: var(--green-deep);
+      font-weight: 500;
+      line-height: 1.15;
+      margin-bottom: 22px;
+    }
+    .about-heading em { font-style: italic; color: var(--green-mid); }
+
+    .about-body {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.9;
+      margin-bottom: 32px;
+    }
+
+    .about-values {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .value-pill {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green-deep);
+      background: var(--green-light);
+      padding: 6px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.06em;
+    }
+
+    .about-links {
+      display: flex;
+      gap: 20px;
+    }
+    .about-links a {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-muted);
+      letter-spacing: 0.07em;
+      transition: color 0.2s;
+    }
+    .about-links a:hover { color: var(--green-deep); }
+
+    .about-right {
+      flex: 0.85;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      padding-top: 8px;
+    }
+
+    .stat {
+      border-left: 2px solid var(--green-light);
+      padding-left: 22px;
+    }
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      color: var(--green-deep);
+      font-weight: 500;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── Skills ────────────────────────────────────────── */
+    #skills {
+      padding: 96px 80px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .skill-group-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green-soft);
+      letter-spacing: 0.14em;
+      margin-bottom: 16px;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .skill-item {
+      font-size: 13px;
+      color: var(--ink-mid);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .skill-item::before {
+      content: '';
+      width: 16px;
+      height: 0.5px;
+      background: var(--green-pale);
+      flex-shrink: 0;
+    }
+
+    /* ─── Experience ────────────────────────────────────── */
+    #experience {
+      padding: 96px 80px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .exp-item {
+      display: flex;
+      gap: 40px;
+      padding: 36px 0;
+      border-bottom: 0.5px solid var(--border-light);
+    }
+    .exp-item:last-child { border-bottom: none; }
+
+    .exp-date {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.07em;
+      min-width: 80px;
+      padding-top: 4px;
+      line-height: 1.6;
+    }
+
+    .exp-body { flex: 1; }
+
+    .exp-top {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .exp-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--green-deep);
+      font-weight: 500;
+    }
+
+    .exp-org {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green-soft);
+      letter-spacing: 0.07em;
+    }
+
+    .exp-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.8;
+    }
+
+    /* ─── Education ─────────────────────────────────────── */
+    #education {
+      padding: 96px 80px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .edu-card {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .edu-left { flex: 1; }
+
+    .edu-school {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      color: var(--green-deep);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .edu-degree {
+      font-size: 14px;
+      color: var(--ink-mid);
+      margin-bottom: 4px;
+    }
+
+    .edu-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green-soft);
+      letter-spacing: 0.09em;
+      margin-bottom: 18px;
+    }
+
+    .edu-courses {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .edu-right {
+      flex: 0.8;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .honor-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+    .honor-item::before {
+      content: '';
+      width: 14px;
+      height: 0.5px;
+      background: var(--green-pale);
+      flex-shrink: 0;
+    }
+
+    /* ─── Contact ───────────────────────────────────────── */
+    #contact {
+      padding: 96px 80px 120px;
+    }
+
+    .contact-inner {
+      max-width: 560px;
+    }
+
+    .contact-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 3.5vw, 44px);
+      color: var(--green-deep);
+      font-weight: 500;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .contact-heading em { font-style: italic; color: var(--green-mid); }
+
+    .contact-sub {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.85;
+      margin-bottom: 44px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-mid);
+      letter-spacing: 0.07em;
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--green-mid); }
+    .contact-link:hover .cl-arrow { transform: translateX(4px); }
+
+    .cl-label {
+      font-size: 9px;
+      color: var(--ink-faint);
+      letter-spacing: 0.12em;
+      min-width: 60px;
+    }
+    .cl-rule {
+      width: 20px;
+      height: 0.5px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .cl-arrow {
+      margin-left: auto;
+      color: var(--ink-faint);
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .contact-footer {
+      margin-top: 72px;
+      padding-top: 28px;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-name {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      color: var(--ink-faint);
+      font-style: italic;
+    }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-faint);
+      letter-spacing: 0.09em;
+    }
+
+    /* ─── Responsive ────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .floating-nav { display: flex; opacity: 1 !important; pointer-events: all !important; }
+      .section, #hero, #building, #projects, #about, #skills, #experience, #education, #contact {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+      #about { flex-direction: column; gap: 48px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .edu-card { flex-direction: column; }
+      .building-card { flex-direction: column; gap: 24px; }
+      .building-right { text-align: left; }
+    }
+
+    @media (max-width: 600px) {
+      .skills-grid { grid-template-columns: 1fr; }
+      .hero-statement { font-size: 36px; }
+    }
+  </style>
 </head>
 <body>
 
-  <a class="skip-link" href="#main">Skip to content</a>
+  <!-- Floating nav (appears after sidebar dissolves) -->
+  <nav class="floating-nav" id="floatingNav">
+    <a href="#hero">home</a>
+    <a href="#projects">projects</a>
+    <a href="#about">about</a>
+    <a href="#skills">skills</a>
+    <a href="#experience">experience</a>
+    <a href="#contact">contact</a>
+    <a href="Professional_Resume_2026_.pdf" target="_blank" class="f-resume">résumé ↗</a>
+  </nav>
 
-  <header class="hero" id="top">
-    <div class="overlay" aria-hidden="true"></div>
+  <div class="layout">
 
-    <nav class="nav" aria-label="Primary">
-      <a class="brand" href="#top">CM</a>
-      <div class="nav-links">
-        <a href="#projects">Projects</a>
-        <a href="#education">Education</a>
-        <a href="#leadership">Leadership</a>
-        <a href="#skills">Skills</a>
-        <a href="#github">GitHub</a>
-        <a href="#about">About</a>
-        <a href="#journey">Journey</a>
-        <a href="#contact">Contact</a>
-        <a class="nav-blog" href="blog.html">Blog</a>
-        <a class="nav-cta" href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener">Resume</a>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <!-- CM Monogram SVG -->
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="18" stroke="#2d6644" stroke-width="1.2"/>
+          <path d="M10 28 L16 14 L20 22 L24 14 L30 28" stroke="#2d6644" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M8 20 A12 12 0 0 1 20 8" stroke="#2d6644" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        </svg>
       </div>
-    </nav>
-    <div class="hero-content">
-      <h1>Connor McKelvey</h1>
-      <p>Is an Eagle Scout leading innovation in how technology shapes our world.</p>
-      <ul class="hero-highlights" aria-label="At a glance">
-        <li>2029 UT Austin ECE </li>
-        <li>Honors Robotics Program</li>
-        <li>Strategic Planning at IT Bridge</li>
-      </ul>
-      <div class="hero-actions">
-        <a href="#projects" class="btn">Explore My Work</a>
-        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      <div class="sidebar-name">Connor McKelvey</div>
+      <div class="sidebar-role">ece · robotics · ut austin</div>
+      <nav class="sidebar-nav">
+        <a href="#hero" class="active"><span class="nav-dot"></span>home</a>
+        <a href="#projects"><span class="nav-dot"></span>projects</a>
+        <a href="#about"><span class="nav-dot"></span>about</a>
+        <a href="#skills"><span class="nav-dot"></span>skills</a>
+        <a href="#experience"><span class="nav-dot"></span>experience</a>
+        <a href="#contact"><span class="nav-dot"></span>contact</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-links">
+          <a href="https://github.com/connormmckelvey" target="_blank">github ↗</a>
+          <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank">linkedin ↗</a>
+        </div>
+        <a href="Professional_Resume_2026_.pdf" target="_blank" class="resume-btn">résumé ↗</a>
       </div>
-      <p class="subtle"></p> 
-    </div>
-  </header>
+    </aside>
 
-  <main id="main">
+    <!-- Main -->
+    <main class="main">
 
-  <section id="projects" class="section">
-    <h2>Featured Projects</h2>
-    <div class="filters" role="group" aria-label="Filter projects">
-      <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
-      <button class="filter" type="button" data-filter="robotics" aria-pressed="false">Robotics</button>
-      <button class="filter" type="button" data-filter="embedded" aria-pressed="false">Embedded</button>
-      <button class="filter" type="button" data-filter="tooling" aria-pressed="false">Tooling</button>
-      <button class="filter" type="button" data-filter="education" aria-pressed="false">Education</button>
-    </div>
-    <div class="card-grid">
-      <article class="card project-card" data-project="fireball" data-tags="tooling automation python">
-        <h3>Fireball Dice Roller (Discord Bot)</h3>
-        <p>Verified Discord bot (10,000+ users / 150 servers) with a flexible dice engine for multiple TTRPG systems.</p>
-        <div class="tags"><span>tooling</span><span>python</span><span>discord api</span></div>
-        <div class="card-actions">
-          <button class="card-action" type="button" data-open-project="fireball">Details</button>
+      <!-- ── Hero ── -->
+      <section id="hero">
+        <svg class="hero-topo" viewBox="0 0 480 480">
+          <ellipse cx="340" cy="380" rx="220" ry="80" class="topo-path"/>
+          <ellipse cx="340" cy="380" rx="185" ry="64" class="topo-path"/>
+          <ellipse cx="340" cy="380" rx="148" ry="50" class="topo-path"/>
+          <ellipse cx="340" cy="380" rx="112" ry="37" class="topo-path"/>
+          <ellipse cx="340" cy="380" rx="76" ry="25" class="topo-path"/>
+          <ellipse cx="340" cy="380" rx="42" ry="14" class="topo-path"/>
+          <ellipse cx="340" cy="380" rx="220" ry="100" class="topo-path"/>
+          <ellipse cx="340" cy="380" rx="220" ry="122" class="topo-path"/>
+          <ellipse cx="340" cy="380" rx="218" ry="146" class="topo-path"/>
+          <ellipse cx="340" cy="380" rx="214" ry="170" class="topo-path"/>
+        </svg>
+
+        <div class="hero-eyebrow">
+          <span class="eyebrow-line"></span>
+          ECE · Honors Robotics · UT Austin
         </div>
-      </article>
 
-      <article class="card project-card" data-project="logic" data-tags="tooling education ece godot">
-        <h3>Circuit Board Digital Logic Simulator</h3>
-        <p>Published grid-based simulator in Godot for learning digital logic: gates, signals, and circuit behavior.</p>
-        <div class="tags"><span>tooling</span><span>education</span><span>godot</span></div>
-        <div class="card-actions">
-          <button class="card-action" type="button" data-open-project="logic">Details</button>
+        <h1 class="hero-statement">
+          <em>Leading</em> and executing<br>technology that matters.
+        </h1>
+
+        <div class="hero-byline">
+          <span class="byline-name">Connor McKelvey</span>
+          <span class="byline-rule"></span>
+          <span class="byline-disc">hardware · firmware · autonomy</span>
         </div>
-      </article>
 
-      <article class="card project-card" data-project="curriculum" data-tags="education systems teaching">
-        <h3>High School CS Curriculum (Bavaria)</h3>
-        <p>10th-grade project-based game-dev curriculum teaching OOP + composition in 14 lessons.</p>
-        <div class="tags"><span>education</span><span>systems</span><span>writing</span></div>
-        <div class="card-actions">
-          <button class="card-action" type="button" data-open-project="curriculum">Details</button>
-        </div>
-      </article>
-
-      <article class="card project-card" data-project="arm" data-tags="robotics embedded mechatronics">
-        <h3>Drawing Robot Arm</h3>
-        <p>Two-jointed drawing arm for research: inverse kinematics, image simplification, serial comms, buffering.</p>
-        <div class="tags"><span>robotics</span><span>embedded</span><span>controls</span></div>
-        <div class="card-actions">
-          <button class="card-action" type="button" data-open-project="arm">Details</button>
-        </div>
-      </article>
-
-      <article class="card project-card" data-project="itbridge" data-tags="embedded education leadership">
-        <h3>IEEE Hardware Program (IT Bridge)</h3>
-        <p>Built a long-term hardware program (IEEE) to teach EE careers through repeatable, hands-on builds.</p>
-        <div class="tags"><span>embedded</span><span>education</span><span>leadership</span></div>
-        <div class="card-actions">
-          <button class="card-action" type="button" data-open-project="itbridge">Details</button>
-        </div>
-      </article>
-
-      <article class="card project-card" data-project="krazy" data-tags="tooling leadership systems">
-        <h3>Krazy Studios</h3>
-        <p>Founded and led a small team shipping chatbots + Discord games for clients and communities.</p>
-        <div class="tags"><span>leadership</span><span>tooling</span><span>delivery</span></div>
-        <div class="card-actions">
-          <button class="card-action" type="button" data-open-project="krazy">Details</button>
-        </div>
-      </article>
-    </div>
-    <p class="subtle" id="projects-status" aria-live="polite"></p>
-  </section>
-
-  <section id="education" class="section dark">
-    <h2>Education</h2>
-    <div class="split">
-      <div>
-        <p class="wide">
-          University of Texas at Austin — B.S. in Electrical &amp; Computer Engineering
+        <p class="hero-sub">
+          I build systems at the intersection of hardware and human impact — from embedded firmware to robotic autonomy. Based in Austin, TX.
         </p>
-        <ul class="facts" aria-label="Education details">
-          <li>Honors Robotics Program, Robotics Minor</li>
-          <li>Expected graduation: 2029</li>
-          <li>Related coursework: Multivariable Calculus, Electrical Engineering, Embedded Systems</li>
-        </ul>
-      </div>
 
-      <article class="card" aria-label="Current focus">
-        <h3>Current focus</h3>
-        <p>Learning low level computer architecture and embedded systems while researching medical robotics with a focus on haptics</p>
-        <div class="tags">
-          <span>medical robotics</span>
-          <span>haptics</span>
-          <span>embedded systems</span>
-          <span>C/C++</span>
-          <span>leadership</span>
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary">explore projects →</a>
+          <a href="#about" class="btn-ghost">about me ↓</a>
         </div>
-      </article>
-    </div>
-  </section>
+      </section>
 
-  <!-- <section id="leadership" class="section">
-    <h2>Experience &amp; Leadership</h2>
-    <p class="wide">Highlights from leadership and community work — open the entries in <a class="inline-link" href="#journey">Journey</a> for full details.</p>
-    <ul class="facts" aria-label="Experience highlights">
-      <li>Software Developer &amp; Founder — Krazy Studios</li>
-      <li>IEEE Assistant Officer — External Activities &amp; Events (UT Austin)</li>
-      <li>Eagle Scout — Boy Scouts of America</li>
-      <li>President &amp; Founder — Computer Science Club (Concordia Lutheran HS)</li>
-    </ul>
-  </section> -->
-
-  <section id="skills" class="section dark">
-    <h2>Technical Skills</h2>
-    <div class="card-grid">
-      <article class="card">
-        <h3>Software / Programming</h3>
-        <p>Tools-first engineering with clean interfaces and predictable behavior.</p>
-        <div class="tags">
-          <span>python</span><span>c</span><span>c++</span><span>java</span><span>godot engine</span><span>git</span><span>discord api</span>
+      <!-- ── Currently Building ── -->
+      <section id="building">
+        <div class="sec-header reveal">
+          <span class="sec-label">// currently building</span>
+          <span class="sec-rule"></span>
         </div>
-      </article>
-
-      <article class="card">
-        <h3>Hardware / Tools</h3>
-        <p>Hands-on build + debug: electronics, integration, and real constraints.</p>
-        <div class="tags">
-          <span>arduino</span><span>stm32</span><span>circuit design</span><span>soldering</span><span>robotics systems</span>
+        <div class="building-card reveal reveal-delay-1">
+          <div style="flex:1;">
+            <div class="building-pulse">
+              <span class="pulse-dot"></span>
+              active research
+            </div>
+            <h2 class="building-title">Vibrotactile Motor<br><em>Skill Learning Armband</em></h2>
+            <p class="building-desc">
+              A low-cost wearable armband that uses targeted vibrational feedback to help users learn large motor skills. Built for the HERO Lab at Texas Robotics — designed to make haptic-assisted learning accessible outside the lab.
+            </p>
+            <div class="building-meta">
+              <span class="meta-item">Texas Robotics HERO Lab</span>
+              <span class="meta-item">haptics · embedded · wearable</span>
+              <span class="meta-item">UT Austin, 2025–present</span>
+            </div>
+          </div>
+          <div class="building-right">
+            <div class="building-org">HERO Lab</div>
+            <div class="building-tag">research</div>
+          </div>
         </div>
-      </article>
+      </section>
 
-      <article class="card">
-        <h3>Soft Skills</h3>
-        <p>Leadership that translates into shipped, reliable systems.</p>
-        <div class="tags">
-          <span>public speaking</span><span>servant leadership</span><span>reliability</span><span>delegation</span>
+      <!-- ── Projects ── -->
+      <section id="projects">
+        <div class="sec-header reveal">
+          <span class="sec-label">// selected projects</span>
+          <span class="sec-rule"></span>
+          <span class="sec-count">05</span>
         </div>
-      </article>
-    </div>
-  </section>
 
-  <section id="github" class="section">
-    <h2>Recent on GitHub</h2>
-    <div class="github" id="github-repos" data-username="connormmckelvey" data-source="recent">
-      <p class="wide">
-        A snapshot of what I’ve been shipping lately. Full profile: <a class="inline-link" data-profile href="https://github.com/connormmckelvey" target="_blank" rel="noopener">github.com/connormmckelvey</a>.
-      </p>
-      <p class="subtle" data-status>Loading repositories…</p>
-      <div class="lang-summary" aria-label="Top languages" data-langs hidden></div>
-      <div class="card-grid" data-grid aria-live="polite"></div>
-      <div class="github-actions">
-        <a class="btn btn-ghost" href="https://github.com/connormmckelvey?tab=repositories" target="_blank" rel="noopener">View all repos</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="about" class="section dark">
-    <h2>Engineering Philosophy</h2>
-    <div class="split">
-      <div>
-        <p class="wide">
-          I build systems that interact with the real world — robotics, embedded systems, and tools that hold up under real use.
-          I care about reliability, clear interfaces, and designs that survive contact with reality.
-        </p>
-        <p class="wide">
-          I’m happiest where software meets hardware, and where "works on my machine" turns into repeatable results.
-        </p>
-        <ul class="facts" aria-label="Highlights">
-          <li>Focus: embedded systems, autonomy, and practical tools</li>
-          <li>Style: pragmatic engineering, clean interfaces, and rigorous iteration</li>
-          <li>North star: systems that don’t crumble outside the lab</li>
-        </ul>
-      </div>
-      <figure class="portrait">
-        <img src="images/Headshot.JPG" alt="Portrait photo of Connor McKelvey" loading="lazy" />
-      </figure>
-    </div>
-  </section>
-
-  <section id="journey" class="section">
-    <h2>Journey</h2>
-    <p class="wide">Click an entry to expand it.</p>
-    <div class="timeline" data-journey>
-      <div class="event-item">
-        <button class="event" type="button" aria-expanded="false" aria-controls="journey-eagle" data-journey-toggle>
-          Eagle Scout — Boy Scouts of America
-          <span class="event-hint" aria-hidden="true">Click to expand</span>
-        </button>
-        <div class="event-details" id="journey-eagle" hidden>
-          <p class="subtle">Servant leadership with high-accountability execution.</p>
-          <ul class="event-bullets">
-            <li>Selected as 1 of 4 youth in the Houston area to lead a national leadership course</li>
-            <li>Led 1,000+ hours of service and major community projects</li>
-            <li>Mentored new youth leaders as Junior Assistant Scoutmaster</li>
-          </ul>
+        <div class="project-item reveal reveal-delay-1">
+          <div class="proj-num">01</div>
+          <div class="proj-body">
+            <div class="proj-top">
+              <span class="proj-title">Haplink</span>
+              <span class="proj-tag">robotics research</span>
+            </div>
+            <p class="proj-desc">
+              Firmware and Python library for robust serial communication between haptic devices and robotic applications. Built at the HERO Lab — reduced packet size to 13 bytes with 100% error detection at a 100Hz control loop. Adopted by a class of 30 researchers.
+            </p>
+            <div class="proj-stack">
+              <span class="chip">C++</span><span class="chip">Python</span><span class="chip">Arduino</span><span class="chip">Serial Comms</span><span class="chip">Haptics</span>
+            </div>
+          </div>
+          <div class="proj-arrow">→</div>
         </div>
-      </div>
 
-      <div class="event-item">
-        <button class="event" type="button" aria-expanded="false" aria-controls="journey-csclub" data-journey-toggle>
-          President &amp; Founder — Computer Science Club (Concordia Lutheran HS)
-          <span class="event-hint" aria-hidden="true">Click to expand</span>
-        </button>
-        <div class="event-details" id="journey-csclub" hidden>
-          <p class="subtle">Built a team and a culture from zero; trained students for real competition.</p>
-          <ul class="event-bullets">
-            <li>Grew membership from 0 to a committed group of about 15 individuals</li>
-            <li>Organized and trained teams for HPE CodeWars (novice + advanced)</li>
-          </ul>
+        <div class="project-item reveal reveal-delay-1">
+          <div class="proj-num">02</div>
+          <div class="proj-body">
+            <div class="proj-top">
+              <span class="proj-title">SkyLore</span>
+              <span class="proj-tag">hackathon</span>
+              <span class="proj-award">🏆 1st place · $1,000 · HackTX 2025</span>
+            </div>
+            <p class="proj-desc">
+              Crowdsourced astronomy and light pollution mapping app — won first place out of 5,000 participants at HackTX 2025. Built a full mobile app with augmented reality, a machine learning constellation recognition pipeline, web dashboard, and a living light pollution database to help city planners and researchers.
+            </p>
+            <div class="proj-stack">
+              <span class="chip">Python</span><span class="chip">ML</span><span class="chip">AR</span><span class="chip">Full Stack</span><span class="chip">Mobile</span>
+            </div>
+          </div>
+          <div class="proj-arrow">→</div>
         </div>
-      </div>
 
-      <div class="event-item">
-        <button class="event" type="button" aria-expanded="false" aria-controls="journey-krazy" data-journey-toggle>
-          Software Developer &amp; Founder — Krazy Studios
-          <span class="event-hint" aria-hidden="true">Click to expand</span>
-        </button>
-        <div class="event-details" id="journey-krazy" hidden>
-          <p class="subtle">Established and led a team to publish chatbots and Discord-based games.</p>
-          <ul class="event-bullets">
-            <li>Delivered private client bots and built community engagement</li>
-            <li>Built workflows around shipping, reliability, and clear ownership</li>
-          </ul>
+        <div class="project-item reveal reveal-delay-2">
+          <div class="proj-num">03</div>
+          <div class="proj-body">
+            <div class="proj-top">
+              <span class="proj-title">Drawing Robot Arm</span>
+              <span class="proj-tag">robotics · research</span>
+            </div>
+            <p class="proj-desc">
+              A two-jointed robotic arm that takes a digital image and draws it using inverse kinematics. Built as a research tool for a study on human bias against AI-generated artwork — standardized stimuli for a published academic project at UT Austin.
+            </p>
+            <div class="proj-stack">
+              <span class="chip">Python</span><span class="chip">Inverse Kinematics</span><span class="chip">Serial Comms</span><span class="chip">Image Processing</span>
+            </div>
+          </div>
+          <div class="proj-arrow">→</div>
         </div>
-      </div>
 
-      <div class="event-item">
-        <button class="event" type="button" aria-expanded="false" aria-controls="journey-ieee" data-journey-toggle>
-          IEEE Assistant Officer — External Activities &amp; Events (UT Austin)
-          <span class="event-hint" aria-hidden="true">Click to expand</span>
-        </button>
-        <div class="event-details" id="journey-ieee" hidden>
-          <p class="subtle">Built a long-term project program to develop hardware used by the non-profit IT Bridge.</p>
-          <ul class="event-bullets">
-            <li>Planned and executed events for the entire chapter</li>
-            <li>Created repeatable, approachable hardware builds that scale</li>
-          </ul>
+        <div class="project-item reveal reveal-delay-2">
+          <div class="proj-num">04</div>
+          <div class="proj-body">
+            <div class="proj-top">
+              <span class="proj-title">Fireball Dice Roller</span>
+              <span class="proj-tag">software</span>
+            </div>
+            <p class="proj-desc">
+              A verified Discord bot with 10,000+ users across 150 servers, built to support tabletop gaming communities during the pandemic. Features a customizable randomization engine handling complex dice mechanics across multiple TTRPG systems.
+            </p>
+            <div class="proj-stack">
+              <span class="chip">Python</span><span class="chip">Discord API</span><span class="chip">Algorithms</span>
+            </div>
+          </div>
+          <div class="proj-arrow">→</div>
         </div>
-      </div>
 
-      <div class="event-item">
-        <button class="event" type="button" aria-expanded="false" aria-controls="journey-uta" data-journey-toggle>
-          University of Texas at Austin — Electrical &amp; Computer Engineering
-          <span class="event-hint" aria-hidden="true">Click to expand</span>
-        </button>
-        <div class="event-details" id="journey-uta" hidden>
-          <p class="subtle">Honors Robotics Program, Robotics Minor — Expected Graduation: 2029</p>
-          <ul class="event-bullets">
-            <li>Related coursework: Multivariable Calculus, Electrical Engineering, Embedded Systems</li>
-            <li>Current focus: low-level computer architecture, embedded systems, and medical robotics (haptics)</li>
-          </ul>
+        <div class="project-item reveal reveal-delay-3">
+          <div class="proj-num">05</div>
+          <div class="proj-body">
+            <div class="proj-top">
+              <span class="proj-title">Circuit Board Logic Simulator</span>
+              <span class="proj-tag">education · software</span>
+            </div>
+            <p class="proj-desc">
+              A drag-and-drop graphical simulator for digital logic gate design, built in Godot. Implements Boolean algebra operators in an interactive grid interface to visualize circuit behavior — designed as a teaching tool for electronics education.
+            </p>
+            <div class="proj-stack">
+              <span class="chip">GDScript</span><span class="chip">Godot</span><span class="chip">Digital Logic</span>
+            </div>
+          </div>
+          <div class="proj-arrow">→</div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <section id="contact" class="section">
-    <h2>Contact</h2>
-    <div class="contact">
-      <p class="wide">If you’re building something real-world and reliability-focused, I’d love to connect.</p>
-      <div class="contact-actions">
-          <a class="btn" href="mailto:connormckelvey@utexas.edu">Email me</a>
-          <a class="btn btn-ghost" href="tel:+13462256981">Call / text</a>
-        <a class="btn btn-ghost" href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener">Open resume</a>
-      </div>
-      <div class="socials" aria-label="Social links">
-        <a class="social" href="https://github.com/connormmckelvey" target="_blank" rel="noopener">GitHub</a>
-          <a class="social" href="https://www.linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener">LinkedIn</a>
-      </div>
-        <p class="subtle">Best way to reach me: email or LinkedIn.</p>
-    </div>
-  </section>
+      </section>
 
-  </main>
+      <!-- ── About ── -->
+      <section id="about">
+        <div class="about-left">
+          <div class="sec-header reveal" style="margin-bottom:40px;">
+            <span class="sec-label">// about</span>
+            <span class="sec-rule"></span>
+          </div>
+          <h2 class="about-heading reveal">Engineer by trade,<br><em>outdoorsman</em> by nature.</h2>
+          <p class="about-body reveal reveal-delay-1">
+            I'm a first-year ECE student in the Honors Robotics Program at UT Austin — building hardware and software that sits at the edge of what's possible. I care deeply about two things: <em>leading</em> and <em>executing</em>. Whether that's guiding a research team, shipping a product used by thousands, or earning Eagle Scout through years of service leadership.
+          </p>
+          <p class="about-body reveal reveal-delay-2">
+            When I'm not in the lab or writing firmware, I'm somewhere without cell service. 200+ nights camping, a decade of scouting, and a healthy obsession with being outside informs everything I build — including a trail sensor that runs for six months untouched in the backcountry.
+          </p>
+          <div class="about-values reveal reveal-delay-3">
+            <span class="value-pill">leading</span>
+            <span class="value-pill">executing</span>
+            <span class="value-pill">outdoor pursuits</span>
+            <span class="value-pill">hardware</span>
+            <span class="value-pill">human impact</span>
+            <span class="value-pill">Eagle Scout</span>
+          </div>
+          <div class="about-links reveal reveal-delay-4">
+            <a href="https://github.com/connormmckelvey" target="_blank">github ↗</a>
+            <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank">linkedin ↗</a>
+            <a href="mailto:connormckelvey@utexas.edu">email ↗</a>
+          </div>
+        </div>
+        <div class="about-right">
+          <div class="stat reveal">
+            <div class="stat-num">10k+</div>
+            <div class="stat-label">users on shipped software</div>
+          </div>
+          <div class="stat reveal reveal-delay-1">
+            <div class="stat-num">30+</div>
+            <div class="stat-label">researchers using Haplink</div>
+          </div>
+          <div class="stat reveal reveal-delay-2">
+            <div class="stat-num">1st</div>
+            <div class="stat-label">HackTX 2025 · 5,000 participants</div>
+          </div>
+          <div class="stat reveal reveal-delay-3">
+            <div class="stat-num">200+</div>
+            <div class="stat-label">nights in the backcountry</div>
+          </div>
+        </div>
+      </section>
 
-  <footer>
-    <p>© Connor McKelvey · Built like a machine, inspired by nature</p>
-  </footer>
+      <!-- ── Skills ── -->
+      <section id="skills" class="section" style="border-bottom: 0.5px solid var(--border); padding-top:96px; padding-bottom:96px;">
+        <div class="sec-header reveal">
+          <span class="sec-label">// skills & tools</span>
+          <span class="sec-rule"></span>
+        </div>
+        <div class="skills-grid">
+          <div class="reveal">
+            <div class="skill-group-label">languages</div>
+            <div class="skill-list">
+              <span class="skill-item">Python</span>
+              <span class="skill-item">C / C++</span>
+              <span class="skill-item">Java</span>
+              <span class="skill-item">GDScript</span>
+            </div>
+          </div>
+          <div class="reveal reveal-delay-1">
+            <div class="skill-group-label">hardware & embedded</div>
+            <div class="skill-list">
+              <span class="skill-item">Arduino</span>
+              <span class="skill-item">STM32 Microcontrollers</span>
+              <span class="skill-item">Circuit Design</span>
+              <span class="skill-item">Soldering</span>
+            </div>
+          </div>
+          <div class="reveal reveal-delay-2">
+            <div class="skill-group-label">robotics & systems</div>
+            <div class="skill-list">
+              <span class="skill-item">Haptics / Vibrotactile</span>
+              <span class="skill-item">Serial Communication</span>
+              <span class="skill-item">Inverse Kinematics</span>
+              <span class="skill-item">ROS (learning)</span>
+            </div>
+          </div>
+          <div class="reveal reveal-delay-1">
+            <div class="skill-group-label">software & tools</div>
+            <div class="skill-list">
+              <span class="skill-item">Git / GitHub</span>
+              <span class="skill-item">Discord API</span>
+              <span class="skill-item">Godot Engine</span>
+              <span class="skill-item">Linux</span>
+            </div>
+          </div>
+          <div class="reveal reveal-delay-2">
+            <div class="skill-group-label">leadership</div>
+            <div class="skill-list">
+              <span class="skill-item">Team leadership</span>
+              <span class="skill-item">Public speaking</span>
+              <span class="skill-item">Mentorship</span>
+              <span class="skill-item">Event planning</span>
+            </div>
+          </div>
+          <div class="reveal reveal-delay-3">
+            <div class="skill-group-label">currently learning</div>
+            <div class="skill-list">
+              <span class="skill-item">Embedded Systems (EE)</span>
+              <span class="skill-item">Multivariable Calculus</span>
+              <span class="skill-item">PCB Design</span>
+              <span class="skill-item">FPGA</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-  <a class="to-top" href="#top" aria-label="Back to top">Back to top</a>
+      <!-- ── Experience ── -->
+      <section id="experience" style="padding: 96px 80px; border-bottom: 0.5px solid var(--border);">
+        <div class="sec-header reveal">
+          <span class="sec-label">// experience</span>
+          <span class="sec-rule"></span>
+        </div>
 
-  <button class="fun-fab" type="button" data-fun-toggle aria-pressed="false" title="Toggle Fun Mode" aria-label="Toggle Fun Mode">Fun</button>
+        <div class="exp-item reveal">
+          <div class="exp-date">2025<br>present</div>
+          <div class="exp-body">
+            <div class="exp-top">
+              <span class="exp-title">Research Assistant</span>
+              <span class="exp-org">HERO Lab · Texas Robotics, UT Austin</span>
+            </div>
+            <p class="exp-desc">Building the Haplink communication framework for haptic devices and developing a vibrotactile armband for motor skill learning. Haplink adopted by 30 researchers — 100% error detection, 13-byte packets at 100Hz.</p>
+          </div>
+        </div>
 
-  <div class="compass" data-compass aria-hidden="true" hidden>
-    <div class="compass-face"></div>
-    <div class="compass-needle" data-needle></div>
-    <div class="compass-center"></div>
-    <div class="compass-label" data-label>NE</div>
-  </div>
+        <div class="exp-item reveal reveal-delay-1">
+          <div class="exp-date">2025<br>present</div>
+          <div class="exp-body">
+            <div class="exp-top">
+              <span class="exp-title">IEEE Assistant Officer</span>
+              <span class="exp-org">External Activities & Events · UT Austin</span>
+            </div>
+            <p class="exp-desc">Created a long-term project program to develop hardware for IT Bridge, a nonprofit teaching underprivileged youth about electrical engineering careers. Planned and executed events for the full chapter.</p>
+          </div>
+        </div>
 
-  <div class="trail-hud" data-trail-hud aria-label="Trail progress" hidden>
-    <div class="trail-hud-title">Trail</div>
-    <div class="trail-track" aria-hidden="true">
-      <div class="trail-fill" data-trail-fill></div>
-    </div>
-    <div class="trail-markers" data-trail-markers aria-label="Waypoints"></div>
-  </div>
+        <div class="exp-item reveal reveal-delay-2">
+          <div class="exp-date">2023<br>2025</div>
+          <div class="exp-body">
+            <div class="exp-top">
+              <span class="exp-title">Founder & Software Developer</span>
+              <span class="exp-org">Krazy Studios</span>
+            </div>
+            <p class="exp-desc">Established a studio of programmers, artists, and writers to develop and publish Discord bots and games. Grew Fireball Dice Roller to 10,000+ users across 150 servers. Delivered private bots for clients and built community on social media.</p>
+          </div>
+        </div>
 
-  <div class="modal" id="cmdk" hidden>
-    <div class="modal-backdrop" data-cmdk-close></div>
-    <div class="modal-dialog cmdk" role="dialog" aria-modal="true" aria-labelledby="cmdk-title">
-      <button class="modal-close" type="button" data-cmdk-close aria-label="Close quick navigation">×</button>
-      <h3 id="cmdk-title">Quick navigation</h3>
-      <p class="subtle">Press <strong>K</strong> or <strong>Ctrl + K</strong>. Type to filter.</p>
-      <input class="cmdk-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="Go to… (projects, skills, contact)" aria-label="Search sections" data-cmdk-input />
-      <div class="cmdk-list" role="listbox" aria-label="Navigation results" data-cmdk-list></div>
-      <p class="subtle cmdk-hint">Tip: use ↑/↓ then Enter.</p>
-    </div>
-  </div>
+        <div class="exp-item reveal reveal-delay-3">
+          <div class="exp-date">2024<br>2025</div>
+          <div class="exp-body">
+            <div class="exp-top">
+              <span class="exp-title">NYLT Senior Patrol Leader</span>
+              <span class="exp-org">Boy Scouts of America · Houston Area</span>
+            </div>
+            <p class="exp-desc">Selected as 1 of 4 youth in the Houston area for the highest youth role in Scouting's premier leadership program. Led and prepared a 25-person staff to deliver a week-long leadership intensive for 60 handpicked participants.</p>
+          </div>
+        </div>
 
-  <div class="modal" id="project-modal" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
-      <button class="modal-close" type="button" data-close aria-label="Close dialog">×</button>
-      <h3 id="project-modal-title">Project</h3>
-      <p class="subtle" id="project-modal-subtitle"></p>
-      <p class="wide" id="project-modal-desc"></p>
-      <ul class="modal-bullets" id="project-modal-bullets"></ul>
-      <div class="tags" id="project-modal-tags" aria-label="Project tags"></div>
-    </div>
+      </section>
+
+      <!-- ── Education ── -->
+      <section id="education" style="padding: 96px 80px; border-bottom: 0.5px solid var(--border);">
+        <div class="sec-header reveal">
+          <span class="sec-label">// education</span>
+          <span class="sec-rule"></span>
+        </div>
+        <div class="edu-card">
+          <div class="edu-left reveal">
+            <div class="edu-school">University of Texas at Austin</div>
+            <div class="edu-degree">B.S. Electrical and Computer Engineering</div>
+            <div class="edu-meta">Honors Robotics Program · Robotics Minor · Expected 2029</div>
+            <div class="edu-courses">
+              <span class="chip">Multivariable Calculus</span>
+              <span class="chip">Electrical Engineering</span>
+              <span class="chip">Embedded Systems</span>
+            </div>
+          </div>
+          <div class="edu-right reveal reveal-delay-1">
+            <div class="honor-item">Eagle Scout — Boy Scouts of America</div>
+            <div class="honor-item">AP Scholar with Distinction</div>
+            <div class="honor-item">Varsity Soccer Captain & Defensive MVP ×2</div>
+            <div class="honor-item">HPE CodeWars — Advanced Division</div>
+            <div class="honor-item">Robotics Academy — 3rd of 50 teams, UT Austin</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Contact ── -->
+      <section id="contact" style="padding: 96px 80px 120px;">
+        <div class="contact-inner">
+          <div class="sec-header reveal" style="margin-bottom:40px;">
+            <span class="sec-label">// contact</span>
+            <span class="sec-rule"></span>
+          </div>
+          <h2 class="contact-heading reveal">Let's build something<br><em>that matters.</em></h2>
+          <p class="contact-sub reveal reveal-delay-1">
+            I'm always open to research collaborations, internship opportunities, and interesting projects. If you're working on something at the intersection of hardware, software, and human impact — reach out.
+          </p>
+          <div class="contact-links reveal reveal-delay-2">
+            <a href="mailto:connormckelvey@utexas.edu" class="contact-link">
+              <span class="cl-label">email</span>
+              <span class="cl-rule"></span>
+              connormckelvey@utexas.edu
+              <span class="cl-arrow">→</span>
+            </a>
+            <a href="https://github.com/connormmckelvey" target="_blank" class="contact-link">
+              <span class="cl-label">github</span>
+              <span class="cl-rule"></span>
+              connormmckelvey
+              <span class="cl-arrow">→</span>
+            </a>
+            <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" class="contact-link">
+              <span class="cl-label">linkedin</span>
+              <span class="cl-rule"></span>
+              connor-mckelvey
+              <span class="cl-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-footer reveal">
+          <span class="footer-name">Connor McKelvey</span>
+          <span class="footer-copy">© 2026 · Austin, TX</span>
+        </div>
+      </section>
+
+    </main>
   </div>
 
   <script>
-    (() => {
-      const root = document.getElementById('github-repos');
-      if (!root) return;
+    const sidebar = document.getElementById('sidebar');
+    const floatingNav = document.getElementById('floatingNav');
+    const allNavLinks = document.querySelectorAll('.sidebar-nav a, .floating-nav a');
+    const sections = document.querySelectorAll('section[id]');
+    const reveals = document.querySelectorAll('.reveal');
 
-      const username = root.dataset.username;
-      const source = root.dataset.source || 'recent';
-      const statusEl = root.querySelector('[data-status]');
-      const gridEl = root.querySelector('[data-grid]');
-      const profileEl = root.querySelector('[data-profile]');
-      const langsEl = root.querySelector('[data-langs]');
+    // Sidebar dissolve on scroll
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const heroH = document.getElementById('hero').offsetHeight;
 
-      if (!username || !statusEl || !gridEl || !profileEl) return;
-
-      profileEl.href = `https://github.com/${username}`;
-      profileEl.textContent = `github.com/${username}`;
-
-      const fmtUpdated = (iso) => {
-        try {
-          const date = new Date(iso);
-          return new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short' }).format(date);
-        } catch {
-          return '';
-        }
-      };
-
-      const normalizeRepo = (repo) => {
-        const name = repo?.repo || repo?.name || '';
-        const htmlUrl = repo?.link || repo?.html_url || (name ? `https://github.com/${username}/${name}` : `https://github.com/${username}`);
-
-        return {
-          name,
-          html_url: htmlUrl,
-          description: repo?.description || '',
-          language: repo?.language || '',
-          stargazers_count: repo?.stars ?? repo?.stargazers_count ?? 0,
-          updated_at: repo?.updated_at || ''
-        };
-      };
-
-      const makeRepoCard = (repo) => {
-        const normalized = normalizeRepo(repo);
-
-        const a = document.createElement('a');
-        a.className = 'card repo-card';
-        a.href = normalized.html_url;
-        a.target = '_blank';
-        a.rel = 'noopener';
-
-        const name = document.createElement('h3');
-        name.textContent = normalized.name || 'Repository';
-
-        const desc = document.createElement('p');
-        desc.textContent = normalized.description || 'A project with details on GitHub.';
-
-        const meta = document.createElement('div');
-        meta.className = 'repo-meta';
-
-        const lang = document.createElement('span');
-        lang.className = 'chip';
-        lang.textContent = normalized.language || 'Code';
-
-        const stars = document.createElement('span');
-        stars.className = 'chip';
-        stars.textContent = `★ ${normalized.stargazers_count ?? 0}`;
-
-        const updated = document.createElement('span');
-        updated.className = 'chip chip-muted';
-        updated.textContent = normalized.updated_at ? `Updated ${fmtUpdated(normalized.updated_at)}` : 'Pinned';
-
-        meta.append(lang, stars, updated);
-        a.append(name, desc, meta);
-        return a;
-      };
-
-      const loadRecent = async () => {
-        const url = new URL(`https://api.github.com/users/${username}/repos`);
-        url.searchParams.set('per_page', '12');
-        url.searchParams.set('sort', 'updated');
-
-        const res = await fetch(url, {
-          headers: { 'Accept': 'application/vnd.github+json' }
-        });
-        if (!res.ok) throw new Error(`GitHub API returned ${res.status}`);
-        const repos = await res.json();
-
-        return repos
-          .filter(r => !r.fork && !r.archived)
-          .slice(0, 6);
-      };
-
-      const renderLangSummary = (repos) => {
-        if (!langsEl) return;
-
-        const counts = new Map();
-        for (const repo of repos) {
-          const lang = repo?.language;
-          if (!lang) continue;
-          counts.set(lang, (counts.get(lang) || 0) + 1);
-        }
-
-        const entries = [...counts.entries()]
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 5);
-
-        if (!entries.length) {
-          langsEl.hidden = true;
-          langsEl.textContent = '';
-          return;
-        }
-
-        const total = entries.reduce((sum, [, v]) => sum + v, 0);
-        langsEl.hidden = false;
-        langsEl.replaceChildren(
-          ...entries.map(([name, value]) => {
-            const row = document.createElement('div');
-            row.className = 'lang-row';
-
-            const label = document.createElement('div');
-            label.className = 'lang-label';
-            label.textContent = name;
-
-            const bar = document.createElement('div');
-            bar.className = 'lang-bar';
-
-            const fill = document.createElement('div');
-            fill.className = 'lang-fill';
-            fill.style.width = `${Math.round((value / total) * 100)}%`;
-
-            bar.append(fill);
-            row.append(label, bar);
-            return row;
-          })
-        );
-      };
-
-      const loadPinned = async () => {
-        const url = new URL('https://gh-pinned-repos.egoist.dev/');
-        url.searchParams.set('username', username);
-
-        const res = await fetch(url, {
-          headers: { 'Accept': 'application/json' }
-        });
-        if (!res.ok) throw new Error(`Pinned repos service returned ${res.status}`);
-        const repos = await res.json();
-        return Array.isArray(repos) ? repos.slice(0, 6) : [];
-      };
-
-      const load = async () => {
-        statusEl.textContent = 'Loading repositories…';
-
-        try {
-          const repos = source === 'pinned' ? await loadPinned() : await loadRecent();
-          if (repos.length) {
-            gridEl.replaceChildren(...repos.map(makeRepoCard));
-            statusEl.textContent = source === 'pinned' ? 'Pinned repos:' : 'Recently updated public repos:';
-            if (source !== 'pinned') renderLangSummary(repos);
-            return;
-          }
-
-          if (source === 'pinned') {
-            const fallback = await loadRecent();
-            if (fallback.length) {
-              gridEl.replaceChildren(...fallback.map(makeRepoCard));
-              statusEl.textContent = 'Pinned repos unavailable — showing recent repos:';
-              return;
-            }
-          }
-
-          statusEl.textContent = 'No public repositories found.';
-        } catch (err) {
-          console.warn('GitHub repos failed to load:', err);
-          statusEl.textContent = source === 'pinned'
-            ? 'Pinned repos can’t be fetched without GitHub GraphQL auth; using a public pinned-repos service. It may be blocked/limited — try again later.'
-            : 'Could not load repositories (GitHub rate limit or network).';
-          gridEl.innerHTML = '';
-          if (langsEl) langsEl.hidden = true;
-        }
-      };
-
-      load();
-    })();
-
-    (() => {
-      const nav = document.querySelector('.nav');
-      const navLinks = nav ? [...nav.querySelectorAll('a[href^="#"]')] : [];
-      const sections = navLinks
-        .map(a => document.querySelector(a.getAttribute('href')))
-        .filter(Boolean);
-
-      const setActive = (id) => {
-        for (const a of navLinks) {
-          const isActive = a.getAttribute('href') === `#${id}`;
-          a.classList.toggle('is-active', isActive);
-          if (isActive) a.setAttribute('aria-current', 'page');
-          else a.removeAttribute('aria-current');
-        }
-      };
-
-      if (sections.length && 'IntersectionObserver' in window) {
-        const obs = new IntersectionObserver((entries) => {
-          const visible = entries
-            .filter(e => e.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-          if (visible?.target?.id) setActive(visible.target.id);
-        }, { rootMargin: `-${Math.round(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '68', 10) + 24)}px 0px -70% 0px`, threshold: [0.15, 0.3, 0.6] });
-
-        sections.forEach(s => obs.observe(s));
+      if (scrollY > heroH * 0.72) {
+        sidebar.classList.add('dissolved');
+        floatingNav.classList.add('visible');
+      } else {
+        sidebar.classList.remove('dissolved');
+        floatingNav.classList.remove('visible');
       }
 
-      const toTop = document.querySelector('.to-top');
-      const onScroll = () => {
-        const show = window.scrollY > 600;
-        if (toTop) toTop.classList.toggle('is-visible', show);
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-
-      const filterButtons = [...document.querySelectorAll('[data-filter]')];
-      const projectCards = [...document.querySelectorAll('.project-card')];
-      const projectsStatus = document.getElementById('projects-status');
-
-      const applyFilter = (tag) => {
-        for (const btn of filterButtons) {
-          const isOn = btn.dataset.filter === tag;
-          btn.setAttribute('aria-pressed', String(isOn));
-          btn.classList.toggle('is-active', isOn);
-        }
-
-        let shown = 0;
-        for (const card of projectCards) {
-          const tags = (card.dataset.tags || '').split(/\s+/).filter(Boolean);
-          const matches = tag === 'all' || tags.includes(tag);
-          card.hidden = !matches;
-          if (matches) shown += 1;
-        }
-
-        if (projectsStatus) {
-          projectsStatus.textContent = tag === 'all' ? '' : `Showing ${shown} project${shown === 1 ? '' : 's'} tagged “${tag}”.`;
-        }
-      };
-
-      filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => applyFilter(btn.dataset.filter || 'all'));
+      // Active nav highlight
+      let current = '';
+      sections.forEach(sec => {
+        if (scrollY >= sec.offsetTop - 120) current = sec.id;
       });
+      allNavLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+    });
 
-      const modal = document.getElementById('project-modal');
-      const modalTitle = document.getElementById('project-modal-title');
-      const modalSubtitle = document.getElementById('project-modal-subtitle');
-      const modalDesc = document.getElementById('project-modal-desc');
-      const modalBullets = document.getElementById('project-modal-bullets');
-      const modalTags = document.getElementById('project-modal-tags');
-      let lastFocus = null;
-
-      const PROJECTS = {
-        fireball: {
-          title: 'Fireball Dice Roller — Discord Bot',
-          subtitle: 'Verified bot at real scale',
-          desc: 'Built and published a verified Discord bot used by 10,000+ users across 150 servers. Designed for reliability at scale and flexible dice mechanics across tabletop systems.',
-          bullets: [
-            'Python + Discord API implementation with production-minded event handling',
-            'Customizable dice engine for complex rolls, modifiers, and multiple TTRPG systems',
-            'Built for predictable behavior under real user load (rate limits, retries, edge cases)',
-            'Shipped as a verified bot with real production users and long-term maintenance'
-          ],
-          tags: ['tooling', 'python', 'discord api']
-        },
-        logic: {
-          title: 'Circuit Board Digital Logic Simulator',
-          subtitle: 'Interactive logic education',
-          desc: 'Developed a grid-based graphical simulator in Godot for teaching digital logic. Emphasized a visual, interactive workflow that makes signals and logic flow easy to understand.',
-          bullets: [
-            'Grid-based editor for building circuits quickly',
-            'Boolean algebra operators implemented as interactive components',
-            'Visualization-first UX for learning and debugging logic'
-          ],
-          tags: ['tooling', 'education', 'godot']
-        },
-        curriculum: {
-          title: 'High School CS Curriculum (Bavaria)',
-          subtitle: '14-lesson, project-based sequence',
-          desc: 'Collaborated with a teacher to design a project-based, game-development curriculum for 10th grade. The sequence teaches Object Oriented Programming and Composition through hands-on projects.',
-          bullets: [
-            'Structured 14 lessons with progressive project difficulty',
-            'Teaches OOP + composition through game-dev work',
-            'Optimized for classroom pacing, clarity, and student engagement'
-          ],
-          tags: ['education', 'systems', 'writing']
-        },
-        arm: {
-          title: 'Drawing Robot Arm',
-          subtitle: 'From pixels to motion',
-          desc: 'Built a two-jointed drawing arm that converts a digital image into a physical drawing. Used to standardize stimuli for research on bias against AI creativity in artwork (Professor Dempster’s Being Creative class).',
-          bullets: [
-            'Inverse kinematics for a two-jointed arm',
-            'Image simplification pipeline that turns pixels into drawable paths',
-            'Serial communication + data buffering for smooth execution',
-            'Designed for repeatability so results are comparable across trials'
-          ],
-          tags: ['robotics', 'embedded', 'controls']
-        },
-        itbridge: {
-          title: 'IEEE Hardware Program (IT Bridge)',
-          subtitle: 'Hands-on engineering education',
-          desc: 'Created a long-term project program (through IEEE) to develop hardware used by the non-profit IT Bridge to teach underprivileged youth about careers in Electrical Engineering.',
-          bullets: [
-            'Built an ongoing program (not a one-off demo) for repeatable impact',
-            'Planned and executed chapter-wide events and build sessions',
-            'Focused on approachable hardware learning through real tools'
-          ],
-          tags: ['embedded', 'education', 'leadership']
-        },
-        krazy: {
-          title: 'Krazy Studios',
-          subtitle: 'Founder + builder',
-          desc: 'Established and led a team to publish chatbots and Discord-based games, delivering private client bots and building community engagement.',
-          bullets: [
-            'Led delivery for private client bots and games',
-            'Built community engagement through interactive experiences',
-            'Practiced real-world leadership: delegation, reliability, and shipping'
-          ],
-          tags: ['leadership', 'tooling', 'systems']
-        }
-      };
-
-      const openModal = (key) => {
-        const data = PROJECTS[key];
-        if (!modal || !data) return;
-        lastFocus = document.activeElement;
-
-        if (modalTitle) modalTitle.textContent = data.title;
-        if (modalSubtitle) modalSubtitle.textContent = data.subtitle;
-        if (modalDesc) modalDesc.textContent = data.desc;
-
-        if (modalBullets) {
-          modalBullets.replaceChildren(
-            ...data.bullets.map(t => {
-              const li = document.createElement('li');
-              li.textContent = t;
-              return li;
-            })
-          );
-        }
-
-        if (modalTags) {
-          modalTags.replaceChildren(
-            ...data.tags.map(t => {
-              const s = document.createElement('span');
-              s.textContent = t;
-              return s;
-            })
-          );
-        }
-
-        modal.hidden = false;
-        document.body.classList.add('modal-open');
-
-        const focusable = modal.querySelector('button,[href],[tabindex]:not([tabindex="-1"])');
-        focusable?.focus?.();
-      };
-
-      const closeModal = () => {
-        if (!modal || modal.hidden) return;
-        modal.hidden = true;
-        document.body.classList.remove('modal-open');
-        if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
-      };
-
-      document.addEventListener('click', (e) => {
-        const openBtn = e.target?.closest?.('[data-open-project]');
-        if (openBtn) {
-          openModal(openBtn.getAttribute('data-open-project'));
-          return;
-        }
-
-        const closeBtn = e.target?.closest?.('[data-close]');
-        if (closeBtn) {
-          closeModal();
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
       });
+    }, { threshold: 0.12 });
 
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-      });
-
-      // Cursor-following spotlight for cards (tiny JS, big feel).
-      const grids = document.querySelectorAll('.card-grid');
-      grids.forEach(grid => {
-        grid.addEventListener('pointermove', (e) => {
-          const card = e.target?.closest?.('.card');
-          if (!card) return;
-          const r = card.getBoundingClientRect();
-          const x = Math.round(e.clientX - r.left);
-          const y = Math.round(e.clientY - r.top);
-          card.style.setProperty('--mx', `${x}px`);
-          card.style.setProperty('--my', `${y}px`);
-        });
-      });
-
-      applyFilter('all');
-    })();
-
-    (() => {
-      const root = document.querySelector('[data-journey]');
-      if (!root) return;
-
-      const toggles = [...root.querySelectorAll('[data-journey-toggle]')];
-      if (!toggles.length) return;
-
-      const getDetails = (btn) => {
-        const id = btn.getAttribute('aria-controls');
-        return id ? document.getElementById(id) : null;
-      };
-
-      const close = (btn) => {
-        btn.setAttribute('aria-expanded', 'false');
-        const details = getDetails(btn);
-        if (details) details.hidden = true;
-        btn.closest('.event-item')?.classList?.remove?.('is-open');
-      };
-
-      const open = (btn) => {
-        btn.setAttribute('aria-expanded', 'true');
-        const details = getDetails(btn);
-        if (details) details.hidden = false;
-        btn.closest('.event-item')?.classList?.add?.('is-open');
-      };
-
-      const closeAll = (except) => {
-        for (const btn of toggles) {
-          if (btn === except) continue;
-          close(btn);
-        }
-      };
-
-      for (const btn of toggles) {
-        // Ensure details start hidden.
-        close(btn);
-
-        btn.addEventListener('click', () => {
-          const isOpen = btn.getAttribute('aria-expanded') === 'true';
-          if (isOpen) {
-            close(btn);
-            return;
-          }
-          closeAll(btn);
-          open(btn);
-        });
-
-        // Space should toggle like a native details/summary.
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === ' ') {
-            e.preventDefault();
-            btn.click();
-          }
-        });
-      }
-
-      // Escape closes any open entry when focus is within Journey.
-      root.addEventListener('keydown', (e) => {
-        if (e.key !== 'Escape') return;
-        closeAll(null);
-      });
-    })();
-
-    (() => {
-      const toggle = document.querySelector('[data-fun-toggle]');
-      const compass = document.querySelector('[data-compass]');
-      const needle = document.querySelector('[data-needle]');
-      const label = document.querySelector('[data-label]');
-      if (!toggle) return;
-
-      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const storageKey = 'cm_fun_mode';
-
-      let canvas = null;
-      let ctx = null;
-      let rafId = 0;
-      let w = 0;
-      let h = 0;
-
-      const pointer = { x: 0.5, y: 0.35, vx: 0, vy: 0, has: false };
-      const particles = [];
-      const maxParticles = 28;
-
-      const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
-
-      const headingLabel = (deg) => {
-        const d = (deg + 360) % 360;
-        if (d >= 337.5 || d < 22.5) return 'E';
-        if (d < 67.5) return 'NE';
-        if (d < 112.5) return 'N';
-        if (d < 157.5) return 'NW';
-        if (d < 202.5) return 'W';
-        if (d < 247.5) return 'SW';
-        if (d < 292.5) return 'S';
-        return 'SE';
-      };
-
-      const ensureCanvas = () => {
-        if (canvas) return;
-        canvas = document.createElement('canvas');
-        canvas.className = 'fun-canvas';
-        canvas.setAttribute('aria-hidden', 'true');
-        canvas.style.pointerEvents = 'none';
-        document.body.append(canvas);
-        ctx = canvas.getContext('2d', { alpha: true });
-      };
-
-      const resize = () => {
-        if (!canvas) return;
-        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        w = Math.floor(window.innerWidth);
-        h = Math.floor(window.innerHeight);
-        canvas.width = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        canvas.style.width = `${w}px`;
-        canvas.style.height = `${h}px`;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      };
-
-      const spawnParticle = (x, y) => {
-        if (!particles.length) {
-          for (let i = 0; i < maxParticles; i++) {
-            particles.push({ x, y, vx: 0, vy: 0, a: 0, life: 0, hue: 0, r: 0 });
-          }
-        }
-
-        const p = particles.shift();
-        p.x = x;
-        p.y = y;
-        p.vx = (Math.random() - 0.5) * 1.2;
-        p.vy = (Math.random() - 0.5) * 1.2;
-        p.a = 0.95;
-        p.life = 1;
-        p.hue = 150 + Math.random() * 40;
-        p.r = 1.6 + Math.random() * 2.4;
-        particles.push(p);
-      };
-
-      const tick = () => {
-        rafId = window.requestAnimationFrame(tick);
-        if (!ctx || !canvas) return;
-
-        ctx.clearRect(0, 0, w, h);
-
-        if (pointer.has) {
-          const px = pointer.x * w;
-          const py = pointer.y * h;
-          const speed = Math.hypot(pointer.vx, pointer.vy);
-          const rate = clamp(Math.round(speed * 1.6), 1, 6);
-          for (let i = 0; i < rate; i++) spawnParticle(px + (Math.random() - 0.5) * 10, py + (Math.random() - 0.5) * 10);
-        }
-
-        for (const p of particles) {
-          p.life *= 0.94;
-          p.a *= 0.965;
-          p.vx *= 0.985;
-          p.vy *= 0.985;
-          p.x += p.vx;
-          p.y += p.vy;
-
-          const alpha = clamp(p.a * p.life, 0, 1);
-          if (alpha < 0.02) continue;
-
-          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 14);
-          g.addColorStop(0, `hsla(${p.hue}, 90%, 70%, ${alpha})`);
-          g.addColorStop(1, `hsla(${p.hue}, 90%, 70%, 0)`);
-          ctx.fillStyle = g;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
-          ctx.fill();
-
-          ctx.fillStyle = `rgba(231, 246, 238, ${alpha * 0.55})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      };
-
-      const onPointerMove = (e) => {
-        const x = clamp(e.clientX / Math.max(1, window.innerWidth), 0, 1);
-        const y = clamp(e.clientY / Math.max(1, window.innerHeight), 0, 1);
-        pointer.vx = x - pointer.x;
-        pointer.vy = y - pointer.y;
-        pointer.x = x;
-        pointer.y = y;
-        pointer.has = true;
-
-        if (needle && compass) {
-          const cx = window.innerWidth * 0.5;
-          const cy = window.innerHeight * 0.5;
-          const dx = e.clientX - cx;
-          const dy = e.clientY - cy;
-          const deg = (Math.atan2(-dy, dx) * 180) / Math.PI;
-          needle.style.transform = `rotate(${-deg}deg)`;
-          if (label) label.textContent = headingLabel(deg);
-        }
-      };
-
-      const enable = () => {
-        document.body.classList.add('fun-on');
-        toggle.setAttribute('aria-pressed', 'true');
-        try { localStorage.setItem(storageKey, '1'); } catch { }
-
-        if (compass) compass.hidden = false;
-
-        // Always track pointer for compass; only animate particles if motion is allowed.
-        window.addEventListener('pointermove', onPointerMove, { passive: true });
-        if (!prefersReducedMotion()) {
-          ensureCanvas();
-          resize();
-          window.addEventListener('resize', resize, { passive: true });
-          if (!rafId) rafId = window.requestAnimationFrame(tick);
-        }
-      };
-
-      const disable = () => {
-        document.body.classList.remove('fun-on');
-        toggle.setAttribute('aria-pressed', 'false');
-        try { localStorage.setItem(storageKey, '0'); } catch { }
-
-        if (compass) compass.hidden = true;
-
-        window.removeEventListener('resize', resize);
-        window.removeEventListener('pointermove', onPointerMove);
-
-        if (rafId) {
-          window.cancelAnimationFrame(rafId);
-          rafId = 0;
-        }
-        if (canvas) {
-          canvas.remove();
-          canvas = null;
-          ctx = null;
-        }
-        pointer.has = false;
-      };
-
-      const isOn = () => document.body.classList.contains('fun-on');
-
-      toggle.addEventListener('click', () => {
-        if (isOn()) disable();
-        else enable();
-      });
-
-      // Restore last setting.
-      let shouldEnable = false;
-      try { shouldEnable = localStorage.getItem(storageKey) === '1'; } catch { }
-      if (shouldEnable) enable();
-    })();
-
-    (() => {
-      // Tiny easter egg: type "TRAIL" to trigger a brief night-hike aurora shimmer.
-      const hintDelayMs = 7000;
-      const hintDismissMs = 5000;
-      const code = 'trail';
-      const maxLen = 10;
-      let buffer = '';
-      let hintEl = null;
-      let idleTimer = 0;
-      let hintTimer = 0;
-      let lastActivity = Date.now();
-
-      const funIsOn = () => document.body.classList.contains('fun-on');
-
-      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      const markActivity = () => {
-        lastActivity = Date.now();
-        if (hintEl) hintEl.remove();
-        hintEl = null;
-        if (hintTimer) {
-          window.clearTimeout(hintTimer);
-          hintTimer = 0;
-        }
-      };
-
-      const ensureHint = () => {
-        if (!funIsOn()) return;
-        if (hintEl) return;
-        hintEl = document.createElement('div');
-        hintEl.className = 'easter-hint';
-        hintEl.textContent = 'psst… type TRAIL';
-        document.body.append(hintEl);
-
-        hintTimer = window.setTimeout(() => {
-          if (hintEl) hintEl.remove();
-          hintEl = null;
-          hintTimer = 0;
-        }, hintDismissMs);
-      };
-
-      const tickIdle = () => {
-        if (idleTimer) window.clearTimeout(idleTimer);
-        idleTimer = window.setTimeout(() => {
-          if (!funIsOn()) {
-            if (hintEl) hintEl.remove();
-            hintEl = null;
-          } else if (Date.now() - lastActivity >= hintDelayMs) {
-            ensureHint();
-          }
-          tickIdle();
-        }, 1000);
-      };
-
-      const trigger = () => {
-        document.body.classList.add('night-hike');
-        window.setTimeout(() => document.body.classList.remove('night-hike'), prefersReducedMotion() ? 2500 : 6500);
-      };
-
-      const onKeyDown = (e) => {
-        // Don't hijack typing in inputs.
-        const tag = (e.target && e.target.tagName) ? String(e.target.tagName).toLowerCase() : '';
-        if (tag === 'input' || tag === 'textarea') return;
-
-        if (typeof e.key !== 'string' || e.key.length !== 1) return;
-        markActivity();
-        buffer = (buffer + e.key.toLowerCase()).slice(-maxLen);
-        if (buffer.endsWith(code)) trigger();
-      };
-
-      window.addEventListener('mousemove', markActivity, { passive: true });
-      window.addEventListener('pointerdown', markActivity, { passive: true });
-      window.addEventListener('scroll', markActivity, { passive: true });
-      window.addEventListener('keydown', onKeyDown);
-      tickIdle();
-    })();
-
-    (() => {
-      const hud = document.querySelector('[data-trail-hud]');
-      const fill = document.querySelector('[data-trail-fill]');
-      const markersRoot = document.querySelector('[data-trail-markers]');
-      if (!hud || !fill || !markersRoot) return;
-
-      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      const waypoints = [
-        { label: 'Projects', id: 'projects' },
-        { label: 'Education', id: 'education' },
-        { label: 'GitHub', id: 'github' },
-        { label: 'About', id: 'about' },
-        { label: 'Contact', id: 'contact' }
-      ]
-        .map(w => ({ ...w, el: document.getElementById(w.id) }))
-        .filter(w => w.el);
-
-      if (!waypoints.length) return;
-
-      hud.hidden = false;
-
-      const scrollToEl = (el) => {
-        el?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
-      };
-
-      const buttons = waypoints.map((w) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'trail-marker';
-        b.innerHTML = `<span>${w.label}</span><span class="trail-dot" aria-hidden="true"></span>`;
-        b.addEventListener('click', () => scrollToEl(w.el));
-        markersRoot.append(b);
-        return b;
-      });
-
-      const update = () => {
-        const doc = document.documentElement;
-        const max = Math.max(1, doc.scrollHeight - window.innerHeight);
-        const pct = Math.max(0, Math.min(1, (window.scrollY || doc.scrollTop || 0) / max));
-        fill.style.height = `${Math.round(pct * 100)}%`;
-
-        const targetY = (window.scrollY || 0) + window.innerHeight * 0.35;
-        let activeIndex = 0;
-        for (let i = 0; i < waypoints.length; i++) {
-          const top = waypoints[i].el.getBoundingClientRect().top + (window.scrollY || 0);
-          if (top <= targetY) activeIndex = i;
-        }
-        buttons.forEach((b, i) => b.classList.toggle('is-active', i === activeIndex));
-      };
-
-      window.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update, { passive: true });
-      update();
-    })();
-
-    (() => {
-      const modal = document.getElementById('cmdk');
-      const input = modal?.querySelector?.('[data-cmdk-input]');
-      const list = modal?.querySelector?.('[data-cmdk-list]');
-      const closeEls = modal ? [...modal.querySelectorAll('[data-cmdk-close]')] : [];
-      if (!modal || !input || !list) return;
-
-      const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      const items = [
-        { title: 'Projects', keywords: 'projects work portfolio', run: () => document.getElementById('projects')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }) },
-        { title: 'Education', keywords: 'education ut austin ece robotics', run: () => document.getElementById('education')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }) },
-        { title: 'Leadership', keywords: 'leadership experience ieee eagle scout', run: () => document.getElementById('leadership')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }) },
-        { title: 'Skills', keywords: 'skills tech tools', run: () => document.getElementById('skills')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }) },
-        { title: 'GitHub', keywords: 'github repos', run: () => document.getElementById('github')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }) },
-        { title: 'About', keywords: 'about philosophy', run: () => document.getElementById('about')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }) },
-        { title: 'Contact', keywords: 'contact email linkedin phone', run: () => document.getElementById('contact')?.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' }) },
-        { title: 'Blog', keywords: 'blog field notes posts', run: () => { window.location.href = 'blog.html'; } },
-        { title: 'Open resume (PDF)', keywords: 'resume pdf', run: () => window.open('connor-mckelvey-resume.pdf', '_blank', 'noopener') }
-      ];
-
-      let isOpen = false;
-      let active = 0;
-      let results = items;
-      let lastFocus = null;
-
-      const choose = (item) => {
-        if (!item) return;
-        setOpen(false);
-        window.requestAnimationFrame(() => item.run?.());
-      };
-
-      const setOpen = (on) => {
-        isOpen = on;
-        modal.hidden = !on;
-        document.body.classList.toggle('modal-open', on);
-        if (on) {
-          lastFocus = document.activeElement;
-          input.value = '';
-          active = 0;
-          render();
-          input.focus();
-        } else {
-          if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
-        }
-      };
-
-      const render = () => {
-        const q = input.value.trim().toLowerCase();
-        results = !q
-          ? items
-          : items.filter(i => (i.title + ' ' + (i.keywords || '')).toLowerCase().includes(q));
-
-        if (active >= results.length) active = Math.max(0, results.length - 1);
-        active = Math.min(active, Math.max(0, Math.min(9, results.length - 1)));
-
-        list.replaceChildren(
-          ...results.slice(0, 10).map((item, idx) => {
-            const el = document.createElement('div');
-            el.className = 'cmdk-item' + (idx === active ? ' is-active' : '');
-            el.tabIndex = 0;
-            el.setAttribute('role', 'option');
-            el.setAttribute('aria-selected', String(idx === active));
-
-            const name = document.createElement('div');
-            name.textContent = item.title;
-
-            const kbd = document.createElement('div');
-            kbd.className = 'cmdk-kbd';
-            kbd.textContent = '↵';
-
-            el.append(name, kbd);
-            el.addEventListener('mouseenter', () => {
-              active = idx;
-              render();
-            });
-            el.addEventListener('click', () => {
-              choose(item);
-            });
-            return el;
-          })
-        );
-      };
-
-      const open = () => setOpen(true);
-      const close = () => setOpen(false);
-
-      closeEls.forEach(el => el.addEventListener('click', close));
-
-      document.addEventListener('keydown', (e) => {
-        const tag = (e.target && e.target.tagName) ? String(e.target.tagName).toLowerCase() : '';
-        const inText = tag === 'input' || tag === 'textarea';
-
-        const isCtrlK = (e.key.toLowerCase?.() === 'k') && (e.ctrlKey || e.metaKey);
-        const isPlainK = (e.key.toLowerCase?.() === 'k') && !e.ctrlKey && !e.metaKey && !e.altKey;
-
-        if (!isOpen && (isCtrlK || (isPlainK && !inText))) {
-          e.preventDefault();
-          open();
-          return;
-        }
-
-        if (!isOpen) return;
-
-        if (e.key === 'Escape') {
-          e.preventDefault();
-          close();
-          return;
-        }
-      });
-
-      input.addEventListener('input', render);
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          active = Math.min(active + 1, Math.max(0, Math.min(9, results.length - 1)));
-          render();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          active = Math.max(active - 1, 0);
-          render();
-        } else if (e.key === 'Enter') {
-          e.preventDefault();
-          const chosen = results[active];
-          choose(chosen);
-        }
-      });
-    })();
+    reveals.forEach(el => observer.observe(el));
   </script>
-
 </body>
 </html>
