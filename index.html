@@ -8,1495 +8,774 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    /* ─── Reset & Base ─────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --green-deep:   #1a3a2a;
-      --green-mid:    #2d6644;
-      --green-soft:   #3b6d11;
-      --green-light:  #eaf3de;
-      --green-pale:   #c0dd97;
-      --off-white:    #f7f6f2;
-      --white:        #ffffff;
-      --ink:          #1a1a18;
-      --ink-mid:      #4a4a46;
-      --ink-muted:    #888780;
-      --ink-faint:    #b4b2a9;
-      --border:       #dddbd4;
-      --border-light: #eceae4;
-      --sidebar-w:    210px;
-      --font-serif:   'Lora', Georgia, serif;
-      --font-mono:    'JetBrains Mono', monospace;
-      --font-sans:    'Inter', sans-serif;
+      --green-deep:  #1a3a2a; --green-mid:   #2d6644; --green-soft:  #3b6d11;
+      --green-light: #eaf3de; --green-pale:  #c0dd97;
+      --off-white:   #f7f6f2; --white:       #ffffff;
+      --ink:         #1a1a18; --ink-mid:     #4a4a46; --ink-muted:   #888780; --ink-faint:   #b4b2a9;
+      --border:      #dddbd4; --border-light:#eceae4;
+      --sidebar-w:   210px;
+      --font-serif:  'Lora', Georgia, serif;
+      --font-mono:   'JetBrains Mono', monospace;
+      --font-sans:   'Inter', sans-serif;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--off-white);
-      color: var(--ink);
-      font-family: var(--font-sans);
-      font-size: 15px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
+    body { background: var(--off-white); color: var(--ink); font-family: var(--font-sans); font-size: 15px; line-height: 1.6; overflow-x: hidden; }
     a { color: inherit; text-decoration: none; }
 
-    /* ─── Layout ────────────────────────────────────────── */
-    .layout {
-      display: flex;
-      min-height: 100vh;
-    }
+    /* Layout */
+    .layout { display: flex; min-height: 100vh; }
 
-    /* ─── Sidebar ───────────────────────────────────────── */
+    /* Sidebar */
     .sidebar {
-      width: var(--sidebar-w);
-      min-width: var(--sidebar-w);
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 48px 32px;
-      border-right: 0.5px solid var(--border);
-      background: var(--off-white);
-      transition: transform 0.4s ease;
-      z-index: 100;
+      width: var(--sidebar-w); min-width: var(--sidebar-w);
+      position: sticky; top: 0; height: 100vh;
+      display: flex; flex-direction: column;
+      padding: 48px 32px; border-right: 0.5px solid var(--border);
+      background: var(--off-white); z-index: 100;
+      transition: transform 0.45s ease;
     }
-
-    .sidebar-logo {
-      margin-bottom: 6px;
-    }
-    .sidebar-logo svg {
-      width: 32px;
-      height: 32px;
-    }
-
-    .sidebar-name {
-      font-family: var(--font-serif);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--green-deep);
-      margin-bottom: 3px;
-    }
-
-    .sidebar-role {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--green-soft);
-      letter-spacing: 0.12em;
-      margin-bottom: 52px;
-    }
-
-    .sidebar-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      flex: 1;
-    }
-
-    .sidebar-nav a {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.07em;
-      padding: 10px 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: color 0.2s;
-      border-bottom: 0.5px solid transparent;
-    }
-    .sidebar-nav a:hover,
-    .sidebar-nav a.active { color: var(--green-deep); }
+    .sidebar-logo { margin-bottom: 8px; }
+    .sidebar-logo svg { width: 32px; height: 32px; }
+    .sidebar-name { font-family: var(--font-serif); font-size: 14px; font-weight: 500; color: var(--green-deep); margin-bottom: 3px; }
+    .sidebar-role { font-family: var(--font-mono); font-size: 9px; color: var(--green-soft); letter-spacing: 0.12em; margin-bottom: 52px; }
+    .sidebar-nav { display: flex; flex-direction: column; flex: 1; }
+    .sidebar-nav a { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.07em; padding: 10px 0; display: flex; align-items: center; gap: 12px; transition: color 0.2s; }
+    .sidebar-nav a:hover, .sidebar-nav a.active { color: var(--green-deep); }
     .sidebar-nav a.active .nav-dot { background: var(--green-mid); }
-
-    .nav-dot {
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: var(--border);
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-
-    .sidebar-bottom {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .sidebar-links {
-      display: flex;
-      gap: 14px;
-    }
-
-    .sidebar-links a {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--ink-faint);
-      letter-spacing: 0.07em;
-      transition: color 0.2s;
-    }
+    .nav-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.2s; }
+    .sidebar-bottom { display: flex; flex-direction: column; gap: 16px; }
+    .sidebar-links { display: flex; gap: 14px; }
+    .sidebar-links a { font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint); letter-spacing: 0.07em; transition: color 0.2s; }
     .sidebar-links a:hover { color: var(--green-deep); }
-
-    .resume-btn {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--green-deep);
-      border: 0.5px solid var(--green-mid);
-      padding: 10px 16px;
-      border-radius: 5px;
-      letter-spacing: 0.09em;
-      transition: background 0.2s;
-      cursor: pointer;
-      align-self: flex-start;
-    }
+    .resume-btn { display: inline-block; font-family: var(--font-mono); font-size: 10px; color: var(--green-deep); border: 0.5px solid var(--green-mid); padding: 10px 16px; border-radius: 5px; letter-spacing: 0.09em; transition: background 0.2s; cursor: pointer; align-self: flex-start; }
     .resume-btn:hover { background: var(--green-light); }
 
-    /* ─── Mobile nav (hamburger + dropdown) ────────────── */
-    .mobile-nav-toggle {
-      display: none;
-      position: fixed;
-      top: 18px;
-      left: 18px;
-      z-index: 250;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--green-deep);
-      letter-spacing: 0.09em;
-      border: 0.5px solid var(--border);
-      background: var(--off-white);
-      padding: 10px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .mobile-nav-toggle:focus-visible {
-      outline: 2px solid var(--green-mid);
-      outline-offset: 4px;
-    }
-
-    .mobile-menu-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 240;
-      border: 0;
-      background: transparent;
-      padding: 0;
-      cursor: default;
-    }
-
-    .mobile-menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 245;
-      border-bottom: 0.5px solid var(--border);
-      background: var(--off-white);
-      padding: 72px 18px 18px;
-    }
-
-    .mobile-menu a {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-mid);
-      letter-spacing: 0.07em;
-      padding: 12px 6px;
-      border-bottom: 0.5px solid var(--border-light);
-    }
+    /* Mobile nav */
+    .mobile-nav-toggle { display: none; position: fixed; top: 18px; left: 18px; z-index: 250; font-family: var(--font-mono); font-size: 11px; color: var(--green-deep); letter-spacing: 0.09em; border: 0.5px solid var(--border); background: var(--off-white); padding: 10px 12px; border-radius: 8px; cursor: pointer; }
+    .mobile-menu-backdrop { display: none; position: fixed; inset: 0; z-index: 240; border: 0; background: transparent; padding: 0; cursor: default; }
+    .mobile-menu { position: fixed; top: 0; left: 0; right: 0; z-index: 245; border-bottom: 0.5px solid var(--border); background: var(--off-white); padding: 72px 18px 18px; }
+    .mobile-menu a { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--ink-mid); letter-spacing: 0.07em; padding: 12px 6px; border-bottom: 0.5px solid var(--border-light); }
     .mobile-menu a:last-child { border-bottom: none; }
-    .mobile-menu a:hover,
-    .mobile-menu a.active { color: var(--green-deep); }
+    .mobile-menu a:hover, .mobile-menu a.active { color: var(--green-deep); }
+    .mobile-menu .mobile-menu-meta { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; }
+    .mobile-menu .mobile-menu-meta a { border-bottom: none; padding: 10px 6px; color: var(--ink-muted); }
 
-    .mobile-menu .mobile-menu-meta {
-      margin-top: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+    /* Main */
+    .main { flex: 1; min-width: 0; }
 
-    .mobile-menu .mobile-menu-meta a {
-      border-bottom: none;
-      padding: 10px 6px;
-      color: var(--ink-muted);
-    }
-    .mobile-menu .mobile-menu-meta a:hover { color: var(--green-deep); }
+    /* Section header */
+    .sec-header { display: flex; align-items: center; gap: 18px; margin-bottom: 60px; }
+    .sec-label { font-family: var(--font-mono); font-size: 11px; color: var(--green-soft); letter-spacing: 0.16em; white-space: nowrap; }
+    .sec-rule { flex: 1; height: 0.5px; background: var(--border); }
+    .sec-count { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); }
 
-    /* ─── Main Content ──────────────────────────────────── */
-    .main {
-      flex: 1;
-      min-width: 0;
-    }
-
-    /* ─── Section utility ───────────────────────────────── */
-    .section {
-      padding: 96px 80px;
-      border-bottom: 0.5px solid var(--border);
-    }
-
-    .sec-header {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 60px;
-    }
-    .sec-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--green-soft);
-      letter-spacing: 0.16em;
-      white-space: nowrap;
-    }
-    .sec-rule {
-      flex: 1;
-      height: 0.5px;
-      background: var(--border);
-    }
-    .sec-count {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink-faint);
-    }
-
-    /* ─── Fade-in on scroll ─────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
     .reveal-delay-4 { transition-delay: 0.4s; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ─── Hero ──────────────────────────────────────────── */
-    #hero {
-      padding: 96px 80px 104px;
-      border-bottom: 0.5px solid var(--border);
-      position: relative;
-      overflow: hidden;
-      min-height: 92vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .hero-topo {
-      position: absolute;
-      right: -40px;
-      bottom: -60px;
-      width: 480px;
-      height: 480px;
-      opacity: 0.05;
-      pointer-events: none;
-    }
+    /* Hero */
+    #hero { padding: 96px 80px 104px; border-bottom: 0.5px solid var(--border); position: relative; overflow: hidden; min-height: 92vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero-topo { position: absolute; right: -40px; bottom: -60px; width: 480px; height: 480px; opacity: 0.05; pointer-events: none; }
     .topo-path { fill: none; stroke: var(--green-deep); stroke-width: 0.8; }
 
-    .hero-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--green-soft);
-      letter-spacing: 0.18em;
-      margin-bottom: 28px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.1s forwards;
-    }
-    .eyebrow-line {
-      width: 22px;
-      height: 0.5px;
-      background: var(--green-soft);
+    .hero-photo {
+      position: absolute; right: 72px; bottom: 0;
+      height: 84%; max-height: 600px; width: auto;
+      object-fit: contain; object-position: bottom;
+      pointer-events: none;
+      opacity: 0; animation: fadeUp 1s ease 0.65s forwards;
+      mask-image: linear-gradient(to right, transparent 0%, black 16%), linear-gradient(to top, black 85%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16%), linear-gradient(to top, black 85%, transparent 100%);
+      mask-composite: intersect;
+      -webkit-mask-composite: source-in;
     }
 
-    .hero-statement {
-      font-family: var(--font-serif);
-      font-size: clamp(44px, 5.5vw, 68px);
-      color: var(--green-deep);
-      font-weight: 500;
-      line-height: 1.04;
-      letter-spacing: -0.02em;
-      max-width: 820px;
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 0.25s forwards;
-    }
-    .hero-statement em {
-      font-style: italic;
-      color: var(--green-mid);
-    }
-
-    .hero-byline {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.4s forwards;
-    }
-    .byline-name {
-      font-family: var(--font-mono);
-      font-size: 14px;
-      color: var(--ink-mid);
-      letter-spacing: 0.09em;
-    }
-    .byline-rule {
-      width: 24px;
-      height: 0.5px;
-      background: var(--border);
-    }
-    .byline-disc {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.08em;
-    }
-
-    .hero-sub {
-      font-size: 16px;
-      color: var(--ink-muted);
-      line-height: 1.85;
-      max-width: 560px;
-      margin-bottom: 52px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.5s forwards;
-    }
-
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.62s forwards;
-    }
-    .btn-primary {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--off-white);
-      background: var(--green-deep);
-      padding: 14px 28px;
-      border-radius: 6px;
-      letter-spacing: 0.09em;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+    .hero-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--green-soft); letter-spacing: 0.18em; margin-bottom: 28px; display: flex; align-items: center; gap: 14px; opacity: 0; animation: fadeUp 0.8s ease 0.1s forwards; }
+    .eyebrow-line { width: 22px; height: 0.5px; background: var(--green-soft); }
+    .hero-statement { font-family: var(--font-serif); font-size: clamp(44px, 5.5vw, 68px); color: var(--green-deep); font-weight: 500; line-height: 1.04; letter-spacing: -0.02em; max-width: 640px; margin-bottom: 28px; opacity: 0; animation: fadeUp 0.9s ease 0.25s forwards; }
+    .hero-statement em { font-style: italic; color: var(--green-mid); }
+    .hero-byline { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+    .byline-name { font-family: var(--font-mono); font-size: 14px; color: var(--ink-mid); letter-spacing: 0.09em; }
+    .byline-rule { width: 24px; height: 0.5px; background: var(--border); }
+    .byline-disc { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.08em; }
+    .hero-sub { font-size: 16px; color: var(--ink-muted); line-height: 1.85; max-width: 480px; margin-bottom: 52px; opacity: 0; animation: fadeUp 0.8s ease 0.5s forwards; }
+    .hero-actions { display: flex; align-items: center; gap: 24px; opacity: 0; animation: fadeUp 0.8s ease 0.62s forwards; }
+    .btn-primary { font-family: var(--font-mono); font-size: 12px; color: var(--off-white); background: var(--green-deep); padding: 14px 28px; border-radius: 6px; letter-spacing: 0.09em; cursor: pointer; transition: background 0.2s; display: inline-block; }
     .btn-primary:hover { background: var(--green-mid); }
-    .btn-ghost {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--ink-muted);
-      letter-spacing: 0.09em;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
+    .btn-ghost { font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted); letter-spacing: 0.09em; cursor: pointer; transition: color 0.2s; }
     .btn-ghost:hover { color: var(--green-deep); }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ─── Currently Building ────────────────────────────── */
-    #building {
-      padding: 80px 80px;
-      border-bottom: 0.5px solid var(--border);
-      background: var(--off-white);
-    }
-
-    .building-card {
-      display: flex;
-      gap: 48px;
-      align-items: flex-start;
-      background: var(--white);
-      border: 0.5px solid var(--border);
-      border-radius: 12px;
-      padding: 40px 44px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .building-card::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: var(--green-mid);
-      border-radius: 12px 0 0 12px;
-    }
-
-    .building-pulse {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--green-soft);
-      letter-spacing: 0.14em;
-      margin-bottom: 14px;
-    }
-    .pulse-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green-soft);
-      animation: pulse 2s ease infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.4; transform: scale(0.8); }
-    }
-
-    .building-title {
-      font-family: var(--font-serif);
-      font-size: 26px;
-      color: var(--green-deep);
-      font-weight: 500;
-      margin-bottom: 12px;
-      line-height: 1.2;
-    }
+    /* Currently Building */
+    #building { padding: 80px 80px; border-bottom: 0.5px solid var(--border); }
+    .building-card { display: flex; gap: 48px; align-items: flex-start; background: var(--white); border: 0.5px solid var(--border); border-radius: 12px; padding: 40px 44px; position: relative; overflow: hidden; }
+    .building-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--green-mid); border-radius: 12px 0 0 12px; }
+    .building-pulse { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9px; color: var(--green-soft); letter-spacing: 0.14em; margin-bottom: 14px; }
+    .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-soft); animation: pulse 2s ease infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+    .building-title { font-family: var(--font-serif); font-size: 26px; color: var(--green-deep); font-weight: 500; margin-bottom: 12px; line-height: 1.2; }
     .building-title em { font-style: italic; color: var(--green-mid); }
+    .building-desc { font-size: 14px; color: var(--ink-muted); line-height: 1.8; max-width: 520px; margin-bottom: 20px; }
+    .building-meta { display: flex; gap: 20px; flex-wrap: wrap; }
+    .meta-item { font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint); letter-spacing: 0.1em; display: flex; align-items: center; gap: 7px; }
+    .meta-item::before { content: ''; display: block; width: 14px; height: 0.5px; background: var(--green-pale); }
+    .building-right { flex-shrink: 0; text-align: right; }
+    .building-org { font-family: var(--font-mono); font-size: 10px; color: var(--green-soft); letter-spacing: 0.1em; margin-bottom: 6px; }
+    .building-tag { font-family: var(--font-mono); font-size: 9px; color: var(--green-deep); background: var(--green-light); padding: 4px 12px; border-radius: 20px; letter-spacing: 0.06em; display: inline-block; }
 
-    .building-desc {
-      font-size: 14px;
-      color: var(--ink-muted);
-      line-height: 1.8;
-      max-width: 520px;
-      margin-bottom: 20px;
-    }
-
-    .building-meta {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .meta-item {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--ink-faint);
-      letter-spacing: 0.1em;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-    .meta-item::before {
-      content: '';
-      display: block;
-      width: 14px;
-      height: 0.5px;
-      background: var(--green-pale);
-    }
-
-    .building-right {
-      flex-shrink: 0;
-      text-align: right;
-    }
-    .building-org {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--green-soft);
-      letter-spacing: 0.1em;
-      margin-bottom: 6px;
-    }
-    .building-tag {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--green-deep);
-      background: var(--green-light);
-      padding: 4px 12px;
-      border-radius: 20px;
-      letter-spacing: 0.06em;
-      display: inline-block;
-    }
-
-    /* ─── Projects ──────────────────────────────────────── */
+    /* Projects */
     #projects { padding: 96px 80px; border-bottom: 0.5px solid var(--border); }
 
-    .project-item {
-      display: flex;
-      gap: 32px;
-      padding: 40px 0;
-      border-bottom: 0.5px solid var(--border-light);
-      align-items: flex-start;
-      cursor: pointer;
-      transition: none;
+    .project-card {
+      display: grid; grid-template-columns: 1fr 200px;
+      border: 0.5px solid var(--border-light); border-radius: 10px;
+      margin-bottom: 14px; cursor: pointer; overflow: hidden;
+      background: var(--white); transition: border-color 0.2s, box-shadow 0.25s;
     }
-    .project-item:last-child { border-bottom: none; }
-    .project-item:hover .proj-arrow { color: var(--green-mid); transform: translateX(4px); }
-    .project-item:hover .proj-title { color: var(--green-mid); }
+    .project-card:hover { border-color: var(--border); box-shadow: 0 2px 24px rgba(26,58,42,0.07); }
+    .project-card.active { border-color: var(--green-mid); box-shadow: 0 2px 24px rgba(26,58,42,0.1); }
+    .project-card:hover .pc-arrow, .project-card.active .pc-arrow { color: var(--green-mid); transform: translateX(3px); }
+    .project-card:hover .pc-title, .project-card.active .pc-title { color: var(--green-mid); }
 
-    .proj-num {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink-faint);
-      letter-spacing: 0.06em;
-      padding-top: 6px;
-      min-width: 26px;
+    .pc-body { padding: 26px 30px; display: flex; flex-direction: column; gap: 10px; }
+    .pc-top { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+    .pc-num { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.06em; }
+    .pc-title { font-family: var(--font-serif); font-size: 20px; color: var(--green-deep); font-weight: 500; transition: color 0.2s; }
+    .pc-tag { font-family: var(--font-mono); font-size: 9px; color: var(--green-soft); background: var(--green-light); padding: 3px 10px; border-radius: 20px; letter-spacing: 0.06em; }
+    .pc-award { font-family: var(--font-mono); font-size: 9px; color: #854f0b; background: #faeeda; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.06em; }
+    .pc-brief { font-size: 13px; color: var(--ink-muted); line-height: 1.7; }
+    .pc-stack { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+    .chip { font-family: var(--font-mono); font-size: 9px; color: var(--ink-mid); background: #eeecea; padding: 3px 9px; border-radius: 4px; letter-spacing: 0.04em; }
+    .pc-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 12px; border-top: 0.5px solid var(--border-light); }
+    .pc-cta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.08em; }
+    .pc-arrow { font-size: 13px; color: var(--ink-faint); transition: color 0.2s, transform 0.2s; }
+
+    .pc-preview { background: var(--off-white); border-left: 0.5px solid var(--border-light); display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 160px; }
+    .pc-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .pc-preview-placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint); letter-spacing: 0.08em; text-align: center; padding: 16px; }
+
+    /* Panel */
+    .panel-scrim { position: fixed; inset: 0; z-index: 300; background: rgba(26,58,42,0); pointer-events: none; transition: background 0.4s ease; }
+    .panel-scrim.open { background: rgba(26,58,42,0.18); pointer-events: all; }
+    .panel {
+      position: fixed; top: 0; right: -640px; bottom: 0;
+      width: min(600px, 90vw); background: var(--white);
+      border-left: 0.5px solid var(--border); z-index: 301;
+      display: flex; flex-direction: column;
+      transition: right 0.52s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
     }
+    .panel.open { right: 0; }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 28px 36px 20px; border-bottom: 0.5px solid var(--border-light); flex-shrink: 0; }
+    .panel-back { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.09em; cursor: pointer; background: none; border: none; display: flex; align-items: center; gap: 8px; transition: color 0.2s; padding: 0; }
+    .panel-back:hover { color: var(--green-deep); }
+    .panel-close-x { font-size: 20px; color: var(--ink-faint); cursor: pointer; background: none; border: none; line-height: 1; transition: color 0.2s; }
+    .panel-close-x:hover { color: var(--green-deep); }
+    .panel-scroll { flex: 1; overflow-y: auto; padding: 32px 36px 40px; }
+    .panel-num { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.08em; margin-bottom: 8px; }
+    .panel-title { font-family: var(--font-serif); font-size: 30px; color: var(--green-deep); font-weight: 500; line-height: 1.1; margin-bottom: 12px; }
+    .panel-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .panel-media { margin-bottom: 28px; }
+    .panel-media-main { width: 100%; aspect-ratio: 16/9; background: var(--off-white); border-radius: 8px; border: 0.5px solid var(--border-light); overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+    .panel-media-main img, .panel-media-main video { width: 100%; height: 100%; object-fit: cover; }
+    .panel-media-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.08em; text-align: center; }
+    .panel-media-thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .panel-thumb { width: 64px; height: 44px; border-radius: 5px; background: var(--off-white); border: 0.5px solid var(--border-light); cursor: pointer; overflow: hidden; flex-shrink: 0; transition: border-color 0.15s; }
+    .panel-thumb:hover, .panel-thumb.active { border-color: var(--green-mid); }
+    .panel-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .panel-section-label { font-family: var(--font-mono); font-size: 9px; color: var(--green-soft); letter-spacing: 0.14em; margin-bottom: 10px; margin-top: 24px; }
+    .panel-desc { font-size: 14px; color: var(--ink-muted); line-height: 1.85; }
+    .panel-desc p + p { margin-top: 14px; }
+    .panel-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .panel-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .panel-link-btn { font-family: var(--font-mono); font-size: 10px; color: var(--green-deep); border: 0.5px solid var(--green-mid); padding: 10px 18px; border-radius: 5px; letter-spacing: 0.09em; transition: background 0.2s; cursor: pointer; display: inline-block; }
+    .panel-link-btn:hover { background: var(--green-light); }
+    .panel-nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 36px; border-top: 0.5px solid var(--border-light); flex-shrink: 0; }
+    .panel-nav-btn { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.08em; cursor: pointer; background: none; border: none; transition: color 0.2s; padding: 0; display: flex; align-items: center; gap: 6px; }
+    .panel-nav-btn:hover { color: var(--green-deep); }
+    .panel-nav-btn:disabled { opacity: 0.25; cursor: default; }
+    .panel-nav-indicator { font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint); letter-spacing: 0.08em; }
 
-    .proj-body { flex: 1; }
-
-    .proj-top {
-      display: flex;
-      align-items: baseline;
-      gap: 14px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .proj-title {
-      font-family: var(--font-serif);
-      font-size: 22px;
-      color: var(--green-deep);
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .proj-award {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: #854f0b;
-      background: #faeeda;
-      padding: 3px 10px;
-      border-radius: 20px;
-      letter-spacing: 0.06em;
-    }
-
-    .proj-tag {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--green-soft);
-      background: var(--green-light);
-      padding: 3px 10px;
-      border-radius: 20px;
-      letter-spacing: 0.06em;
-    }
-
-    .proj-desc {
-      font-size: 13px;
-      color: var(--ink-muted);
-      line-height: 1.8;
-      margin-bottom: 16px;
-      max-width: 560px;
-    }
-
-    .proj-stack {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .chip {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--ink-mid);
-      background: #eeecea;
-      padding: 3px 9px;
-      border-radius: 4px;
-      letter-spacing: 0.04em;
-    }
-
-    .proj-arrow {
-      font-size: 14px;
-      color: var(--ink-faint);
-      align-self: center;
-      transition: color 0.2s, transform 0.2s;
-      flex-shrink: 0;
-    }
-
-    /* ─── About ─────────────────────────────────────────── */
-    #about {
-      padding: 96px 80px;
-      border-bottom: 0.5px solid var(--border);
-      display: flex;
-      gap: 80px;
-      align-items: flex-start;
-    }
-
+    /* About */
+    #about { padding: 96px 80px; border-bottom: 0.5px solid var(--border); display: flex; gap: 80px; align-items: flex-start; }
     .about-left { flex: 1.4; }
-
-    .about-heading {
-      font-family: var(--font-serif);
-      font-size: clamp(32px, 3.5vw, 44px);
-      color: var(--green-deep);
-      font-weight: 500;
-      line-height: 1.15;
-      margin-bottom: 22px;
-    }
+    .about-heading { font-family: var(--font-serif); font-size: clamp(32px, 3.5vw, 44px); color: var(--green-deep); font-weight: 500; line-height: 1.15; margin-bottom: 22px; }
     .about-heading em { font-style: italic; color: var(--green-mid); }
-
-    .about-body {
-      font-size: 14px;
-      color: var(--ink-muted);
-      line-height: 1.9;
-      margin-bottom: 32px;
-    }
-
-    .about-values {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 28px;
-    }
-    .value-pill {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--green-deep);
-      background: var(--green-light);
-      padding: 6px 14px;
-      border-radius: 20px;
-      letter-spacing: 0.06em;
-    }
-
-    .about-links {
-      display: flex;
-      gap: 20px;
-    }
-    .about-links a {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink-muted);
-      letter-spacing: 0.07em;
-      transition: color 0.2s;
-    }
+    .about-body { font-size: 14px; color: var(--ink-muted); line-height: 1.9; margin-bottom: 24px; }
+    .about-values { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+    .value-pill { font-family: var(--font-mono); font-size: 9px; color: var(--green-deep); background: var(--green-light); padding: 6px 14px; border-radius: 20px; letter-spacing: 0.06em; }
+    .about-links { display: flex; gap: 20px; }
+    .about-links a { font-family: var(--font-mono); font-size: 10px; color: var(--ink-muted); letter-spacing: 0.07em; transition: color 0.2s; }
     .about-links a:hover { color: var(--green-deep); }
+    .about-right { flex: 0.85; display: flex; flex-direction: column; gap: 36px; padding-top: 8px; }
+    .stat { border-left: 2px solid var(--green-light); padding-left: 22px; }
+    .stat-num { font-family: var(--font-serif); font-size: 36px; color: var(--green-deep); font-weight: 500; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint); letter-spacing: 0.1em; }
 
-    .about-right {
-      flex: 0.85;
-      display: flex;
-      flex-direction: column;
-      gap: 36px;
-      padding-top: 8px;
-    }
+    /* Skills */
+    #skills { padding: 96px 80px; border-bottom: 0.5px solid var(--border); }
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .skill-group-label { font-family: var(--font-mono); font-size: 9px; color: var(--green-soft); letter-spacing: 0.14em; margin-bottom: 16px; }
+    .skill-list { display: flex; flex-direction: column; gap: 10px; }
+    .skill-item { font-size: 13px; color: var(--ink-mid); display: flex; align-items: center; gap: 10px; }
+    .skill-item::before { content: ''; width: 16px; height: 0.5px; background: var(--green-pale); flex-shrink: 0; }
 
-    .stat {
-      border-left: 2px solid var(--green-light);
-      padding-left: 22px;
-    }
-    .stat-num {
-      font-family: var(--font-serif);
-      font-size: 36px;
-      color: var(--green-deep);
-      font-weight: 500;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-    .stat-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--ink-faint);
-      letter-spacing: 0.1em;
-    }
-
-    /* ─── Skills ────────────────────────────────────────── */
-    #skills {
-      padding: 96px 80px;
-      border-bottom: 0.5px solid var(--border);
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-    }
-
-    .skill-group-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--green-soft);
-      letter-spacing: 0.14em;
-      margin-bottom: 16px;
-    }
-
-    .skill-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .skill-item {
-      font-size: 13px;
-      color: var(--ink-mid);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .skill-item::before {
-      content: '';
-      width: 16px;
-      height: 0.5px;
-      background: var(--green-pale);
-      flex-shrink: 0;
-    }
-
-    /* ─── Experience ────────────────────────────────────── */
-    #experience {
-      padding: 96px 80px;
-      border-bottom: 0.5px solid var(--border);
-    }
-
-    .exp-item {
-      display: flex;
-      gap: 40px;
-      padding: 36px 0;
-      border-bottom: 0.5px solid var(--border-light);
-    }
+    /* Experience */
+    #experience { padding: 96px 80px; border-bottom: 0.5px solid var(--border); }
+    .exp-item { display: flex; gap: 40px; padding: 36px 0; border-bottom: 0.5px solid var(--border-light); }
     .exp-item:last-child { border-bottom: none; }
-
-    .exp-date {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink-faint);
-      letter-spacing: 0.07em;
-      min-width: 80px;
-      padding-top: 4px;
-      line-height: 1.6;
-    }
-
+    .exp-date { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.07em; min-width: 80px; padding-top: 4px; line-height: 1.6; }
     .exp-body { flex: 1; }
+    .exp-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+    .exp-title { font-family: var(--font-serif); font-size: 18px; color: var(--green-deep); font-weight: 500; }
+    .exp-org { font-family: var(--font-mono); font-size: 10px; color: var(--green-soft); letter-spacing: 0.07em; }
+    .exp-desc { font-size: 13px; color: var(--ink-muted); line-height: 1.8; }
 
-    .exp-top {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 6px;
-      flex-wrap: wrap;
-    }
-
-    .exp-title {
-      font-family: var(--font-serif);
-      font-size: 18px;
-      color: var(--green-deep);
-      font-weight: 500;
-    }
-
-    .exp-org {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--green-soft);
-      letter-spacing: 0.07em;
-    }
-
-    .exp-desc {
-      font-size: 13px;
-      color: var(--ink-muted);
-      line-height: 1.8;
-    }
-
-    /* ─── Education ─────────────────────────────────────── */
-    #education {
-      padding: 96px 80px;
-      border-bottom: 0.5px solid var(--border);
-    }
-
-    .edu-card {
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-    }
-
+    /* Education */
+    #education { padding: 96px 80px; border-bottom: 0.5px solid var(--border); }
+    .edu-card { display: flex; gap: 40px; align-items: flex-start; }
     .edu-left { flex: 1; }
+    .edu-school { font-family: var(--font-serif); font-size: 26px; color: var(--green-deep); font-weight: 500; margin-bottom: 6px; }
+    .edu-degree { font-size: 14px; color: var(--ink-mid); margin-bottom: 4px; }
+    .edu-meta { font-family: var(--font-mono); font-size: 10px; color: var(--green-soft); letter-spacing: 0.09em; margin-bottom: 18px; }
+    .edu-courses { display: flex; gap: 6px; flex-wrap: wrap; }
+    .edu-right { flex: 0.8; display: flex; flex-direction: column; gap: 12px; }
+    .honor-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-muted); }
+    .honor-item::before { content: ''; width: 14px; height: 0.5px; background: var(--green-pale); flex-shrink: 0; }
 
-    .edu-school {
-      font-family: var(--font-serif);
-      font-size: 26px;
-      color: var(--green-deep);
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-
-    .edu-degree {
-      font-size: 14px;
-      color: var(--ink-mid);
-      margin-bottom: 4px;
-    }
-
-    .edu-meta {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--green-soft);
-      letter-spacing: 0.09em;
-      margin-bottom: 18px;
-    }
-
-    .edu-courses {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .edu-right {
-      flex: 0.8;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .honor-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      color: var(--ink-muted);
-    }
-    .honor-item::before {
-      content: '';
-      width: 14px;
-      height: 0.5px;
-      background: var(--green-pale);
-      flex-shrink: 0;
-    }
-
-    /* ─── Contact ───────────────────────────────────────── */
-    #contact {
-      padding: 96px 80px 120px;
-    }
-
-    .contact-inner {
-      max-width: 560px;
-    }
-
-    .contact-heading {
-      font-family: var(--font-serif);
-      font-size: clamp(32px, 3.5vw, 44px);
-      color: var(--green-deep);
-      font-weight: 500;
-      line-height: 1.15;
-      margin-bottom: 20px;
-    }
+    /* Contact */
+    #contact { padding: 96px 80px 120px; }
+    .contact-inner { max-width: 560px; }
+    .contact-heading { font-family: var(--font-serif); font-size: clamp(32px, 3.5vw, 44px); color: var(--green-deep); font-weight: 500; line-height: 1.15; margin-bottom: 20px; }
     .contact-heading em { font-style: italic; color: var(--green-mid); }
-
-    .contact-sub {
-      font-size: 14px;
-      color: var(--ink-muted);
-      line-height: 1.85;
-      margin-bottom: 44px;
-    }
-
-    .contact-links {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--ink-mid);
-      letter-spacing: 0.07em;
-      transition: color 0.2s;
-    }
+    .contact-sub { font-size: 14px; color: var(--ink-muted); line-height: 1.85; margin-bottom: 44px; }
+    .contact-links { display: flex; flex-direction: column; gap: 16px; }
+    .contact-link { display: flex; align-items: center; gap: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-mid); letter-spacing: 0.07em; transition: color 0.2s; }
     .contact-link:hover { color: var(--green-mid); }
     .contact-link:hover .cl-arrow { transform: translateX(4px); }
+    .cl-label { font-size: 9px; color: var(--ink-faint); letter-spacing: 0.12em; min-width: 60px; }
+    .cl-rule { width: 20px; height: 0.5px; background: var(--border); flex-shrink: 0; }
+    .cl-arrow { margin-left: auto; color: var(--ink-faint); transition: transform 0.2s, color 0.2s; }
+    .contact-footer { margin-top: 72px; padding-top: 28px; border-top: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .footer-name { font-family: var(--font-serif); font-size: 13px; color: var(--ink-faint); font-style: italic; }
+    .footer-copy { font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint); letter-spacing: 0.09em; }
 
-    .cl-label {
-      font-size: 9px;
-      color: var(--ink-faint);
-      letter-spacing: 0.12em;
-      min-width: 60px;
-    }
-    .cl-rule {
-      width: 20px;
-      height: 0.5px;
-      background: var(--border);
-      flex-shrink: 0;
-    }
-    .cl-arrow {
-      margin-left: auto;
-      color: var(--ink-faint);
-      transition: transform 0.2s, color 0.2s;
-    }
-
-    .contact-footer {
-      margin-top: 72px;
-      padding-top: 28px;
-      border-top: 0.5px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .footer-name {
-      font-family: var(--font-serif);
-      font-size: 13px;
-      color: var(--ink-faint);
-      font-style: italic;
-    }
-
-    .footer-copy {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--ink-faint);
-      letter-spacing: 0.09em;
-    }
-
-    /* ─── Responsive ────────────────────────────────────── */
+    /* Responsive */
     @media (max-width: 900px) {
       .sidebar { display: none; }
       .mobile-nav-toggle { display: inline-flex; align-items: center; }
       body.mobile-menu-open .mobile-menu-backdrop { display: block; }
-      .section, #hero, #building, #projects, #about, #skills, #experience, #education, #contact {
-        padding-left: 32px;
-        padding-right: 32px;
-      }
+      #hero,#building,#projects,#about,#skills,#experience,#education,#contact { padding-left: 28px; padding-right: 28px; }
+      .hero-photo { display: none; }
       #about { flex-direction: column; gap: 48px; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
       .edu-card { flex-direction: column; }
       .building-card { flex-direction: column; gap: 24px; }
       .building-right { text-align: left; }
+      .project-card { grid-template-columns: 1fr; }
+      .pc-preview { min-height: 130px; border-left: none; border-top: 0.5px solid var(--border-light); }
     }
-
     @media (max-width: 600px) {
-      .skills-grid { grid-template-columns: 1fr; }
       .hero-statement { font-size: 36px; }
-      .byline-name { font-size: 13px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .panel { width: 100vw; }
     }
   </style>
 </head>
 <body>
 
-  <button
-    class="mobile-nav-toggle"
-    id="mobileNavToggle"
-    type="button"
-    aria-controls="mobileMenu"
-    aria-label="menu"
-    aria-expanded="false"
-  >☰</button>
+<button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-controls="mobileMenu" aria-label="menu" aria-expanded="false">☰</button>
+<button class="mobile-menu-backdrop" id="mobileMenuBackdrop" type="button" aria-hidden="true" hidden></button>
+<nav class="mobile-menu" id="mobileMenu" hidden>
+  <a href="#hero">home</a><a href="#projects">projects</a><a href="#about">about</a>
+  <a href="#skills">skills</a><a href="#experience">experience</a><a href="#contact">contact</a>
+  <a href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener noreferrer">résumé ↗</a>
+  <div class="mobile-menu-meta">
+    <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer">github ↗</a>
+    <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
+  </div>
+</nav>
 
-  <button
-    class="mobile-menu-backdrop"
-    id="mobileMenuBackdrop"
-    type="button"
-    aria-hidden="true"
-    hidden
-  ></button>
-
-  <nav class="mobile-menu" id="mobileMenu" hidden>
-    <a href="#hero">home</a>
-    <a href="#projects">projects</a>
-    <a href="#about">about</a>
-    <a href="#skills">skills</a>
-    <a href="#experience">experience</a>
-    <a href="#contact">contact</a>
-    <a href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener noreferrer">résumé ↗</a>
-    <div class="mobile-menu-meta" aria-label="external links">
-      <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer">github ↗</a>
-      <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
+<!-- Panel -->
+<div class="panel-scrim" id="panelScrim"></div>
+<div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Project details">
+  <div class="panel-header">
+    <button class="panel-back" id="panelBack">← all projects</button>
+    <button class="panel-close-x" id="panelCloseX" aria-label="Close">×</button>
+  </div>
+  <div class="panel-scroll" id="panelScroll">
+    <div class="panel-num" id="pNum"></div>
+    <div class="panel-title" id="pTitle"></div>
+    <div class="panel-tags" id="pTags"></div>
+    <div class="panel-media">
+      <div class="panel-media-main" id="pMediaMain"></div>
+      <div class="panel-media-thumbs" id="pThumbs"></div>
     </div>
-  </nav>
+    <div class="panel-section-label">// about this project</div>
+    <div class="panel-desc" id="pDesc"></div>
+    <div class="panel-section-label">// tech stack</div>
+    <div class="panel-chips" id="pChips"></div>
+    <div class="panel-links" id="pLinks"></div>
+  </div>
+  <div class="panel-nav">
+    <button class="panel-nav-btn" id="panelPrev">← prev</button>
+    <span class="panel-nav-indicator" id="panelNavInd"></span>
+    <button class="panel-nav-btn" id="panelNext">next →</button>
+  </div>
+</div>
 
-  <div class="layout">
-
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-      <!-- CM Monogram SVG -->
-      <div class="sidebar-logo">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="18" stroke="#2d6644" stroke-width="1.2"/>
-          <path d="M10 28 L16 14 L20 22 L24 14 L30 28" stroke="#2d6644" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          <path d="M8 20 A12 12 0 0 1 20 8" stroke="#2d6644" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-        </svg>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" stroke="#2d6644" stroke-width="1.2"/>
+        <path d="M10 28 L16 14 L20 22 L24 14 L30 28" stroke="#2d6644" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M8 20 A12 12 0 0 1 20 8" stroke="#2d6644" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <div class="sidebar-name">Connor McKelvey</div>
+    <div class="sidebar-role">ece · robotics · ut austin</div>
+    <nav class="sidebar-nav">
+      <a href="#hero" class="active"><span class="nav-dot"></span>home</a>
+      <a href="#projects"><span class="nav-dot"></span>projects</a>
+      <a href="#about"><span class="nav-dot"></span>about</a>
+      <a href="#skills"><span class="nav-dot"></span>skills</a>
+      <a href="#experience"><span class="nav-dot"></span>experience</a>
+      <a href="#contact"><span class="nav-dot"></span>contact</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-links">
+        <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer">github ↗</a>
+        <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
       </div>
-      <div class="sidebar-name">Connor McKelvey</div>
-      <div class="sidebar-role">ece · robotics · ut austin</div>
-      <nav class="sidebar-nav">
-        <a href="#hero" class="active"><span class="nav-dot"></span>home</a>
-        <a href="#projects"><span class="nav-dot"></span>projects</a>
-        <a href="#about"><span class="nav-dot"></span>about</a>
-        <a href="#skills"><span class="nav-dot"></span>skills</a>
-        <a href="#experience"><span class="nav-dot"></span>experience</a>
-        <a href="#contact"><span class="nav-dot"></span>contact</a>
-      </nav>
-      <div class="sidebar-bottom">
-        <div class="sidebar-links">
+      <a href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-btn">résumé ↗</a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section id="hero">
+      <svg class="hero-topo" viewBox="0 0 480 480">
+        <ellipse cx="340" cy="380" rx="220" ry="80" class="topo-path"/>
+        <ellipse cx="340" cy="380" rx="185" ry="64" class="topo-path"/>
+        <ellipse cx="340" cy="380" rx="148" ry="50" class="topo-path"/>
+        <ellipse cx="340" cy="380" rx="112" ry="37" class="topo-path"/>
+        <ellipse cx="340" cy="380" rx="76" ry="25" class="topo-path"/>
+        <ellipse cx="340" cy="380" rx="42" ry="14" class="topo-path"/>
+        <ellipse cx="340" cy="380" rx="220" ry="100" class="topo-path"/>
+        <ellipse cx="340" cy="380" rx="220" ry="122" class="topo-path"/>
+        <ellipse cx="340" cy="380" rx="218" ry="146" class="topo-path"/>
+        <ellipse cx="340" cy="380" rx="214" ry="170" class="topo-path"/>
+      </svg>
+      <img src="images/IMG_0073-Photoroom.png" alt="Connor McKelvey" class="hero-photo" />
+      <div class="hero-eyebrow"><span class="eyebrow-line"></span>ECE · Honors Robotics · UT Austin</div>
+      <h1 class="hero-statement"><em>Leading</em> and executing<br>technology that matters.</h1>
+      <div class="hero-byline">
+        <span class="byline-name">Connor McKelvey</span>
+        <span class="byline-rule"></span>
+        <span class="byline-disc">robotics · firmware · hardware</span>
+      </div>
+      <p class="hero-sub">I'm Connor — an Eagle Scout in the Honors Robotics Program at UT Austin, passionate about leading impactful technology through firmware and hardware development.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">explore projects →</a>
+        <a href="#about" class="btn-ghost">about me ↓</a>
+      </div>
+    </section>
+
+    <section id="building">
+      <div class="sec-header reveal"><span class="sec-label">// currently building</span><span class="sec-rule"></span></div>
+      <div class="building-card reveal reveal-delay-1">
+        <div style="flex:1;">
+          <div class="building-pulse"><span class="pulse-dot"></span>active research</div>
+          <h2 class="building-title">Vibrotactile Band<br><em>Teaching Large Motor Skills</em></h2>
+          <p class="building-desc">A low-cost wearable armband that uses targeted vibrational feedback to help users learn large motor skills. Built for the HERO Lab at Texas Robotics. Designed to make haptic-assisted learning accessible outside the lab using modular hardware customized through computer vision software.</p>
+          <div class="building-meta">
+            <span class="meta-item">Texas Robotics HERO Lab</span>
+            <span class="meta-item">haptics · embedded · wearable</span>
+            <span class="meta-item">UT Austin, 2025–present</span>
+          </div>
+        </div>
+        <div class="building-right">
+          <div class="building-org">HERO Lab</div>
+          <div class="building-tag">research</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="sec-header reveal"><span class="sec-label">// selected projects</span><span class="sec-rule"></span><span class="sec-count">05</span></div>
+
+      <div class="project-card reveal reveal-delay-1" data-project="0">
+        <div class="pc-body">
+          <div class="pc-top"><span class="pc-num">01</span><span class="pc-title">Haplink™</span><span class="pc-tag">robotics research</span></div>
+          <p class="pc-brief">Firmware and Python library for robust haptic serial communication. Adopted by 30 researchers at UT Austin's HERO Lab — 100% error detection at 100Hz.</p>
+          <div class="pc-stack"><span class="chip">C++</span><span class="chip">Python</span><span class="chip">Arduino</span><span class="chip">Haptics</span></div>
+          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
+        </div>
+        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-1" data-project="1">
+        <div class="pc-body">
+          <div class="pc-top"><span class="pc-num">02</span><span class="pc-title">SkyLore™</span><span class="pc-tag">hackathon</span><span class="pc-award">🏆 1st · $1,000 · HackTX 2025</span></div>
+          <p class="pc-brief">Crowdsourced astronomy and light pollution mapping app. Won 1st place out of 5,000 participants at HackTX 2025 with AR, ML, and a live pollution database.</p>
+          <div class="pc-stack"><span class="chip">Python</span><span class="chip">ML</span><span class="chip">AR</span><span class="chip">Mobile</span></div>
+          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
+        </div>
+        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2" data-project="2">
+        <div class="pc-body">
+          <div class="pc-top"><span class="pc-num">03</span><span class="pc-title">Drawing Robot Arm</span><span class="pc-tag">robotics · research</span></div>
+          <p class="pc-brief">Two-jointed arm that draws images using inverse kinematics. Built as a research instrument for an academic study on AI creativity bias at UT Austin.</p>
+          <div class="pc-stack"><span class="chip">Python</span><span class="chip">Inverse Kinematics</span><span class="chip">Serial Comms</span></div>
+          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
+        </div>
+        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2" data-project="3">
+        <div class="pc-body">
+          <div class="pc-top"><span class="pc-num">04</span><span class="pc-title">Fireball Dice Roller</span><span class="pc-tag">software</span></div>
+          <p class="pc-brief">Verified Discord bot with 10,000+ users across 150 servers. Built to keep tabletop gaming communities rolling during the pandemic.</p>
+          <div class="pc-stack"><span class="chip">Python</span><span class="chip">Discord API</span><span class="chip">Algorithms</span></div>
+          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
+        </div>
+        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-3" data-project="4">
+        <div class="pc-body">
+          <div class="pc-top"><span class="pc-num">05</span><span class="pc-title">Circuit Board Logic Simulator</span><span class="pc-tag">education · software</span></div>
+          <p class="pc-brief">Drag-and-drop digital logic gate simulator in Godot. Interactive circuit design tool built to make Boolean algebra tangible for students.</p>
+          <div class="pc-stack"><span class="chip">GDScript</span><span class="chip">Godot</span><span class="chip">Digital Logic</span></div>
+          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
+        </div>
+        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="about-left">
+        <div class="sec-header reveal" style="margin-bottom:40px;"><span class="sec-label">// about</span><span class="sec-rule"></span></div>
+        <h2 class="about-heading reveal">Engineer by trade,<br><em>systems builder</em> by nature.</h2>
+        <p class="about-body reveal reveal-delay-1">I'm a first-year ECE student in the Honors Robotics Program at UT Austin, focused on embedded systems, robotics, and autonomy. I care deeply about two things: <em>leading</em> and <em>executing</em> — turning ambitious ideas into working systems that ship.</p>
+        <p class="about-body reveal reveal-delay-2">I like working end-to-end: defining the problem, prototyping quickly, writing the firmware and software, then testing and iterating until it's reliable. A lot of my approach to building (and team leadership) comes from years of service and responsibility as an Eagle Scout.</p>
+        <div class="about-values reveal reveal-delay-3">
+          <span class="value-pill">leading</span><span class="value-pill">executing</span><span class="value-pill">embedded systems</span>
+          <span class="value-pill">robotics</span><span class="value-pill">reliability</span><span class="value-pill">human impact</span><span class="value-pill">Eagle Scout</span>
+        </div>
+        <div class="about-links reveal reveal-delay-4">
           <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer">github ↗</a>
           <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
+          <a href="mailto:connormckelvey@utexas.edu">email ↗</a>
         </div>
-        <a href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-btn">résumé ↗</a>
       </div>
-    </aside>
+      <div class="about-right">
+        <div class="stat reveal"><div class="stat-num">10k+</div><div class="stat-label">users on shipped software</div></div>
+        <div class="stat reveal reveal-delay-1"><div class="stat-num">30+</div><div class="stat-label">researchers using Haplink</div></div>
+        <div class="stat reveal reveal-delay-2"><div class="stat-num">1st</div><div class="stat-label">HackTX 2025 · 5,000 participants</div></div>
+        <div class="stat reveal reveal-delay-3"><div class="stat-num">UT</div><div class="stat-label">Honors Robotics · ECE</div></div>
+      </div>
+    </section>
 
-    <!-- Main -->
-    <main class="main">
+    <section id="skills">
+      <div class="sec-header reveal"><span class="sec-label">// skills & tools</span><span class="sec-rule"></span></div>
+      <div class="skills-grid">
+        <div class="reveal"><div class="skill-group-label">languages</div><div class="skill-list"><span class="skill-item">Python</span><span class="skill-item">C / C++</span><span class="skill-item">Java</span><span class="skill-item">GDScript</span></div></div>
+        <div class="reveal reveal-delay-1"><div class="skill-group-label">hardware & embedded</div><div class="skill-list"><span class="skill-item">Arduino</span><span class="skill-item">STM32 Microcontrollers</span><span class="skill-item">Circuit Design</span><span class="skill-item">Soldering</span></div></div>
+        <div class="reveal reveal-delay-2"><div class="skill-group-label">robotics & systems</div><div class="skill-list"><span class="skill-item">Haptics / Vibrotactile</span><span class="skill-item">Serial Communication</span><span class="skill-item">Inverse Kinematics</span><span class="skill-item">ROS (learning)</span></div></div>
+        <div class="reveal reveal-delay-1"><div class="skill-group-label">software & tools</div><div class="skill-list"><span class="skill-item">Git / GitHub</span><span class="skill-item">Discord API</span><span class="skill-item">Godot Engine</span><span class="skill-item">Linux</span></div></div>
+        <div class="reveal reveal-delay-2"><div class="skill-group-label">leadership</div><div class="skill-list"><span class="skill-item">Team leadership</span><span class="skill-item">Public speaking</span><span class="skill-item">Mentorship</span><span class="skill-item">Event planning</span></div></div>
+        <div class="reveal reveal-delay-3"><div class="skill-group-label">currently learning</div><div class="skill-list"><span class="skill-item">Embedded Systems (EE)</span><span class="skill-item">Multivariable Calculus</span><span class="skill-item">PCB Design</span><span class="skill-item">FPGA</span></div></div>
+      </div>
+    </section>
 
-      <!-- ── Hero ── -->
-      <section id="hero">
-        <svg class="hero-topo" viewBox="0 0 480 480">
-          <ellipse cx="340" cy="380" rx="220" ry="80" class="topo-path"/>
-          <ellipse cx="340" cy="380" rx="185" ry="64" class="topo-path"/>
-          <ellipse cx="340" cy="380" rx="148" ry="50" class="topo-path"/>
-          <ellipse cx="340" cy="380" rx="112" ry="37" class="topo-path"/>
-          <ellipse cx="340" cy="380" rx="76" ry="25" class="topo-path"/>
-          <ellipse cx="340" cy="380" rx="42" ry="14" class="topo-path"/>
-          <ellipse cx="340" cy="380" rx="220" ry="100" class="topo-path"/>
-          <ellipse cx="340" cy="380" rx="220" ry="122" class="topo-path"/>
-          <ellipse cx="340" cy="380" rx="218" ry="146" class="topo-path"/>
-          <ellipse cx="340" cy="380" rx="214" ry="170" class="topo-path"/>
-        </svg>
+    <section id="experience">
+      <div class="sec-header reveal"><span class="sec-label">// experience</span><span class="sec-rule"></span></div>
+      <div class="exp-item reveal"><div class="exp-date">2025<br>present</div><div class="exp-body"><div class="exp-top"><span class="exp-title">Research Assistant</span><span class="exp-org">HERO Lab · Texas Robotics, UT Austin</span></div><p class="exp-desc">Building the Haplink communication framework for haptic devices and developing a vibrotactile armband for motor skill learning. Haplink adopted by 30 researchers — 100% error detection, 13-byte packets at 100Hz.</p></div></div>
+      <div class="exp-item reveal reveal-delay-1"><div class="exp-date">2025<br>present</div><div class="exp-body"><div class="exp-top"><span class="exp-title">IEEE Assistant Officer</span><span class="exp-org">External Activities & Events · UT Austin</span></div><p class="exp-desc">Created a long-term project program to develop hardware for IT Bridge, a nonprofit teaching underprivileged youth about electrical engineering careers. Planned and executed events for the full chapter.</p></div></div>
+      <div class="exp-item reveal reveal-delay-2"><div class="exp-date">2023<br>2025</div><div class="exp-body"><div class="exp-top"><span class="exp-title">Founder & Software Developer</span><span class="exp-org">Krazy Studios</span></div><p class="exp-desc">Established a studio of programmers, artists, and writers to develop and publish Discord bots and games. Grew Fireball Dice Roller to 10,000+ users across 150 servers. Delivered private bots for clients and built community on social media.</p></div></div>
+      <div class="exp-item reveal reveal-delay-3"><div class="exp-date">2024<br>2025</div><div class="exp-body"><div class="exp-top"><span class="exp-title">NYLT Senior Patrol Leader</span><span class="exp-org">Boy Scouts of America · Houston Area</span></div><p class="exp-desc">Selected as 1 of 4 youth in the Houston area for the highest youth role in Scouting's premier leadership program. Led a 25-person staff to deliver a week-long leadership intensive for 60 handpicked participants.</p></div></div>
+    </section>
 
-        <div class="hero-eyebrow">
-          <span class="eyebrow-line"></span>
-          ECE · Honors Robotics · UT Austin
+    <section id="education">
+      <div class="sec-header reveal"><span class="sec-label">// education</span><span class="sec-rule"></span></div>
+      <div class="edu-card">
+        <div class="edu-left reveal"><div class="edu-school">University of Texas at Austin</div><div class="edu-degree">B.S. Electrical and Computer Engineering</div><div class="edu-meta">Computer Architecture Track · Robotics Minor · Expected 2029</div><div class="edu-courses"><span class="chip">Differential Equations</span><span class="chip">Electrical Engineering</span><span class="chip">Embedded Systems</span></div></div>
+        <div class="edu-right reveal reveal-delay-1"><div class="honor-item">Eagle Scout — Boy Scouts of America</div><div class="honor-item">AP Scholar with Distinction</div><div class="honor-item">Varsity Soccer Captain & Defensive MVP ×2</div><div class="honor-item">HPE CodeWars — Advanced Division</div><div class="honor-item">Robotics Academy — 3rd of 50 teams, UT Austin</div></div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="contact-inner">
+        <div class="sec-header reveal" style="margin-bottom:40px;"><span class="sec-label">// contact</span><span class="sec-rule"></span></div>
+        <h2 class="contact-heading reveal">Let's build something<br><em>that matters.</em></h2>
+        <p class="contact-sub reveal reveal-delay-1">I'm always open to research collaborations, internship opportunities, and interesting projects. If you're working on something at the intersection of hardware, software, and human impact — reach out.</p>
+        <div class="contact-links reveal reveal-delay-2">
+          <a href="mailto:connormckelvey@utexas.edu" class="contact-link"><span class="cl-label">email</span><span class="cl-rule"></span>connormckelvey@utexas.edu<span class="cl-arrow">→</span></a>
+          <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer" class="contact-link"><span class="cl-label">github</span><span class="cl-rule"></span>connormmckelvey<span class="cl-arrow">→</span></a>
+          <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer" class="contact-link"><span class="cl-label">linkedin</span><span class="cl-rule"></span>connor-mckelvey<span class="cl-arrow">→</span></a>
         </div>
+      </div>
+      <div class="contact-footer reveal"><span class="footer-name">Connor McKelvey</span><span class="footer-copy">© 2026 · Austin, TX</span></div>
+    </section>
 
-        <h1 class="hero-statement">
-          <em>Leading</em> and executing<br>technology that matters.
-        </h1>
+  </main>
+</div>
 
-        <div class="hero-byline">
-          <span class="byline-name">Connor McKelvey</span>
-          <span class="byline-rule"></span>
-          <span class="byline-disc">hardware · firmware · autonomy</span>
-        </div>
+<script>
+// ── Project data ──────────────────────────────────────────────────────────
+// Project media lives under:
+// - images/projects/<slug>/... for images
+// - videos/projects/<slug>/... for videos
+// To add photos: drop files into the folder above and add JUST the filenames to `media`.
+// To add a video demo: add `video: 'demo.mp4'` (filename only) and drop it into videos/projects/<slug>/.
+// To link GitHub: add `github: 'https://...'`. Live demo: `demo: 'https://...'`.
+const PROJECTS = [
+  {
+    num:'01', title:'Haplink™',
+    slug:'haplink',
+    tags:['robotics research'],
+    desc:`Firmware and Python library for robust serial communication between haptic devices and robotic applications, built at the HERO Lab at Texas Robotics, UT Austin.
 
-        <p class="hero-sub">
-          I build systems at the intersection of hardware and human impact — from embedded firmware to robotic autonomy. Based in Austin, TX.
-        </p>
+The library solves two critical problems: data corruption over serial connections and the need to reflash firmware every time a parameter changed. Haplink implements a communication protocol that allows parameter updates without reflashing, with full data validation. Reduced packet size to 13 bytes with 100% error detection at a 100Hz control loop.
 
-        <div class="hero-actions">
-          <a href="#projects" class="btn-primary">explore projects →</a>
-          <a href="#about" class="btn-ghost">about me ↓</a>
-        </div>
-      </section>
+Adopted by a class of 30 researchers, enabling them to build and tune haptic environments using off-board computation and visualization.`,
+    stack:['C++','Python','Arduino','Serial Comms','Haptics','Firmware'],
+    github:'https://github.com/connormmckelvey/Haplink',
+    media:[] // e.g. ['cover.jpg','wiring.jpg']
+  },
+  {
+    num:'02', title:'SkyLore™',
+    slug:'skylore',
+    tags:['hackathon','🏆 1st place · $1,000 · HackTX 2025'],
+    desc:`Won 1st place and $1,000 in the "best celestial" category out of 5,000 participants at HackTX 2025 at UT Austin.
 
-      <!-- ── Currently Building ── -->
-      <section id="building">
-        <div class="sec-header reveal">
-          <span class="sec-label">// currently building</span>
-          <span class="sec-rule"></span>
-        </div>
-        <div class="building-card reveal reveal-delay-1">
-          <div style="flex:1;">
-            <div class="building-pulse">
-              <span class="pulse-dot"></span>
-              active research
-            </div>
-            <h2 class="building-title">Vibrotactile Motor<br><em>Skill Learning Armband</em></h2>
-            <p class="building-desc">
-              A low-cost wearable armband that uses targeted vibrational feedback to help users learn large motor skills. Built for the HERO Lab at Texas Robotics — designed to make haptic-assisted learning accessible outside the lab.
-            </p>
-            <div class="building-meta">
-              <span class="meta-item">Texas Robotics HERO Lab</span>
-              <span class="meta-item">haptics · embedded · wearable</span>
-              <span class="meta-item">UT Austin, 2025–present</span>
-            </div>
-          </div>
-          <div class="building-right">
-            <div class="building-org">HERO Lab</div>
-            <div class="building-tag">research</div>
-          </div>
-        </div>
-      </section>
+Rather than building a simple star-gazing app, we identified a breakthrough: leveraging crowdsourced user data to build a living light pollution database to help city planners, researchers, and architects. The app features augmented reality constellation overlays, a machine learning pipeline for constellation recognition, a web dashboard for data visualization, and a database architecture that improves with every user.
 
-      <!-- ── Projects ── -->
-      <section id="projects">
-        <div class="sec-header reveal">
-          <span class="sec-label">// selected projects</span>
-          <span class="sec-rule"></span>
-          <span class="sec-count">05</span>
-        </div>
+Built in a single hackathon weekend by a small team under tight time pressure.`,
+    stack:['Python','Machine Learning','Augmented Reality','Full Stack','Mobile','Database'],
+    media:[]
+  },
+  {
+    num:'03', title:'Drawing Robot Arm',
+    slug:'drawing-robot-arm',
+    tags:['robotics','research'],
+    desc:`A two-jointed robotic arm that takes a digital image and draws it on paper using inverse kinematics. Built as a research instrument for Professor Dempster's "Being Creative" course at UT Austin.
 
-        <div class="project-item reveal reveal-delay-1">
-          <div class="proj-num">01</div>
-          <div class="proj-body">
-            <div class="proj-top">
-              <span class="proj-title">Haplink</span>
-              <span class="proj-tag">robotics research</span>
-            </div>
-            <p class="proj-desc">
-              Firmware and Python library for robust serial communication between haptic devices and robotic applications. Built at the HERO Lab — reduced packet size to 13 bytes with 100% error detection at a 100Hz control loop. Adopted by a class of 30 researchers.
-            </p>
-            <div class="proj-stack">
-              <span class="chip">C++</span><span class="chip">Python</span><span class="chip">Arduino</span><span class="chip">Serial Comms</span><span class="chip">Haptics</span>
-            </div>
-          </div>
-          <div class="proj-arrow">→</div>
-        </div>
+The arm was used to standardize AI-generated artwork stimuli for a study on human bias against AI creativity. Key technical challenges included implementing inverse kinematics for smooth joint control, image simplification to extract drawable line paths, and serial communication and data buffering between the control software and motor hardware.
 
-        <div class="project-item reveal reveal-delay-1">
-          <div class="proj-num">02</div>
-          <div class="proj-body">
-            <div class="proj-top">
-              <span class="proj-title">SkyLore</span>
-              <span class="proj-tag">hackathon</span>
-              <span class="proj-award">🏆 1st place · $1,000 · HackTX 2025</span>
-            </div>
-            <p class="proj-desc">
-              Crowdsourced astronomy and light pollution mapping app — won first place out of 5,000 participants at HackTX 2025. Built a full mobile app with augmented reality, a machine learning constellation recognition pipeline, web dashboard, and a living light pollution database to help city planners and researchers.
-            </p>
-            <div class="proj-stack">
-              <span class="chip">Python</span><span class="chip">ML</span><span class="chip">AR</span><span class="chip">Full Stack</span><span class="chip">Mobile</span>
-            </div>
-          </div>
-          <div class="proj-arrow">→</div>
-        </div>
+The project contributed to research exploring how people perceive and evaluate creativity in AI-generated versus human-generated artwork.`,
+    stack:['Python','Inverse Kinematics','Serial Communication','Image Processing','Robotics'],
+    github:'https://github.com/connormmckelvey/Being-Creative-Research-Project',
+    media:[]
+  },
+  {
+    num:'04', title:'Fireball Dice Roller',
+    slug:'fireball-dice-roller',
+    tags:['software'],
+    desc:`A verified Discord bot built to help tabletop role-playing game communities continue playing online during the COVID-19 pandemic. Grew to 10,000+ users across 150+ servers and is verified on the Discord platform.
 
-        <div class="project-item reveal reveal-delay-2">
-          <div class="proj-num">03</div>
-          <div class="proj-body">
-            <div class="proj-top">
-              <span class="proj-title">Drawing Robot Arm</span>
-              <span class="proj-tag">robotics · research</span>
-            </div>
-            <p class="proj-desc">
-              A two-jointed robotic arm that takes a digital image and draws it using inverse kinematics. Built as a research tool for a study on human bias against AI-generated artwork — standardized stimuli for a published academic project at UT Austin.
-            </p>
-            <div class="proj-stack">
-              <span class="chip">Python</span><span class="chip">Inverse Kinematics</span><span class="chip">Serial Comms</span><span class="chip">Image Processing</span>
-            </div>
-          </div>
-          <div class="proj-arrow">→</div>
-        </div>
+The bot features a customizable randomization engine that handles complex dice mechanics, modifiers, and multiple TTRPG systems (D&D, Pathfinder, and more). Built as founder of Krazy Studios alongside a team of developers and community managers.
 
-        <div class="project-item reveal reveal-delay-2">
-          <div class="proj-num">04</div>
-          <div class="proj-body">
-            <div class="proj-top">
-              <span class="proj-title">Fireball Dice Roller</span>
-              <span class="proj-tag">software</span>
-            </div>
-            <p class="proj-desc">
-              A verified Discord bot with 10,000+ users across 150 servers, built to support tabletop gaming communities during the pandemic. Features a customizable randomization engine handling complex dice mechanics across multiple TTRPG systems.
-            </p>
-            <div class="proj-stack">
-              <span class="chip">Python</span><span class="chip">Discord API</span><span class="chip">Algorithms</span>
-            </div>
-          </div>
-          <div class="proj-arrow">→</div>
-        </div>
+This was one of the first projects that showed me what it meant to ship software that real people depend on — and the responsibility that comes with that scale.`,
+    stack:['Python','Discord API','Algorithms','Randomization','Bot Architecture'],
+    media:[]
+  },
+  {
+    num:'05', title:'Circuit Board Logic Simulator',
+    slug:'logic-simulator',
+    tags:['education','software'],
+    desc:`A drag-and-drop graphical simulator for digital logic gate design, built in the Godot game engine. Allows users to place logic gates and circuit components on a grid to design and simulate electronic circuit logic.
 
-        <div class="project-item reveal reveal-delay-3">
-          <div class="proj-num">05</div>
-          <div class="proj-body">
-            <div class="proj-top">
-              <span class="proj-title">Circuit Board Logic Simulator</span>
-              <span class="proj-tag">education · software</span>
-            </div>
-            <p class="proj-desc">
-              A drag-and-drop graphical simulator for digital logic gate design, built in Godot. Implements Boolean algebra operators in an interactive grid interface to visualize circuit behavior — designed as a teaching tool for electronics education.
-            </p>
-            <div class="proj-stack">
-              <span class="chip">GDScript</span><span class="chip">Godot</span><span class="chip">Digital Logic</span>
-            </div>
-          </div>
-          <div class="proj-arrow">→</div>
-        </div>
+Implements Boolean algebra operators (AND, OR, NOT, XOR, NAND, NOR) in an interactive interface so students can visualize circuit behavior and logic flow in real time. Designed as a teaching tool to make digital electronics concepts more accessible and hands-on.
 
-      </section>
+This project grew out of my interest in making technical concepts tangible — the same instinct that drives a lot of my hardware work.`,
+    stack:['GDScript','Godot Engine','Digital Logic','Boolean Algebra','Education'],
+    media:[]
+  }
+];
 
-      <!-- ── About ── -->
-      <section id="about">
-        <div class="about-left">
-          <div class="sec-header reveal" style="margin-bottom:40px;">
-            <span class="sec-label">// about</span>
-            <span class="sec-rule"></span>
-          </div>
-          <h2 class="about-heading reveal">Engineer by trade,<br><em>systems builder</em> by nature.</h2>
-          <p class="about-body reveal reveal-delay-1">
-            I'm a first-year ECE student in the Honors Robotics Program at UT Austin, focused on embedded systems, robotics, and autonomy. I care deeply about two things: <em>leading</em> and <em>executing</em> — turning ambitious ideas into working systems that ship.
-          </p>
-          <p class="about-body reveal reveal-delay-2">
-            I like working end-to-end: defining the problem, prototyping quickly, writing the firmware and software, then testing and iterating until it's reliable. A lot of my approach to building (and team leadership) comes from years of service and responsibility as an Eagle Scout.
-          </p>
-          <div class="about-values reveal reveal-delay-3">
-            <span class="value-pill">leading</span>
-            <span class="value-pill">executing</span>
-            <span class="value-pill">embedded systems</span>
-            <span class="value-pill">robotics</span>
-            <span class="value-pill">reliability</span>
-            <span class="value-pill">human impact</span>
-            <span class="value-pill">Eagle Scout</span>
-          </div>
-          <div class="about-links reveal reveal-delay-4">
-            <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer">github ↗</a>
-            <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
-            <a href="mailto:connormckelvey@utexas.edu">email ↗</a>
-          </div>
-        </div>
-        <div class="about-right">
-          <div class="stat reveal">
-            <div class="stat-num">10k+</div>
-            <div class="stat-label">users on shipped software</div>
-          </div>
-          <div class="stat reveal reveal-delay-1">
-            <div class="stat-num">30+</div>
-            <div class="stat-label">researchers using Haplink</div>
-          </div>
-          <div class="stat reveal reveal-delay-2">
-            <div class="stat-num">1st</div>
-            <div class="stat-label">HackTX 2025 · 5,000 participants</div>
-          </div>
-          <div class="stat reveal reveal-delay-3">
-            <div class="stat-num">UT</div>
-            <div class="stat-label">Honors Robotics · ECE</div>
-          </div>
-        </div>
-      </section>
+function normalizeAssetPath(asset) {
+  return String(asset || '').replace(/\\/g, '/').trim();
+}
 
-      <!-- ── Skills ── -->
-      <section id="skills" class="section" style="border-bottom: 0.5px solid var(--border); padding-top:96px; padding-bottom:96px;">
-        <div class="sec-header reveal">
-          <span class="sec-label">// skills & tools</span>
-          <span class="sec-rule"></span>
-        </div>
-        <div class="skills-grid">
-          <div class="reveal">
-            <div class="skill-group-label">languages</div>
-            <div class="skill-list">
-              <span class="skill-item">Python</span>
-              <span class="skill-item">C / C++</span>
-              <span class="skill-item">Java</span>
-              <span class="skill-item">GDScript</span>
-            </div>
-          </div>
-          <div class="reveal reveal-delay-1">
-            <div class="skill-group-label">hardware & embedded</div>
-            <div class="skill-list">
-              <span class="skill-item">Arduino</span>
-              <span class="skill-item">STM32 Microcontrollers</span>
-              <span class="skill-item">Circuit Design</span>
-              <span class="skill-item">Soldering</span>
-            </div>
-          </div>
-          <div class="reveal reveal-delay-2">
-            <div class="skill-group-label">robotics & systems</div>
-            <div class="skill-list">
-              <span class="skill-item">Haptics / Vibrotactile</span>
-              <span class="skill-item">Serial Communication</span>
-              <span class="skill-item">Inverse Kinematics</span>
-              <span class="skill-item">ROS (learning)</span>
-            </div>
-          </div>
-          <div class="reveal reveal-delay-1">
-            <div class="skill-group-label">software & tools</div>
-            <div class="skill-list">
-              <span class="skill-item">Git / GitHub</span>
-              <span class="skill-item">Discord API</span>
-              <span class="skill-item">Godot Engine</span>
-              <span class="skill-item">Linux</span>
-            </div>
-          </div>
-          <div class="reveal reveal-delay-2">
-            <div class="skill-group-label">leadership</div>
-            <div class="skill-list">
-              <span class="skill-item">Team leadership</span>
-              <span class="skill-item">Public speaking</span>
-              <span class="skill-item">Mentorship</span>
-              <span class="skill-item">Event planning</span>
-            </div>
-          </div>
-          <div class="reveal reveal-delay-3">
-            <div class="skill-group-label">currently learning</div>
-            <div class="skill-list">
-              <span class="skill-item">Embedded Systems (EE)</span>
-              <span class="skill-item">Multivariable Calculus</span>
-              <span class="skill-item">PCB Design</span>
-              <span class="skill-item">FPGA</span>
-            </div>
-          </div>
-        </div>
-      </section>
+function resolveProjectAsset(project, asset, kind) {
+  const a = normalizeAssetPath(asset);
+  if (!a) return '';
 
-      <!-- ── Experience ── -->
-      <section id="experience" style="padding: 96px 80px; border-bottom: 0.5px solid var(--border);">
-        <div class="sec-header reveal">
-          <span class="sec-label">// experience</span>
-          <span class="sec-rule"></span>
-        </div>
+  // Leave full/explicit paths untouched.
+  if (a.includes('://') || a.startsWith('/') || a.includes('/')) return a;
 
-        <div class="exp-item reveal">
-          <div class="exp-date">2025<br>present</div>
-          <div class="exp-body">
-            <div class="exp-top">
-              <span class="exp-title">Research Assistant</span>
-              <span class="exp-org">HERO Lab · Texas Robotics, UT Austin</span>
-            </div>
-            <p class="exp-desc">Building the Haplink communication framework for haptic devices and developing a vibrotactile armband for motor skill learning. Haplink adopted by 30 researchers — 100% error detection, 13-byte packets at 100Hz.</p>
-          </div>
-        </div>
+  const slug = (project && project.slug) ? project.slug : '';
+  if (kind === 'video') return slug ? `videos/projects/${slug}/${a}` : `videos/${a}`;
+  return slug ? `images/projects/${slug}/${a}` : `images/${a}`;
+}
 
-        <div class="exp-item reveal reveal-delay-1">
-          <div class="exp-date">2025<br>present</div>
-          <div class="exp-body">
-            <div class="exp-top">
-              <span class="exp-title">IEEE Assistant Officer</span>
-              <span class="exp-org">External Activities & Events · UT Austin</span>
-            </div>
-            <p class="exp-desc">Created a long-term project program to develop hardware for IT Bridge, a nonprofit teaching underprivileged youth about electrical engineering careers. Planned and executed events for the full chapter.</p>
-          </div>
-        </div>
+// ── Panel ─────────────────────────────────────────────────────────────────
+const panel      = document.getElementById('panel');
+const panelScrim = document.getElementById('panelScrim');
+let activeIdx    = null;
 
-        <div class="exp-item reveal reveal-delay-2">
-          <div class="exp-date">2023<br>2025</div>
-          <div class="exp-body">
-            <div class="exp-top">
-              <span class="exp-title">Founder & Software Developer</span>
-              <span class="exp-org">Krazy Studios</span>
-            </div>
-            <p class="exp-desc">Established a studio of programmers, artists, and writers to develop and publish Discord bots and games. Grew Fireball Dice Roller to 10,000+ users across 150 servers. Delivered private bots for clients and built community on social media.</p>
-          </div>
-        </div>
+const placeholderSVG = `<div class="panel-media-placeholder">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>
+  <span>photos & demos coming soon</span>
+</div>`;
 
-        <div class="exp-item reveal reveal-delay-3">
-          <div class="exp-date">2024<br>2025</div>
-          <div class="exp-body">
-            <div class="exp-top">
-              <span class="exp-title">NYLT Senior Patrol Leader</span>
-              <span class="exp-org">Boy Scouts of America · Houston Area</span>
-            </div>
-            <p class="exp-desc">Selected as 1 of 4 youth in the Houston area for the highest youth role in Scouting's premier leadership program. Led and prepared a 25-person staff to deliver a week-long leadership intensive for 60 handpicked participants.</p>
-          </div>
-        </div>
+function tagHTML(t) {
+  return t.startsWith('🏆')
+    ? `<span class="pc-award">${t}</span>`
+    : `<span class="pc-tag">${t}</span>`;
+}
 
-      </section>
+function renderPanel(idx) {
+  const p = PROJECTS[idx];
+  activeIdx = idx;
 
-      <!-- ── Education ── -->
-      <section id="education" style="padding: 96px 80px; border-bottom: 0.5px solid var(--border);">
-        <div class="sec-header reveal">
-          <span class="sec-label">// education</span>
-          <span class="sec-rule"></span>
-        </div>
-        <div class="edu-card">
-          <div class="edu-left reveal">
-            <div class="edu-school">University of Texas at Austin</div>
-            <div class="edu-degree">B.S. Electrical and Computer Engineering</div>
-            <div class="edu-meta">Honors Robotics Program · Robotics Minor · Expected 2029</div>
-            <div class="edu-courses">
-              <span class="chip">Multivariable Calculus</span>
-              <span class="chip">Electrical Engineering</span>
-              <span class="chip">Embedded Systems</span>
-            </div>
-          </div>
-          <div class="edu-right reveal reveal-delay-1">
-            <div class="honor-item">Eagle Scout — Boy Scouts of America</div>
-            <div class="honor-item">AP Scholar with Distinction</div>
-            <div class="honor-item">Varsity Soccer Captain & Defensive MVP ×2</div>
-            <div class="honor-item">HPE CodeWars — Advanced Division</div>
-            <div class="honor-item">Robotics Academy — 3rd of 50 teams, UT Austin</div>
-          </div>
-        </div>
-      </section>
+  document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+  const card = document.querySelector(`.project-card[data-project="${idx}"]`);
+  if (card) card.classList.add('active');
 
-      <!-- ── Contact ── -->
-      <section id="contact" style="padding: 96px 80px 120px;">
-        <div class="contact-inner">
-          <div class="sec-header reveal" style="margin-bottom:40px;">
-            <span class="sec-label">// contact</span>
-            <span class="sec-rule"></span>
-          </div>
-          <h2 class="contact-heading reveal">Let's build something<br><em>that matters.</em></h2>
-          <p class="contact-sub reveal reveal-delay-1">
-            I'm always open to research collaborations, internship opportunities, and interesting projects. If you're working on something at the intersection of hardware, software, and human impact — reach out.
-          </p>
-          <div class="contact-links reveal reveal-delay-2">
-            <a href="mailto:connormckelvey@utexas.edu" class="contact-link">
-              <span class="cl-label">email</span>
-              <span class="cl-rule"></span>
-              connormckelvey@utexas.edu
-              <span class="cl-arrow">→</span>
-            </a>
-            <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer" class="contact-link">
-              <span class="cl-label">github</span>
-              <span class="cl-rule"></span>
-              connormmckelvey
-              <span class="cl-arrow">→</span>
-            </a>
-            <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer" class="contact-link">
-              <span class="cl-label">linkedin</span>
-              <span class="cl-rule"></span>
-              connor-mckelvey
-              <span class="cl-arrow">→</span>
-            </a>
-          </div>
-        </div>
+  document.getElementById('pNum').textContent   = p.num;
+  document.getElementById('pTitle').textContent = p.title;
+  document.getElementById('pTags').innerHTML    = p.tags.map(tagHTML).join('');
 
-        <div class="contact-footer reveal">
-          <span class="footer-name">Connor McKelvey</span>
-          <span class="footer-copy">© 2026 · Austin, TX</span>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <script>
-    const mobileNavToggle = document.getElementById('mobileNavToggle');
-    const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    const allNavLinks = document.querySelectorAll('.sidebar-nav a, .mobile-menu a');
-    const sections = document.querySelectorAll('section[id]');
-    const reveals = document.querySelectorAll('.reveal');
-
-    function setMobileMenuOpen(open) {
-      document.body.classList.toggle('mobile-menu-open', open);
-      mobileMenu.hidden = !open;
-      mobileMenuBackdrop.hidden = !open;
-      mobileNavToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  // Media
+  const main   = document.getElementById('pMediaMain');
+  const thumbs = document.getElementById('pThumbs');
+  if (p.video) {
+    const videoSrc = resolveProjectAsset(p, p.video, 'video');
+    if (!videoSrc) {
+      main.innerHTML = placeholderSVG;
+      thumbs.innerHTML = '';
+    } else {
+      main.innerHTML = `<video src="${videoSrc}" controls playsinline></video>`;
+      thumbs.innerHTML = '';
     }
-
-    mobileNavToggle.addEventListener('click', () => {
-      const isOpen = mobileNavToggle.getAttribute('aria-expanded') === 'true';
-      setMobileMenuOpen(!isOpen);
-    });
-
-    mobileMenuBackdrop.addEventListener('click', () => setMobileMenuOpen(false));
-
-    mobileMenu.addEventListener('click', (e) => {
-      const link = e.target.closest('a');
-      if (!link) return;
-      setMobileMenuOpen(false);
-    });
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') setMobileMenuOpen(false);
-    });
-
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 900) setMobileMenuOpen(false);
-    });
-
-    function updateActiveNav() {
-      const scrollY = window.scrollY;
-      let current = sections[0]?.id || '';
-      sections.forEach(sec => {
-        if (scrollY >= sec.offsetTop - 120) current = sec.id;
-      });
-      allNavLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-      });
+  } else if (p.media && p.media.length) {
+    const resolved = p.media.map(src => resolveProjectAsset(p, src, 'image')).filter(Boolean);
+    if (!resolved.length) {
+      main.innerHTML = placeholderSVG;
+      thumbs.innerHTML = '';
+    } else {
+      main.innerHTML   = `<img src="${resolved[0]}" alt="${p.title}">`;
+      thumbs.innerHTML = resolved.map((src,i)=>
+        `<div class="panel-thumb${i===0?' active':''}" onclick="switchThumb(this,'${src}')"><img src="${src}" alt=""></div>`
+      ).join('');
     }
+  } else {
+    main.innerHTML   = placeholderSVG;
+    thumbs.innerHTML = '';
+  }
 
-    window.addEventListener('scroll', updateActiveNav, { passive: true });
-    updateActiveNav();
+  // Description — convert double newlines to paragraphs
+  document.getElementById('pDesc').innerHTML =
+    '<p>' + p.desc.replace(/\n\n/g,'</p><p>') + '</p>';
 
-    // Scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
+  document.getElementById('pChips').innerHTML =
+    p.stack.map(s=>`<span class="chip">${s}</span>`).join('');
 
-    reveals.forEach(el => observer.observe(el));
-  </script>
+  const links = [];
+  if (p.github) links.push(`<a href="${p.github}" target="_blank" rel="noopener noreferrer" class="panel-link-btn">github ↗</a>`);
+  if (p.demo)   links.push(`<a href="${p.demo}"   target="_blank" rel="noopener noreferrer" class="panel-link-btn">live demo ↗</a>`);
+  document.getElementById('pLinks').innerHTML = links.join('');
+
+  document.getElementById('panelNavInd').textContent = `${idx+1} / ${PROJECTS.length}`;
+  document.getElementById('panelPrev').disabled = idx === 0;
+  document.getElementById('panelNext').disabled = idx === PROJECTS.length - 1;
+
+  document.getElementById('panelScroll').scrollTop = 0;
+
+  panel.classList.add('open');
+  panelScrim.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function switchThumb(el, src) {
+  document.getElementById('pMediaMain').innerHTML = `<img src="${src}" alt="">`;
+  document.querySelectorAll('.panel-thumb').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function closePanel() {
+  panel.classList.remove('open');
+  panelScrim.classList.remove('open');
+  document.body.style.overflow = '';
+  document.querySelectorAll('.project-card').forEach(c=>c.classList.remove('active'));
+  activeIdx = null;
+}
+
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const idx = parseInt(card.dataset.project);
+    if (activeIdx === idx) { closePanel(); return; }
+    renderPanel(idx);
+  });
+});
+
+document.getElementById('panelBack').addEventListener('click', closePanel);
+document.getElementById('panelCloseX').addEventListener('click', closePanel);
+panelScrim.addEventListener('click', closePanel);
+document.getElementById('panelPrev').addEventListener('click', () => { if (activeIdx > 0) renderPanel(activeIdx-1); });
+document.getElementById('panelNext').addEventListener('click', () => { if (activeIdx < PROJECTS.length-1) renderPanel(activeIdx+1); });
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closePanel(); return; }
+  if (!panel.classList.contains('open')) return;
+  if (e.key === 'ArrowLeft'  && activeIdx > 0)                   renderPanel(activeIdx-1);
+  if (e.key === 'ArrowRight' && activeIdx < PROJECTS.length - 1) renderPanel(activeIdx+1);
+});
+
+// ── Active nav highlight (sidebar + mobile menu) ─────────────────────────
+const allLinks = document.querySelectorAll('.sidebar-nav a, .mobile-menu a');
+const sections = document.querySelectorAll('section[id]');
+
+function updateNav() {
+  const sy = window.scrollY;
+  let cur = sections[0]?.id || '';
+  sections.forEach(s => { if (sy >= s.offsetTop - 120) cur = s.id; });
+  allLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+
+// ── Scroll reveal ─────────────────────────────────────────────────────────
+new IntersectionObserver((entries, obs) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 }).observe
+  // observe all at once
+; (() => {
+  const obs = new IntersectionObserver((entries, o) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); o.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// ── Mobile nav ────────────────────────────────────────────────────────────
+const toggle   = document.getElementById('mobileNavToggle');
+const backdrop = document.getElementById('mobileMenuBackdrop');
+const menu     = document.getElementById('mobileMenu');
+function setMenu(open) {
+  document.body.classList.toggle('mobile-menu-open', open);
+  menu.hidden     = !open;
+  backdrop.hidden = !open;
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+toggle.addEventListener('click',   () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+backdrop.addEventListener('click', () => setMenu(false));
+menu.addEventListener('click',     e  => { if (e.target.closest('a')) setMenu(false); });
+window.addEventListener('keydown', e  => { if (e.key === 'Escape') setMenu(false); });
+window.addEventListener('resize',  ()  => { if (window.innerWidth > 900) setMenu(false); });
+</script>
 </body>
 </html>
