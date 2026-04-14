@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connor McKelvey | Travel Map</title>
+  <meta name="description" content="An interactive travel map and trip log for Connor McKelvey." />
+  <meta property="og:title" content="Connor McKelvey | Travel Map" />
+  <meta property="og:description" content="An interactive travel map and trip log." />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="map.css" />
+</head>
+<body class="map-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="map-shell" id="top">
+    <nav class="map-nav" aria-label="Primary">
+      <a class="map-brand" href="../index.html">Connor McKelvey</a>
+      <div class="map-nav-links">
+        <a href="../index.html#projects">projects</a>
+        <a href="../index.html#about">about</a>
+        <a href="../blog.html">blog</a>
+        <a href="./" aria-current="page">map</a>
+        <a href="../connor-mckelvey-resume.pdf" target="_blank" rel="noopener noreferrer">resume</a>
+      </div>
+    </nav>
+
+    <header class="map-hero">
+      <svg class="map-topo" viewBox="0 0 1200 520" aria-hidden="true">
+        <path d="M20 410 C150 320, 280 500, 430 410 C560 332, 690 470, 830 392 C955 324, 1080 430, 1180 372" />
+        <path d="M40 360 C180 278, 310 438, 460 354 C604 272, 730 418, 872 336 C1002 264, 1110 346, 1188 304" />
+        <path d="M0 300 C130 226, 258 360, 398 284 C548 204, 682 332, 822 258 C962 184, 1092 258, 1200 212" />
+        <path d="M80 242 C226 170, 360 278, 496 214 C642 148, 770 238, 916 186 C1046 140, 1132 192, 1200 164" />
+        <path d="M36 186 C170 128, 296 212, 432 166 C568 120, 706 194, 838 152 C976 108, 1098 154, 1180 128" />
+      </svg>
+      <div class="map-hero-copy">
+        <p class="map-kicker">// travel log</p>
+        <h1>A map of places, trips,<br /><em>and the stories tied to them.</em></h1>
+        <p>This page is built to become your personal log of everywhere you have been. Click a pin or card to open the details, filter by year or search term, and replace the starter trips in <span>trips.json</span> with your own history.</p>
+      </div>
+      <aside class="map-hero-card" aria-label="How to update the map">
+        <h2>starter workflow</h2>
+        <ol>
+          <li>Add a trip entry in map/trips.json.</li>
+          <li>Set coordinates, dates, notes, and photos.</li>
+          <li>Refresh the page to see the new pin.</li>
+          <li>Use the cards and filters to review trips.</li>
+        </ol>
+      </aside>
+    </header>
+
+    <main class="map-main" id="main">
+      <section class="map-controls" aria-label="Trip filters">
+        <div class="map-controls-left">
+          <div>
+            <p class="map-controls-label">search</p>
+            <input class="map-search" type="search" placeholder="Search places, notes, tags" data-trip-search />
+          </div>
+          <div>
+            <p class="map-controls-label">years</p>
+            <div class="map-filters" data-year-filters></div>
+          </div>
+        </div>
+        <div class="map-controls-right">
+          <p class="map-status" data-map-status aria-live="polite"></p>
+          <button class="map-reset" type="button" data-reset-filters>clear filters</button>
+        </div>
+      </section>
+
+      <section class="map-board">
+        <div class="map-stage">
+          <div class="map-stage-head">
+            <div>
+              <p class="map-stage-label">map view</p>
+              <h2>Open the trip map</h2>
+            </div>
+            <p class="map-stage-note">Pins update from map/trips.json and stay in sync with the list.</p>
+          </div>
+          <div class="map-canvas-wrap">
+            <div id="trip-map" class="trip-map" aria-label="Interactive world map of trips"></div>
+            <div class="map-canvas-overlay">
+              <p class="map-overlay-label">selected</p>
+              <p class="map-overlay-title" data-selected-title>Choose a trip</p>
+              <p class="map-overlay-meta" data-selected-meta>Open a pin or card to focus the map.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="map-rail">
+          <article class="trip-detail" data-trip-detail aria-live="polite">
+            <div class="trip-detail-media">
+              <img data-trip-photo src="../images/about/weekend-reset.jpg" alt="Trip preview" loading="lazy" />
+            </div>
+            <div class="trip-detail-body">
+              <p class="trip-detail-kicker" data-trip-kicker>Trip log</p>
+              <h3 data-trip-title>Choose a trip</h3>
+              <p class="trip-detail-meta" data-trip-meta></p>
+              <div class="tags trip-tags" data-trip-tags></div>
+              <p class="trip-detail-note" data-trip-note>Pick a pin or card to read the notes, review the photos, and jump the map to that place.</p>
+            </div>
+          </article>
+
+          <div class="trip-list-head">
+            <div>
+              <p class="map-stage-label">trip list</p>
+              <h2>All stops</h2>
+            </div>
+            <p class="trip-list-count" data-trip-count></p>
+          </div>
+          <div class="trip-list" data-trip-list></div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="map-footer">
+      <p>Connor McKelvey | Travel Map | Austin, TX</p>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="map.js"></script>
+</body>
+</html>

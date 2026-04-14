@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connor McKelvey | Admin</title>
+  <meta name="description" content="Private content editor for Connor McKelvey's portfolio." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="admin-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="admin-shell">
+    <header class="admin-topbar">
+      <div>
+        <p class="admin-kicker">// private workspace</p>
+        <h1>Admin</h1>
+        <p class="admin-summary">Create and edit blog posts and trips, preview changes, then export or publish back to the repo.</p>
+      </div>
+      <div class="admin-topbar-meta">
+        <span class="admin-chip" data-kind-status>blog</span>
+        <span class="admin-chip" data-draft-status>drafts saved locally</span>
+        <button class="admin-chip admin-chip-button" type="button" data-logout hidden>log out</button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="admin-gate" data-admin-gate>
+        <div class="admin-gate-card">
+          <p class="admin-kicker">access</p>
+          <h2>Unlock the workspace</h2>
+          <p>This is a starter gate. The secure serverless login will replace it, but this gives you a private working surface now.</p>
+          <form class="admin-gate-form" data-gate-form>
+            <label>
+              <span class="admin-label">Passcode</span>
+              <input type="password" autocomplete="current-password" data-gate-input placeholder="Enter passcode" />
+            </label>
+            <button class="admin-btn admin-btn-primary" type="submit">unlock</button>
+          </form>
+          <p class="admin-status" data-gate-status aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="admin-app" data-admin-app hidden>
+        <section class="admin-toolbar">
+          <div class="admin-toolbar-left">
+            <button class="admin-btn admin-btn-primary" type="button" data-new-post>new blog post</button>
+            <button class="admin-btn" type="button" data-new-trip>new trip</button>
+            <button class="admin-btn" type="button" data-duplicate-item>duplicate</button>
+            <button class="admin-btn" type="button" data-delete-item>delete</button>
+          </div>
+          <div class="admin-toolbar-right">
+            <button class="admin-btn" type="button" data-save-draft>save draft</button>
+            <button class="admin-btn" type="button" data-export-current>export current</button>
+            <button class="admin-btn" type="button" data-export-all>export all</button>
+            <button class="admin-btn admin-btn-primary" type="button" data-publish>publish</button>
+          </div>
+        </section>
+
+        <section class="admin-board">
+          <aside class="admin-library">
+            <div class="admin-panel-head">
+              <div>
+                <p class="admin-panel-label">content library</p>
+                <h2>Posts and trips</h2>
+              </div>
+              <div class="admin-tabs" role="tablist" aria-label="Content type">
+                <button class="admin-tab is-active" type="button" data-filter-kind="blog">blog</button>
+                <button class="admin-tab" type="button" data-filter-kind="trip">trips</button>
+                <button class="admin-tab" type="button" data-filter-kind="all">all</button>
+              </div>
+            </div>
+            <label class="admin-search-wrap">
+              <span class="admin-label">search</span>
+              <input class="admin-search" type="search" placeholder="Search titles, tags, ids, notes" data-search />
+            </label>
+            <div class="admin-list" data-content-list></div>
+          </aside>
+
+          <section class="admin-editor">
+            <div class="admin-panel-head">
+              <div>
+                <p class="admin-panel-label">editor</p>
+                <h2 data-editor-title>Select an item</h2>
+              </div>
+              <p class="admin-muted" data-editor-meta></p>
+            </div>
+            <form class="admin-form" data-editor-form></form>
+          </section>
+
+          <aside class="admin-preview">
+            <div class="admin-panel-head">
+              <div>
+                <p class="admin-panel-label">preview</p>
+                <h2>Live output</h2>
+              </div>
+            </div>
+            <div class="admin-preview-card" data-preview-card></div>
+            <div class="admin-log">
+              <p class="admin-label">publish status</p>
+              <p data-publish-status>Idle.</p>
+            </div>
+          </aside>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="../blog/posts.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -248,7 +248,40 @@
     .about-links { display: flex; gap: 20px; }
     .about-links a { font-family: var(--font-mono); font-size: 10px; color: var(--ink-muted); letter-spacing: 0.07em; transition: color 0.2s; }
     .about-links a:hover { color: var(--green-deep); }
+    .about-blog-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green-deep);
+      border: 0.5px solid var(--green-mid);
+      padding: 10px 16px;
+      border-radius: 5px;
+      letter-spacing: 0.09em;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .about-blog-btn:hover { background: var(--green-light); transform: translateY(-1px); }
     .about-right { flex: 0.85; display: flex; flex-direction: column; gap: 36px; padding-top: 8px; }
+    .about-photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .about-photo-card {
+      border: 0.5px solid var(--border-light);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--white);
+    }
+    .about-photo-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+    .about-photo-card-wide { grid-column: 1 / -1; }
+    .about-photo-card-wide img { aspect-ratio: 16 / 10; }
+    .about-photo-cap {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+      padding: 8px 10px;
+      border-top: 0.5px solid var(--border-light);
+    }
     .stat { border-left: 2px solid var(--green-light); padding-left: 22px; }
     .stat-num { font-family: var(--font-serif); font-size: 36px; color: var(--green-deep); font-weight: 500; line-height: 1; margin-bottom: 6px; }
     .stat-label { font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint); letter-spacing: 0.1em; }
@@ -371,8 +404,9 @@
     .honor-item::before { content: ''; width: 14px; height: 0.5px; background: var(--green-pale); flex-shrink: 0; }
 
     /* Contact */
-    #contact { padding: 96px 80px 120px; }
-    .contact-inner { max-width: 560px; }
+    #contact { padding: 96px 80px 120px; display: flex; gap: 80px; align-items: flex-start; flex-wrap: wrap; }
+    .contact-inner { flex: 1.4; max-width: 560px; }
+    .contact-right { flex: 0.85; display: flex; flex-direction: column; gap: 36px; padding-top: 86px; }
     .contact-heading { font-family: var(--font-serif); font-size: clamp(32px, 3.5vw, 44px); color: var(--green-deep); font-weight: 500; line-height: 1.15; margin-bottom: 20px; }
     .contact-heading em { font-style: italic; color: var(--green-mid); }
     .contact-sub { font-size: 14px; color: var(--ink-muted); line-height: 1.85; margin-bottom: 44px; }
@@ -383,7 +417,7 @@
     .cl-label { font-size: 9px; color: var(--ink-faint); letter-spacing: 0.12em; min-width: 60px; }
     .cl-rule { width: 20px; height: 0.5px; background: var(--border); flex-shrink: 0; }
     .cl-arrow { margin-left: auto; color: var(--ink-faint); transition: transform 0.2s, color 0.2s; }
-    .contact-footer { margin-top: 72px; padding-top: 28px; border-top: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .contact-footer { flex-basis: 100%; margin-top: 72px; padding-top: 28px; border-top: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
     .footer-name { font-family: var(--font-serif); font-size: 13px; color: var(--ink-faint); font-style: italic; }
     .footer-copy { font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint); letter-spacing: 0.09em; }
 
@@ -396,6 +430,9 @@
       .hero-photo { display: none; }
       .hero-topo { opacity: 0.03; width: 980px; height: 980px; }
       #about { flex-direction: column; gap: 48px; }
+      #contact { flex-direction: column; gap: 48px; }
+      .contact-inner { max-width: none; }
+      .contact-right { width: 100%; padding-top: 0; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
       .edu-card { flex-direction: column; }
       .building-card { flex-direction: column; gap: 24px; }
@@ -515,7 +552,7 @@
         <span class="byline-rule"></span>
         <span class="byline-disc">robotics · firmware · hardware</span>
       </div>
-      <p class="hero-sub">I'm Connor — an Eagle Scout in the Honors Robotics Program at UT Austin, passionate about leading impactful technology through firmware and hardware development.</p>
+      <p class="hero-sub">I'm Connor, an Eagle Scout in the Honors Robotics Program at UT Austin, passionate about leading impactful technology through firmware and hardware development.</p>
       <div class="hero-actions">
         <a href="#projects" class="btn-primary">explore projects →</a>
         <a href="#about" class="btn-ghost">about me ↓</a>
@@ -548,7 +585,7 @@
       <div class="project-card reveal reveal-delay-1" data-project="0">
         <div class="pc-body">
           <div class="pc-top"><span class="pc-num">01</span><span class="pc-title">Haplink™</span><span class="pc-tag">robotics research</span></div>
-          <p class="pc-brief">Firmware and Python library for robust haptic serial communication. Adopted by 30 researchers at UT Austin's HERO Lab — 100% error detection at 100Hz.</p>
+          <p class="pc-brief">Firmware and Python library for robust haptic serial communication. Increased reliablity by providing 100% error detection at 100Hz.</p>
           <div class="pc-stack"><span class="chip">C++</span><span class="chip">Python</span><span class="chip">Arduino</span><span class="chip">Haptics</span></div>
           <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
         </div>
@@ -598,43 +635,54 @@
 
     <section id="about">
       <div class="about-left">
-        <div class="sec-header reveal" style="margin-bottom:40px;"><span class="sec-label">// about</span><span class="sec-rule"></span></div>
-        <h2 class="about-heading reveal">Engineer by trade,<br><em>systems builder</em> by nature.</h2>
-        <p class="about-body reveal reveal-delay-1">I'm a first-year ECE student in the Honors Robotics Program at UT Austin, focused on embedded systems, robotics, and autonomy. I care deeply about two things: <em>leading</em> and <em>executing</em> — turning ambitious ideas into working systems that ship.</p>
-        <p class="about-body reveal reveal-delay-2">I like working end-to-end: defining the problem, prototyping quickly, writing the firmware and software, then testing and iterating until it's reliable. A lot of my approach to building (and team leadership) comes from years of service and responsibility as an Eagle Scout.</p>
+        <div class="sec-header reveal" style="margin-bottom:40px;"><span class="sec-label">// off the clock</span><span class="sec-rule"></span></div>
+        <h2 class="about-heading reveal">More than circuits:<br><em>the human side of me.</em></h2>
+        <p class="about-body reveal reveal-delay-1">When I'm not building robots, I'm usually outside, moving, or making something for fun. I love pickup soccer, long walks around Austin with a playlist on, and hunting down the next coffee spot worth becoming a regular at.</p>
+        <p class="about-body reveal reveal-delay-2">I also like storytelling through photos and short journal-style posts. This part of my life keeps me grounded, curious, and creative, and it gives me better perspective when I come back to harder technical work.</p>
         <div class="about-values reveal reveal-delay-3">
-          <span class="value-pill">leading</span><span class="value-pill">executing</span><span class="value-pill">embedded systems</span>
-          <span class="value-pill">robotics</span><span class="value-pill">reliability</span><span class="value-pill">human impact</span><span class="value-pill">Eagle Scout</span>
+          <span class="value-pill">soccer</span><span class="value-pill">gym sessions</span><span class="value-pill">coffee scouting</span>
+          <span class="value-pill">music rabbit holes</span><span class="value-pill">photography</span><span class="value-pill">hiking</span><span class="value-pill">journaling</span>
         </div>
         <div class="about-links reveal reveal-delay-4">
+          <a href="blog.html" class="about-blog-btn">visit my blog <span aria-hidden="true">→</span></a>
           <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer">github ↗</a>
           <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
           <a href="mailto:connormckelvey@utexas.edu">email ↗</a>
         </div>
       </div>
       <div class="about-right">
-        <div class="stat reveal"><div class="stat-num">10k+</div><div class="stat-label">users on shipped software</div></div>
-        <div class="stat reveal reveal-delay-1"><div class="stat-num">30+</div><div class="stat-label">researchers using Haplink</div></div>
-        <div class="stat reveal reveal-delay-2"><div class="stat-num">1st</div><div class="stat-label">HackTX 2025 · 5,000 participants</div></div>
-        <div class="stat reveal reveal-delay-3"><div class="stat-num">UT</div><div class="stat-label">Honors Robotics · ECE</div></div>
+        <div class="about-photo-grid">
+          <figure class="about-photo-card about-photo-card-wide reveal">
+            <img src="images/about/weekend-reset.jpg" alt="Connor outside in Austin" loading="lazy" />
+            <figcaption class="about-photo-cap">weekend reset</figcaption>
+          </figure>
+          <figure class="about-photo-card reveal reveal-delay-1">
+            <img src="images/about/coffee-portrait.jpg" alt="Connor smiling for a casual portrait" loading="lazy" />
+            <figcaption class="about-photo-cap">good coffee + good people</figcaption>
+          </figure>
+          <figure class="about-photo-card reveal reveal-delay-2">
+            <img src="images/about/curiosity-sky.png" alt="Night sky inspired photo" loading="lazy" />
+            <figcaption class="about-photo-cap">curiosity mode</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
     <section id="experience">
       <div class="sec-header reveal"><span class="sec-label">// experience</span><span class="sec-rule"></span></div>
-      <div class="exp-item reveal"><div class="exp-date">2025<br>present</div><div class="exp-body"><div class="exp-top"><span class="exp-title">Research Assistant</span><span class="exp-org">HERO Lab · Texas Robotics, UT Austin</span></div><p class="exp-desc">Building the Haplink communication framework for haptic devices and developing a vibrotactile armband for motor skill learning. Haplink adopted by 30 researchers — 100% error detection, 13-byte packets at 100Hz.</p></div></div>
-      <div class="exp-item reveal reveal-delay-1"><div class="exp-date">2025<br>present</div><div class="exp-body"><div class="exp-top"><span class="exp-title">IEEE Assistant Officer</span><span class="exp-org">External Activities & Events · UT Austin</span></div><p class="exp-desc">Created a long-term project program to develop hardware for IT Bridge, a nonprofit teaching underprivileged youth about electrical engineering careers. Planned and executed events for the full chapter.</p></div></div>
-      <div class="exp-item reveal reveal-delay-2"><div class="exp-date">2023<br>2025</div><div class="exp-body"><div class="exp-top"><span class="exp-title">Founder & Software Developer</span><span class="exp-org">Krazy Studios</span></div><p class="exp-desc">Established a studio of programmers, artists, and writers to develop and publish Discord bots and games. Grew Fireball Dice Roller to 10,000+ users across 150 servers. Delivered private bots for clients and built community on social media.</p></div></div>
+      <div class="exp-item reveal"><div class="exp-date">2025<br>present</div><div class="exp-body"><div class="exp-top"><span class="exp-title">Student Researcher</span><span class="exp-org">HERO Lab · Texas Robotics, UT Austin</span></div><p class="exp-desc">Building the Haplink communication framework for haptic devices and developing a vibrotactile armband for motor skill learning. Improved reliability with 100% error detection, 13-byte packets at 100Hz. Worked under Dr. Ross Neuman.</p></div></div>
+      <div class="exp-item reveal reveal-delay-1"><div class="exp-date">2025<br>present</div><div class="exp-body"><div class="exp-top"><span class="exp-title">IEEE Assistant Officer</span><span class="exp-org">External Activities & Events · UT Austin</span></div><p class="exp-desc">Creating a long-term project program to develop hardware for IT Bridge, a nonprofit teaching underprivileged youth about electrical engineering careers. Planned and executed events for the full chapter.</p></div></div>
       <div class="exp-item reveal reveal-delay-3"><div class="exp-date">2024<br>2025</div><div class="exp-body"><div class="exp-top"><span class="exp-title">NYLT Senior Patrol Leader</span><span class="exp-org">Boy Scouts of America · Houston Area</span></div><p class="exp-desc">Selected as 1 of 4 youth in the Houston area for the highest youth role in Scouting's premier leadership program. Led a 25-person staff to deliver a week-long leadership intensive for 60 handpicked participants.</p></div></div>
+      <div class="exp-item reveal reveal-delay-2"><div class="exp-date">2023<br>2025</div><div class="exp-body"><div class="exp-top"><span class="exp-title">Founder & Software Developer</span><span class="exp-org">Krazy Studios</span></div><p class="exp-desc">Established a studio of programmers, artists, and writers to develop and publish Discord bots and games. Grew Fireball Dice Roller to 10,000+ users across 150 servers. Delivered private bots for clients and built community on social media.</p></div></div>
     </section>
 
-    <section id="education">
+    <!-- <section id="education">
       <div class="sec-header reveal"><span class="sec-label">// education</span><span class="sec-rule"></span></div>
       <div class="edu-card">
         <div class="edu-left reveal"><div class="edu-school">University of Texas at Austin</div><div class="edu-degree">B.S. Electrical and Computer Engineering</div><div class="edu-meta">Computer Architecture Track · Robotics Minor · Expected 2029</div><div class="edu-courses"><span class="chip">Differential Equations</span><span class="chip">Electrical Engineering</span><span class="chip">Embedded Systems</span></div></div>
         <div class="edu-right reveal reveal-delay-1"><div class="honor-item">Eagle Scout — Boy Scouts of America</div><div class="honor-item">AP Scholar with Distinction</div><div class="honor-item">Varsity Soccer Captain & Defensive MVP ×2</div><div class="honor-item">HPE CodeWars — Advanced Division</div><div class="honor-item">Robotics Academy — 3rd of 50 teams, UT Austin</div></div>
       </div>
-    </section>
+    </section> -->
 
 
     <section id="skills">
@@ -652,13 +700,19 @@
     <section id="contact">
       <div class="contact-inner">
         <div class="sec-header reveal" style="margin-bottom:40px;"><span class="sec-label">// contact</span><span class="sec-rule"></span></div>
-        <h2 class="contact-heading reveal">Let's build something<br><em>that matters.</em></h2>
-        <p class="contact-sub reveal reveal-delay-1">I'm always open to research collaborations, internship opportunities, and interesting projects. If you're working on something at the intersection of hardware, software, and human impact — reach out.</p>
+        <h2 class="contact-heading reveal">Let's build something<br><em>that that changes the world.</em></h2>
+        <p class="contact-sub reveal reveal-delay-1">I'm always open to research collaborations, internship opportunities, and interesting projects. If you're working on something cool, please reach out and lets make a difference (or just make a sick robot).</p>
         <div class="contact-links reveal reveal-delay-2">
           <a href="mailto:connormckelvey@utexas.edu" class="contact-link"><span class="cl-label">email</span><span class="cl-rule"></span>connormckelvey@utexas.edu<span class="cl-arrow">→</span></a>
           <a href="https://github.com/connormmckelvey" target="_blank" rel="noopener noreferrer" class="contact-link"><span class="cl-label">github</span><span class="cl-rule"></span>connormmckelvey<span class="cl-arrow">→</span></a>
           <a href="https://linkedin.com/in/connor-mckelvey-8591a6201/" target="_blank" rel="noopener noreferrer" class="contact-link"><span class="cl-label">linkedin</span><span class="cl-rule"></span>connor-mckelvey<span class="cl-arrow">→</span></a>
         </div>
+      </div>
+      <div class="contact-right about-right">
+        <div class="stat reveal"><div class="stat-num">10k+</div><div class="stat-label">users on shipped software</div></div>
+        <div class="stat reveal reveal-delay-1"><div class="stat-num">30+</div><div class="stat-label">researchers using Haplink</div></div>
+        <div class="stat reveal reveal-delay-2"><div class="stat-num">1st</div><div class="stat-label">HackTX 2025 · 5,000 participants</div></div>
+        <div class="stat reveal reveal-delay-3"><div class="stat-num">UT</div><div class="stat-label">Honors Robotics · ECE</div></div>
       </div>
       <div class="contact-footer reveal"><span class="footer-name">Connor McKelvey</span><span class="footer-copy">Inspired by my friends at Texas Robotics, esspecially PranavMaringanti.com © 2026 · Austin, TX</span></div>
     </section>

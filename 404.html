@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found | Connor McKelvey</title>
+  <meta name="description" content="Looks like this page moved. Explore Connor McKelvey's portfolio, projects, and field notes." />
+  <meta name="theme-color" content="#1a3a2a" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --nf-shadow: 0 16px 50px rgba(26, 58, 42, 0.12);
+    }
+
+    body.not-found {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(1000px 540px at 8% -10%, rgba(192, 221, 151, 0.42), transparent 60%),
+        radial-gradient(900px 520px at 88% 0%, rgba(45, 102, 68, 0.10), transparent 62%),
+        var(--off-white);
+    }
+
+    .nf-wrap {
+      width: min(980px, 100%);
+      border: 0.5px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.90);
+      box-shadow: var(--nf-shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .nf-topo {
+      position: absolute;
+      right: -140px;
+      top: -70px;
+      width: min(700px, 90vw);
+      opacity: 0.28;
+      pointer-events: none;
+      animation: drift 16s ease-in-out infinite alternate;
+    }
+
+    .nf-topo path {
+      fill: none;
+      stroke: rgba(45, 102, 68, 0.24);
+      stroke-width: 1.1;
+    }
+
+    .nf-head {
+      padding: 30px 32px;
+      border-bottom: 0.5px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nf-brand {
+      font-family: var(--font-serif);
+      font-size: 19px;
+      color: var(--green-deep);
+      font-weight: 500;
+    }
+
+    .nf-home {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.09em;
+      color: var(--ink-muted);
+      border: 0.5px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+    }
+
+    .nf-home:hover {
+      color: var(--green-deep);
+      border-color: var(--green-mid);
+      background: var(--green-light);
+    }
+
+    .nf-main {
+      padding: 44px 32px 38px;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .nf-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--green-soft);
+      letter-spacing: 0.13em;
+      margin-bottom: 14px;
+    }
+
+    .nf-title {
+      font-family: var(--font-serif);
+      color: var(--green-deep);
+      font-size: clamp(40px, 8vw, 84px);
+      line-height: 0.95;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    .nf-sub {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4vw, 42px);
+      color: var(--green-deep);
+      line-height: 1.08;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+
+    .nf-sub em {
+      color: var(--green-mid);
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .nf-copy {
+      color: var(--ink-muted);
+      line-height: 1.8;
+      max-width: 60ch;
+      margin-bottom: 26px;
+      font-size: 15px;
+    }
+
+    .nf-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nf-btn {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.09em;
+      border-radius: 6px;
+      padding: 10px 14px;
+      border: 0.5px solid var(--green-mid);
+      color: var(--green-deep);
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .nf-btn:hover {
+      transform: translateY(-1px);
+      background: var(--green-light);
+    }
+
+    .nf-btn-primary {
+      color: var(--off-white);
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+    }
+
+    .nf-btn-primary:hover {
+      background: var(--green-mid);
+    }
+
+    .nf-panel {
+      border: 0.5px solid var(--border-light);
+      border-radius: 10px;
+      padding: 18px;
+      background: var(--white);
+    }
+
+    .nf-panel h2 {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--green-soft);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .nf-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nf-list a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--ink-mid);
+      border: 0.5px solid var(--border-light);
+      border-radius: 7px;
+      padding: 10px 12px;
+      transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .nf-list a:hover {
+      border-color: var(--green-mid);
+      background: var(--green-light);
+      color: var(--green-deep);
+    }
+
+    .nf-arrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+    }
+
+    .nf-foot {
+      border-top: 0.5px solid var(--border-light);
+      padding: 14px 32px 18px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-16px, 10px, 0); }
+    }
+
+    @media (max-width: 900px) {
+      .nf-main {
+        grid-template-columns: 1fr;
+      }
+
+      .nf-title {
+        font-size: clamp(36px, 12vw, 72px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nf-topo {
+        animation: none;
+      }
+
+      .nf-btn,
+      .nf-home,
+      .nf-list a {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body class="not-found">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <main class="nf-wrap" id="main">
+    <svg class="nf-topo" viewBox="0 0 1200 520" aria-hidden="true">
+      <path d="M20 410 C150 320, 280 500, 430 410 C560 332, 690 470, 830 392 C955 324, 1080 430, 1180 372" />
+      <path d="M40 360 C180 278, 310 438, 460 354 C604 272, 730 418, 872 336 C1002 264, 1110 346, 1188 304" />
+      <path d="M0 300 C130 226, 258 360, 398 284 C548 204, 682 332, 822 258 C962 184, 1092 258, 1200 212" />
+      <path d="M80 242 C226 170, 360 278, 496 214 C642 148, 770 238, 916 186 C1046 140, 1132 192, 1200 164" />
+      <path d="M36 186 C170 128, 296 212, 432 166 C568 120, 706 194, 838 152 C976 108, 1098 154, 1180 128" />
+    </svg>
+
+    <header class="nf-head">
+      <div class="nf-brand">Connor McKelvey</div>
+      <a class="nf-home" href="index.html">back to home</a>
+    </header>
+
+    <section class="nf-main">
+      <div>
+        <p class="nf-kicker">// page not found</p>
+        <h1 class="nf-title">404</h1>
+        <h2 class="nf-sub">Looks like this path went <em>off trail.</em></h2>
+        <p class="nf-copy">The page you tried to visit may have moved, been renamed, or never existed. Use one of the quick routes below to jump back into projects, writing, and contact info.</p>
+        <div class="nf-actions">
+          <a class="nf-btn nf-btn-primary" href="index.html">go to portfolio</a>
+          <a class="nf-btn" href="blog.html">open field notes</a>
+        </div>
+      </div>
+
+      <aside class="nf-panel" aria-label="Quick routes">
+        <h2>quick routes</h2>
+        <div class="nf-list">
+          <a href="index.html#projects"><span>projects</span><span class="nf-arrow">-></span></a>
+          <a href="index.html#about"><span>about me</span><span class="nf-arrow">-></span></a>
+          <a href="index.html#contact"><span>contact</span><span class="nf-arrow">-></span></a>
+          <a href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener noreferrer"><span>resume</span><span class="nf-arrow">-></span></a>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="nf-foot">
+      <span>custom 404 page</span>
+      <span>austin, tx</span>
+    </footer>
+  </main>
+</body>
+</html>
