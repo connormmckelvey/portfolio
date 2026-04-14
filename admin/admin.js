@@ -8,6 +8,7 @@
   const gateForm = document.querySelector('[data-gate-form]');
   const gateInput = document.querySelector('[data-gate-input]');
   const gateStatus = document.querySelector('[data-gate-status]');
+  const gateMessage = document.querySelector('[data-gate-message]');
   const kindStatus = document.querySelector('[data-kind-status]');
   const draftStatus = document.querySelector('[data-draft-status]');
   const logoutBtn = document.querySelector('[data-logout]');
@@ -192,6 +193,18 @@
   let libraryFilter = state.libraryFilter;
   let editorKind = state.activeKind;
   let isAuthenticated = false;
+
+  const configureGateUi = () => {
+    if (gateMessage) {
+      gateMessage.textContent = LOCAL_MODE
+        ? 'Local preview mode is using the temporary passcode gate. Your deployed /admin route uses secure serverless login.'
+        : 'Sign in with your ADMIN_PASSWORD. Authentication is handled by serverless endpoints and an HttpOnly session cookie.';
+    }
+
+    if (gateInput) {
+      gateInput.placeholder = LOCAL_MODE ? 'Enter local preview passcode' : 'Enter admin password';
+    }
+  };
 
   const persistState = () => {
     state.activeKind = editorKind;
@@ -1052,6 +1065,7 @@
   });
   publishBtn?.addEventListener('click', publish);
 
+  configureGateUi();
   await checkSession();
 
   if (searchInput) searchInput.value = state.search || '';
