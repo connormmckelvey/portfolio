@@ -7,9 +7,16 @@
     "year": "2025",
     "sortDate": "2025-03-01",
     "dateLabel": "Spring 2025",
-    "coords": [30.2672, -97.7431],
+    "coords": [
+      30.2672,
+      -97.7431
+    ],
     "note": "The city I keep returning to between deadlines, classes, and projects. Most of the best memories here are long walks, late coffees, and quiet resets.",
-    "tags": ["home", "walks", "coffee"],
+    "tags": [
+      "home",
+      "walks",
+      "coffee"
+    ],
     "photos": [
       {
         "src": "../images/about/weekend-reset.jpg",
@@ -26,9 +33,15 @@
     "year": "2024",
     "sortDate": "2024-07-08",
     "dateLabel": "Summer 2024",
-    "coords": [29.7604, -95.3698],
+    "coords": [
+      29.7604,
+      -95.3698
+    ],
     "note": "A week that still shapes how I think about teamwork, planning, and leading under pressure.",
-    "tags": ["leadership", "scouting"],
+    "tags": [
+      "leadership",
+      "scouting"
+    ],
     "photos": [
       {
         "src": "../images/about/coffee-portrait.jpg",
@@ -45,9 +58,15 @@
     "year": "2025",
     "sortDate": "2025-10-12",
     "dateLabel": "Fall 2025",
-    "coords": [41.8781, -87.6298],
+    "coords": [
+      41.8781,
+      -87.6298
+    ],
     "note": "A dense city visit that is mostly about people, transit, and how much a single day can hold.",
-    "tags": ["city", "school"],
+    "tags": [
+      "city",
+      "school"
+    ],
     "photos": [
       {
         "src": "../images/about/curiosity-sky.png",
@@ -64,9 +83,15 @@
     "year": "2025",
     "sortDate": "2025-11-18",
     "dateLabel": "Late 2025",
-    "coords": [40.7128, -74.006],
+    "coords": [
+      40.7128,
+      -74.006
+    ],
     "note": "Fast, loud, and impossible to ignore. A good reminder that scale changes the way you look at everything.",
-    "tags": ["city", "travel"],
+    "tags": [
+      "city",
+      "travel"
+    ],
     "photos": [
       {
         "src": "../images/about/weekend-reset.jpg",
@@ -83,9 +108,15 @@
     "year": "2026",
     "sortDate": "2026-02-09",
     "dateLabel": "Early 2026",
-    "coords": [51.5074, -0.1278],
+    "coords": [
+      51.5074,
+      -0.1278
+    ],
     "note": "A place for museums, long walks, and notes that turn into better questions later.",
-    "tags": ["international", "museums"],
+    "tags": [
+      "international",
+      "museums"
+    ],
     "photos": [
       {
         "src": "../images/about/coffee-portrait.jpg",
@@ -102,9 +133,15 @@
     "year": "2026",
     "sortDate": "2026-03-22",
     "dateLabel": "Spring 2026",
-    "coords": [37.7749, -122.4194],
+    "coords": [
+      37.7749,
+      -122.4194
+    ],
     "note": "A trip that felt like it should end with a notebook full of ideas and a longer to-do list.",
-    "tags": ["travel", "build"],
+    "tags": [
+      "travel",
+      "build"
+    ],
     "photos": [
       {
         "src": "../images/about/curiosity-sky.png",
