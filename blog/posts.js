@@ -1,25 +1,7 @@
 window.BLOG_POSTS = [
   {
-    "id": "post-1776220068297",
-    "title": "test3",
-    "date": "2026-04-15",
-    "readTime": "3 min read",
-    "tags": [
-      "meta"
-    ],
-    "excerpt": "",
-    "coverImage": "images/about/weekend-reset.jpg",
-    "coverAlt": "",
-    "content": [
-      {
-        "type": "paragraph",
-        "text": "Write the first paragraph here."
-      }
-    ]
-  },
-  {
-    "id": "post-1776219759458",
-    "title": "Testbruh",
+    "id": "post-1776221877709",
+    "title": "Untitled post",
     "date": "2026-04-15",
     "readTime": "3 min read",
     "tags": [
