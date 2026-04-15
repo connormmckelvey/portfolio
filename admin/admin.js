@@ -1010,10 +1010,14 @@
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) throw new Error(`Publish failed (${response.status})`);
+      if (!response.ok) {
+        const detail = result?.error || result?.message || `Publish failed (${response.status})`;
+        if (publishStatus) publishStatus.textContent = detail;
+        return;
+      }
       if (publishStatus) publishStatus.textContent = result.message || 'Published successfully.';
     } catch {
-      if (publishStatus) publishStatus.textContent = 'Publish endpoint unavailable. Use export to download the updated files.';
+      if (publishStatus) publishStatus.textContent = 'Network error reaching publish endpoint. Verify admin API URL and CORS allowlist.';
     }
   };
 
