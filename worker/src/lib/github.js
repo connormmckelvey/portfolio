@@ -54,7 +54,10 @@ const getContentSha = async (env, path) => {
 
   if (response.status === 404) return null;
   if (!response.ok) {
-    const detail = payload?.message || response.statusText || 'Unknown GitHub API error';
+    const payloadMessage = typeof payload === 'string'
+      ? payload.trim()
+      : payload?.message;
+    const detail = payloadMessage || response.statusText || 'Unknown GitHub API error';
     throw new Error(`Unable to read ${path}: ${response.status} ${detail}`);
   }
 
