@@ -1,12 +1,16 @@
 const encodeContentPath = (path) => encodeURIComponent(path).replace(/%2F/g, '/');
 
-const textToBase64 = (value) => {
-  const bytes = new TextEncoder().encode(value);
+const bytesToBase64 = (bytes) => {
   let binary = '';
   for (let i = 0; i < bytes.length; i += 1) {
     binary += String.fromCharCode(bytes[i]);
   }
   return btoa(binary);
+};
+
+const textToBase64 = (value) => {
+  const bytes = new TextEncoder().encode(value);
+  return bytesToBase64(bytes);
 };
 
 const repoConfig = (env) => {
@@ -90,6 +94,33 @@ const putContent = async (env, path, content, message) => {
   return payload;
 };
 
+const putBinaryContent = async (env, path, bytes, message) => {
+  const { owner, repo, branch } = repoConfig(env);
+  const encodedPath = encodeContentPath(path);
+  const sha = await getContentSha(env, path);
+
+  const body = {
+    message,
+    content: bytesToBase64(bytes),
+    branch
+  };
+
+  if (sha) body.sha = sha;
+
+  const { response, payload } = await githubRequest(env, `/repos/${owner}/${repo}/contents/${encodedPath}`, {
+    method: 'PUT',
+    body: JSON.stringify(body)
+  });
+
+  if (!response.ok) {
+    const detail = payload?.message || 'Unknown GitHub API error';
+    throw new Error(`Failed to update ${path}: ${detail}`);
+  }
+
+  return payload;
+};
+
 export {
+  putBinaryContent,
   putContent
 };

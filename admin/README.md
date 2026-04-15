@@ -38,6 +38,16 @@ python -m http.server 8000
 
 Use admin at `/admin/` and verify login/session/logout/publish.
 
+## 3.1 Image uploads in admin
+
+- Admin now supports authenticated image uploads via `POST /api/admin/upload`.
+- Supported file types: `image/jpeg`, `image/png`, `image/webp`, `image/gif`.
+- Default max size is 6 MB per file.
+- Uploaded files are committed directly into the repo under `images/...`.
+- Optional Worker setting: `MAX_UPLOAD_BYTES` (environment variable) to override max size.
+
+If upload fails with 413, reduce file size or increase `MAX_UPLOAD_BYTES` in Worker env/vars.
+
 ## 4) Deploy Worker
 
 ```bash

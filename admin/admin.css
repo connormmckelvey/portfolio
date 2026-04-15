@@ -393,6 +393,57 @@
   letter-spacing: 0.06em;
 }
 
+.admin-upload-widget {
+  display: grid;
+  gap: 8px;
+  border: 0.5px solid var(--border-light);
+  border-radius: 12px;
+  padding: 12px;
+  background: #fcfcfb;
+}
+
+.admin-upload-dropzone {
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  color: var(--ink-mid);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  background: var(--white);
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+}
+
+.admin-upload-dropzone:hover,
+.admin-upload-dropzone.is-dragover {
+  border-color: var(--green-mid);
+  background: var(--green-light);
+  color: var(--green-deep);
+}
+
+.admin-upload-dropzone.is-busy {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.admin-upload-dropzone:focus-visible {
+  outline: 2px solid var(--green-mid);
+  outline-offset: 3px;
+}
+
+.admin-upload-hint,
+.admin-upload-status {
+  color: var(--ink-muted);
+  line-height: 1.7;
+  font-size: 12px;
+}
+
+.admin-upload-status.is-error {
+  color: #9c2f2f;
+}
+
 .admin-preview-card {
   display: grid;
   gap: 12px;

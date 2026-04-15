@@ -20,8 +20,51 @@ import {
   readJson
 } from './lib/http.js';
 import {
+  putBinaryContent,
   putContent
 } from './lib/github.js';
+
+const ALLOWED_UPLOAD_TYPES = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/gif': 'gif'
+};
+
+const MAX_UPLOAD_BYTES = 6 * 1024 * 1024;
+
+const sanitizeSegment = (value) => String(value || '')
+  .toLowerCase()
+  .replace(/[^a-z0-9-_]+/g, '-')
+  .replace(/^-+|-+$/g, '')
+  .slice(0, 48);
+
+const sanitizeFileStem = (value) => {
+  const stem = sanitizeSegment(value);
+  return stem || 'image';
+};
+
+const normalizeImageFolder = (value) => {
+  const raw = String(value || 'uploads').replace(/\\/g, '/').trim();
+  const cleaned = raw.startsWith('images/') ? raw.slice(7) : raw;
+  const pieces = cleaned.split('/').map(sanitizeSegment).filter(Boolean);
+  const folder = pieces.length ? pieces.join('/') : 'uploads';
+  return `images/${folder}`;
+};
+
+const extFromName = (name) => {
+  const match = String(name || '').toLowerCase().match(/\.([a-z0-9]+)$/);
+  return match?.[1] || '';
+};
+
+const buildUploadPath = ({ folder, originalName, mimeType, requestedBase }) => {
+  const normalizedFolder = normalizeImageFolder(folder);
+  const safeBase = sanitizeFileStem(requestedBase || originalName || 'image');
+  const mimeExt = ALLOWED_UPLOAD_TYPES[mimeType] || '';
+  const nameExt = extFromName(originalName);
+  const extension = mimeExt || nameExt || 'jpg';
+  return `${normalizedFolder}/${safeBase}-${Date.now()}.${extension}`;
+};
 
 const withCors = (request, env, response) => {
   const cors = corsForRequest(request, env);
@@ -112,6 +155,51 @@ const publish = async (request, env) => {
   return json({ message: 'Published changes to blog/posts.js and map/trips.json.' }, 200);
 };
 
+const upload = async (request, env) => {
+  const methodError = assertMethod(request, ['POST']);
+  if (methodError) return methodError;
+
+  if (!await isAuthenticatedRequest(request, env)) {
+    return json({ error: 'Authentication required' }, 401);
+  }
+
+  const form = await request.formData();
+  const file = form.get('file');
+
+  if (!(file instanceof File)) {
+    return json({ error: 'Missing file upload' }, 400);
+  }
+
+  const mimeType = String(file.type || '').toLowerCase();
+  if (!ALLOWED_UPLOAD_TYPES[mimeType]) {
+    return json({ error: 'Unsupported file type. Allowed: JPEG, PNG, WebP, GIF.' }, 415);
+  }
+
+  const maxBytes = Number(env.MAX_UPLOAD_BYTES || MAX_UPLOAD_BYTES) || MAX_UPLOAD_BYTES;
+  if (file.size > maxBytes) {
+    return json({ error: `File too large. Max ${Math.floor(maxBytes / (1024 * 1024))} MB.` }, 413);
+  }
+
+  const folder = String(form.get('folder') || 'uploads');
+  const basename = String(form.get('basename') || 'image');
+  const path = buildUploadPath({
+    folder,
+    originalName: file.name,
+    mimeType,
+    requestedBase: basename
+  });
+
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  await putBinaryContent(env, path, bytes, `Upload image asset ${path} from /admin`);
+
+  return json({
+    message: 'Uploaded image asset.',
+    path,
+    mimeType,
+    size: file.size
+  }, 200);
+};
+
 const route = async (request, env) => {
   const path = new URL(request.url).pathname;
 
@@ -128,6 +216,7 @@ const route = async (request, env) => {
   if (path === '/api/admin/session') return withCors(request, env, await session(request, env));
   if (path === '/api/admin/logout') return withCors(request, env, await logout(request, env));
   if (path === '/api/admin/publish') return withCors(request, env, await publish(request, env));
+  if (path === '/api/admin/upload') return withCors(request, env, await upload(request, env));
 
   return withCors(request, env, json({ error: 'Not found' }, 404));
 };

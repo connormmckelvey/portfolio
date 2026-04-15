@@ -18,6 +18,9 @@
   }
   const savedApiBase = String(localStorage.getItem(API_BASE_KEY) || '').trim();
   const API_BASE = String(window.ADMIN_API_BASE || queryApiBase || savedApiBase || apiBaseMeta?.content || '').trim().replace(/\/$/, '');
+  const MAX_UPLOAD_BYTES = 6 * 1024 * 1024;
+  const UPLOAD_ACCEPT = 'image/jpeg,image/png,image/webp,image/gif';
+  const ALLOWED_UPLOAD_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 
   const gate = document.querySelector('[data-admin-gate]');
   const app = document.querySelector('[data-admin-app]');
@@ -179,6 +182,177 @@
       return value;
     }
     return `../${value}`;
+  };
+
+  const slugifySegment = (value) => String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 48);
+
+  const trimFileNameExt = (name) => String(name || '').replace(/\.[a-z0-9]+$/i, '');
+
+  const formatBytes = (value) => {
+    const bytes = Number(value || 0);
+    if (!Number.isFinite(bytes) || bytes <= 0) return '0 B';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const parseJsonSafe = async (response) => {
+    try {
+      return await response.json();
+    } catch {
+      return null;
+    }
+  };
+
+  const uploadImageAsset = async ({ file, folder, basename }) => {
+    if (LOCAL_MODE) {
+      throw new Error('Image upload requires deployed /admin, not local file preview mode.');
+    }
+    if (!API_BASE) {
+      throw new Error('Admin API URL is not configured.');
+    }
+    if (!isAuthenticated) {
+      throw new Error('Sign in before uploading images.');
+    }
+    if (!(file instanceof File)) {
+      throw new Error('No file selected.');
+    }
+    if (!ALLOWED_UPLOAD_TYPES.has(String(file.type || '').toLowerCase())) {
+      throw new Error('Unsupported file type. Use JPEG, PNG, WebP, or GIF.');
+    }
+    if (file.size > MAX_UPLOAD_BYTES) {
+      throw new Error(`File too large (${formatBytes(file.size)}). Max ${formatBytes(MAX_UPLOAD_BYTES)}.`);
+    }
+
+    const body = new FormData();
+    body.append('file', file);
+    body.append('folder', String(folder || 'uploads'));
+    body.append('basename', String(basename || trimFileNameExt(file.name) || 'image'));
+
+    const response = await fetch(apiUrl('/api/admin/upload'), {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        ...authHeaders()
+      },
+      body
+    });
+
+    const payload = await parseJsonSafe(response);
+    if (!response.ok) {
+      throw new Error(payload?.error || `Upload failed (${response.status}).`);
+    }
+
+    if (!payload?.path) {
+      throw new Error('Upload succeeded but did not return a file path.');
+    }
+
+    return payload;
+  };
+
+  const createUploadWidget = ({
+    title,
+    hint,
+    folder,
+    basename,
+    onUploaded
+  }) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'admin-upload-widget';
+
+    const widgetTitle = document.createElement('div');
+    widgetTitle.className = 'admin-label';
+    widgetTitle.textContent = title;
+
+    const zone = document.createElement('div');
+    zone.className = 'admin-upload-dropzone';
+    zone.tabIndex = 0;
+    zone.setAttribute('role', 'button');
+    zone.setAttribute('aria-label', `${title}. Drag and drop an image or press Enter to browse.`);
+    zone.textContent = 'Drop image here or click to browse';
+
+    const helper = document.createElement('p');
+    helper.className = 'admin-upload-hint';
+    helper.textContent = hint;
+
+    const status = document.createElement('p');
+    status.className = 'admin-upload-status';
+    status.setAttribute('aria-live', 'polite');
+
+    const picker = document.createElement('input');
+    picker.type = 'file';
+    picker.accept = UPLOAD_ACCEPT;
+    picker.hidden = true;
+
+    const setStatus = (text, isError = false) => {
+      status.textContent = text;
+      status.classList.toggle('is-error', isError);
+    };
+
+    const openPicker = () => {
+      picker.click();
+    };
+
+    const handleFile = async (file) => {
+      if (!file) return;
+      setStatus(`Uploading ${file.name} (${formatBytes(file.size)})...`);
+      zone.classList.add('is-busy');
+      try {
+        const payload = await uploadImageAsset({ file, folder, basename });
+        onUploaded(payload.path, payload);
+        setStatus(`Uploaded to ${payload.path}`);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Image upload failed.';
+        setStatus(message, true);
+      } finally {
+        zone.classList.remove('is-busy');
+        picker.value = '';
+      }
+    };
+
+    zone.addEventListener('click', openPicker);
+    zone.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openPicker();
+      }
+    });
+
+    const preventDefault = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    zone.addEventListener('dragenter', (event) => {
+      preventDefault(event);
+      zone.classList.add('is-dragover');
+    });
+    zone.addEventListener('dragover', (event) => {
+      preventDefault(event);
+      zone.classList.add('is-dragover');
+    });
+    zone.addEventListener('dragleave', (event) => {
+      preventDefault(event);
+      zone.classList.remove('is-dragover');
+    });
+    zone.addEventListener('drop', (event) => {
+      preventDefault(event);
+      zone.classList.remove('is-dragover');
+      const file = event.dataTransfer?.files?.[0];
+      void handleFile(file);
+    });
+
+    picker.addEventListener('change', () => {
+      const file = picker.files?.[0];
+      void handleFile(file);
+    });
+
+    wrap.append(widgetTitle, zone, helper, status, picker);
+    return wrap;
   };
 
   const defaultState = () => ({
@@ -617,7 +791,7 @@
     container.replaceChildren(root);
   };
 
-  const renderTripPhotosEditor = (container, photos = []) => {
+  const renderTripPhotosEditor = (container, photos = [], uploadFolder = 'projects/trip') => {
     const root = document.createElement('div');
     root.className = 'admin-block-list';
 
@@ -687,7 +861,18 @@
       altInput.addEventListener('input', updatePhoto);
       captionInput.addEventListener('input', updatePhoto);
 
-      card.append(srcField, altField, captionField);
+      const uploadWidget = createUploadWidget({
+        title: 'upload photo',
+        hint: 'JPEG, PNG, WebP, or GIF. Max 6 MB. Upload writes into images/projects/... and auto-fills src.',
+        folder: uploadFolder,
+        basename: `trip-photo-${index + 1}`,
+        onUploaded: (path) => {
+          srcInput.value = `../${path}`;
+          updatePhoto();
+        }
+      });
+
+      card.append(srcField, uploadWidget, altField, captionField);
       root.append(card);
     });
 
@@ -834,17 +1019,51 @@
     structuredHead.append(structuredTitle);
     structuredPanel.append(structuredHead);
 
-    formRoot.replaceChildren(grid, note, structuredPanel);
+    const uploadPanel = document.createElement('div');
+    uploadPanel.className = 'admin-section';
+
+    formRoot.replaceChildren(grid, note, uploadPanel, structuredPanel);
     grid.replaceChildren(...fields);
 
     if (useBlog) {
+      const blogUpload = createUploadWidget({
+        title: 'upload cover image',
+        hint: 'Drag and drop or browse. Images are saved under images/blog and this field updates automatically.',
+        folder: 'blog',
+        basename: item.id || item.title || 'blog-cover',
+        onUploaded: (path) => {
+          secondaryOne.value = path;
+          commit();
+        }
+      });
+      uploadPanel.replaceChildren(blogUpload);
       renderBlogBlocksEditor(structuredPanel, Array.isArray(item.content) ? item.content : []);
     } else {
+      const tripSlug = slugifySegment(item.id || item.title || 'trip') || 'trip';
+      const tripUploadFolder = `projects/${tripSlug}`;
+      const tripUpload = createUploadWidget({
+        title: 'upload trip image',
+        hint: 'Adds files under images/projects/<trip-id>. Use this for quick uploads, then assign image paths in the photo rows below.',
+        folder: tripUploadFolder,
+        basename: `${tripSlug}-image`,
+        onUploaded: (path) => {
+          if (!Array.isArray(item.photos) || !item.photos.length) {
+            writeCurrentItem((itemData) => {
+              itemData.photos = [{ src: `../${path}`, alt: itemData.title || 'Trip photo', caption: '' }];
+              return itemData;
+            });
+            renderEditor();
+          }
+          renderPreview();
+        }
+      });
+      uploadPanel.replaceChildren(tripUpload);
+
       const photoLabel = document.createElement('div');
       photoLabel.className = 'admin-muted';
       photoLabel.textContent = 'Add images for the trip preview below.';
       structuredPanel.append(photoLabel);
-      renderTripPhotosEditor(structuredPanel, Array.isArray(item.photos) ? item.photos : []);
+      renderTripPhotosEditor(structuredPanel, Array.isArray(item.photos) ? item.photos : [], tripUploadFolder);
     }
 
     const commit = () => {
