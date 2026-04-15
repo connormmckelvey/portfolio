@@ -1,7 +1,7 @@
 window.BLOG_POSTS = [
   {
-    "id": "post-1776221877709",
-    "title": "Untitled post",
+    "id": "post-1776230768191",
+    "title": "Welcome to my blog!",
     "date": "2026-04-15",
     "readTime": "3 min read",
     "tags": [
