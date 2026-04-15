@@ -1,0 +1,6 @@
+name = "portfolio-admin-api"
+main = "worker/src/index.js"
+compatibility_date = "2026-04-14"
+
+[vars]
+ALLOWED_ORIGINS = "https://connormckelvey.dev,https://www.connormckelvey.dev,https://connormmckelvey.github.io,http://localhost:5000"

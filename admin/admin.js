@@ -1,7 +1,23 @@
 (async () => {
   const ACCESS_CODE = 'atlas';
   const STORAGE_KEY = 'cm-admin-state-v1';
+  const SESSION_TOKEN_KEY = 'cm-admin-session-token';
+  const API_BASE_KEY = 'cm-admin-api-base';
   const LOCAL_MODE = location.protocol === 'file:';
+  const apiBaseMeta = document.querySelector('meta[name="admin-api-base"]');
+  const queryApiBase = (() => {
+    try {
+      const value = new URLSearchParams(location.search).get('api') || '';
+      return String(value).trim();
+    } catch {
+      return '';
+    }
+  })();
+  if (queryApiBase) {
+    localStorage.setItem(API_BASE_KEY, queryApiBase);
+  }
+  const savedApiBase = String(localStorage.getItem(API_BASE_KEY) || '').trim();
+  const API_BASE = String(window.ADMIN_API_BASE || queryApiBase || savedApiBase || apiBaseMeta?.content || '').trim().replace(/\/$/, '');
 
   const gate = document.querySelector('[data-admin-gate]');
   const app = document.querySelector('[data-admin-app]');
@@ -113,6 +129,21 @@
   ];
 
   const deepClone = (value) => JSON.parse(JSON.stringify(value));
+  const authHeaders = () => {
+    const token = sessionStorage.getItem(SESSION_TOKEN_KEY);
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  };
+  const storeSessionToken = (token) => {
+    if (!token) return;
+    sessionStorage.setItem(SESSION_TOKEN_KEY, String(token));
+  };
+  const clearSessionToken = () => {
+    sessionStorage.removeItem(SESSION_TOKEN_KEY);
+  };
+  const apiUrl = (path) => {
+    if (LOCAL_MODE || !API_BASE) return path;
+    return `${API_BASE}${path}`;
+  };
   const normalizeTags = (value) => String(value || '').split(',').map((tag) => tag.trim()).filter(Boolean);
   const previewBlogAssetPath = (path) => {
     const value = String(path || '').trim();
@@ -196,9 +227,13 @@
 
   const configureGateUi = () => {
     if (gateMessage) {
-      gateMessage.textContent = LOCAL_MODE
-        ? 'Local preview mode is using the temporary passcode gate. Your deployed /admin route uses secure serverless login.'
-        : 'Sign in with your ADMIN_PASSWORD. Authentication is handled by serverless endpoints and an HttpOnly session cookie.';
+      if (LOCAL_MODE) {
+        gateMessage.textContent = 'Local preview mode is using the temporary passcode gate. Your deployed /admin route uses secure serverless login.';
+      } else if (!API_BASE) {
+        gateMessage.textContent = 'Admin API is not configured yet. Set the admin-api-base meta tag, or open /admin/?api=https://your-worker.workers.dev once to save it.';
+      } else {
+        gateMessage.textContent = `Sign in with your ADMIN_PASSWORD. Authentication is handled by ${API_BASE}.`;
+      }
     }
 
     if (gateInput) {
@@ -227,6 +262,7 @@
 
   const lock = () => {
     isAuthenticated = false;
+    clearSessionToken();
     setGate(false);
   };
 
@@ -235,6 +271,7 @@
       credentials: 'include',
       ...options,
       headers: {
+        ...authHeaders(),
         'Content-Type': 'application/json',
         ...(options.headers || {})
       }
@@ -256,9 +293,15 @@
       return;
     }
 
+    if (!API_BASE) {
+      lock();
+      return;
+    }
+
     try {
-      const { response, payload } = await requestJson('/api/admin/session', { method: 'GET' });
+      const { response, payload } = await requestJson(apiUrl('/api/admin/session'), { method: 'GET' });
       if (response.ok && payload?.authenticated) {
+        if (payload?.token) storeSessionToken(payload.token);
         unlock();
         return;
       }
@@ -962,7 +1005,7 @@
     };
 
     try {
-      const { response, payload: result } = await requestJson('/api/admin/publish', {
+      const { response, payload: result } = await requestJson(apiUrl('/api/admin/publish'), {
         method: 'POST',
         body: JSON.stringify(payload)
       });
@@ -991,7 +1034,7 @@
     if (gateStatus) gateStatus.textContent = 'Signing in...';
 
     try {
-      const { response, payload } = await requestJson('/api/admin/login', {
+      const { response, payload } = await requestJson(apiUrl('/api/admin/login'), {
         method: 'POST',
         body: JSON.stringify({ password: pass })
       });
@@ -1001,6 +1044,7 @@
         return;
       }
 
+      storeSessionToken(payload?.token);
       if (gateStatus) gateStatus.textContent = 'Signed in.';
       unlock();
     } catch {
@@ -1011,7 +1055,7 @@
   logoutBtn?.addEventListener('click', async () => {
     if (LOCAL_MODE) return;
     try {
-      await requestJson('/api/admin/logout', { method: 'POST' });
+      await requestJson(apiUrl('/api/admin/logout'), { method: 'POST' });
     } catch {
       // Fall through and lock the UI locally.
     }

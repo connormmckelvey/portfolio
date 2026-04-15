@@ -1,4 +1,0 @@
-# Never upload local environment files in direct/CLI deploys
-.env
-.env.*
-!.env.example
