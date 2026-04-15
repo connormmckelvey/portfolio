@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": "trip-1776230126199",
+    "title": "Joshua Tree NP",
+    "place": "Joshua Tree National Park",
+    "region": "",
+    "year": "2026",
+    "sortDate": "2026-04-15",
+    "dateLabel": "",
+    "coords": [
+      30,
+      -97
+    ],
+    "note": "",
+    "tags": [
+      "travel"
+    ],
+    "photos": [
+      {
+        "src": "../images/projects/trip-1776230126199/trip-1776230126199-image-1776230204439.png",
+        "alt": "Joshua Tree NP",
+        "caption": ""
+      }
+    ]
+  }
+]
