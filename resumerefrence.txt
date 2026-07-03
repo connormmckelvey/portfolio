@@ -1,0 +1,117 @@
+Haplink™
+At Employer: HERO Lab, Texas Robotics
+Job Title: Research Assistant in Texas Robotics
+Challenge/Problem with Context: 
+-	Our haptic devices had trouble with data corruption and sending data quickly over serial communications ports. 
+-	We also needed to completely reflash the firmware onto the microcontroller every time a parameter needed to be tweaked. This was time consuming and repetitive
+
+Action (what steps you put in place):
+
+•	Outside of class I built a firmware library and python library that outlines a communication protocol to update parameters without reflashing the microcontroller, and implements data validation to prevent corrupt data from being sent to the robot
+
+Result(s) – quantify with $, % or #:
+
+•	Published and organized so that its modular so anyone can implement the framework
+•	Shared/adopted by research class of 30
+•	Reduced and set consistent packet size down to 13 bytes
+•	100% error detection with XX latency at 100Hz control loop
+
+Strategic Impact on Employer:
+
+Reduced tuning time for hapkits and allowed researches to invent haptic environments using off board computation and visualization.
+
+Themes (your strengths, skills, personality traits): 
+Problem solving, ingenuity, initiative, innovative, results driven
+SkyLore, Crowdsourced Astronomy and Light polution App
+At Employer: Free Tail Hackers, HackTX 2025 Hackathon
+Job Title: hackathon member
+Challenge/Problem with Context: 
+-	Tasked to build an app inspired by the word celestial and present it in only one weekend.
+Action (what steps you put in place):
+
+-	Identified the breakthrough innovation leveraging user data to build a living database and light pollution map to help city planners, researchers, and builders. Instead of simply building a mobile app to teach enthusiasts about constellations 
+-	Pitched citizen scientist impact to judges. 
+-	Built a full mobile app with augmented reality, web dashboard, database implementation, machine learning algorithm to recognize constellations. 
+Result(s) – quantify with $, % or #:
+-	Won 1st place and $1000 dollars out of 5000 participants in the “best celestial” category.
+Themes (your strengths, skills, personality traits): 
+-	Execution under pressure, full stack system design, innovative problem solving
+Fireball™ Dice Roller Discord Bot
+At Employer: Krazy Studios, Self Employed 
+Job Title: Founder, Software Designer
+Challenge/Problem with Context: 
+-	Identified that during COVID-19 table top gaming groups needed to roll various dice to play together online 
+-	Discord lacked a powerful, easy to use, dice roller chatbot
+Action (what steps you put in place):
+
+•	Developed a Discord chatbot in python implementing a complex algorithm to handle customizable dice rolls and perform other randomization tasked tailored to the table top gaming community. 
+•	Implemented 14 custom slash commands using the discord API. 
+Result(s) – quantify with $, % or #:
+
+•	Published bot, reaching 260+ concurrent servers and 10,000 users prompting verification by Discord.
+
+Strategic Impact on Employer:
+
+Enabled hobby groups around the world to play games online and continue using my chatbot even after COVID-19 ended.
+
+Themes (your strengths, skills, personality traits): 
+Entrepreneurship, Software Design, Consistency, API integration, customer service, Hosting, Brand Image
+Image Drawing Robot Arm for AI Perception Research
+At Employer: UT Austin, Being Creative UGS Class with Professor Dempster 
+Job Title: Principal Investigator and Technical Designer
+Challenge/Problem with Context: 
+-	As AI generates increasingly creative ideas, society undervalue AI led innovation due to bias. Can I develop a robotic system that enables us to standardize physical medium so that we can meaningfully test whether this anti-AI creativity bias exists. 
+Action (what steps you put in place):
+
+•	Designed fabricated a 2 degree of freedom robotic drawing arm using 3D printed parts and embedded electronics to standardize the study’s physical stimuli
+•	Developed end to end software pipeline to simplify images, convert them to normalized coordinates, and use inverse kinematics to generate custom g-code robot instructions. 
+•	Developed simulation software to visualize the robot path of drawing images simplified using Ramer-Douglas-Peucker algorithm before running on physical hardware
+•	Executed a two block psychometric study to measure the perceived creativity of human vs AI design artwork across 25+ participants
+Result(s) – quantify with $, % or #:
+
+•	Proved statistically significant bias (p<0.0001) where labeling AI art decreased its perceived creativity score from 4.5 to 4.02 on a 5 point scale.
+•	Led a study of 25+ participants
+•	Achieved top marks on this project in Professor Dempster’s class.
+
+Strategic Impact on Employer:
+
+Enabled hobby groups around the world to play games online and continue using my chatbot even after COVID-19 ended.
+
+Themes (your strengths, skills, personality traits): 
+Entrepreneurship, Software Design, Consistency, API integration, customer service, Hosting, Brand Image
+Low-cost Vibrotactile Feedback Band for Large Motor Skill Learning
+At Employer: Human Enabled Robotics Lab at Texas Robotics under Professor Ann Fey and Dr. Ross Neuman
+Job Title: Undergraduate Researcher
+Challenge/Problem with Context: 
+-	Current solutions to teach large motor skills like a golf swing relies on solely visual feedback, this restricts both the quality and speed at which individuals can learn and retain motion skills. 
+-	Populations with vision issues are restricted from the current methods for teaching these skills
+-	Current tools the focus on the sense of touch are restricted to one skill or type of motion 
+Action (what steps you put in place):
+•	Invented a low-cost, modular band system that can be placed on any limb to deliver direction based haptic cues to guide motion through up to 4 haptic motor pods, including a Master Pod which holds a custom designed PCB featuring integrated charging, acceleration and orientation tracking, and wireless communication with your laptop
+•	Implemented a limb tracking, computer vision software that sends commands wirelessly to the band to guide the user in a specific path. 
+Result(s) – quantify with $, % or #:
+•	Built a full vibrotactile feedback system for under $25 per unit, making it a low-cost solution for learning motor skills.
+•	Designed a 3cm x 5cm PCB capable of controlling 4 motors, collecting acceleration & orientation data, and implementing one of the fastest wireless communication protocols for microcontrollers with latency around 1ms.
+Strategic Impact on Employer:
+ Enabled anyone (including those with vision issues) to learn large motor skills like kicking a soccer ball, or proper gym form using directional, haptic feedback. 
+Themes (your strengths, skills, personality traits): 
+ Fast Prototyping, PCB Design, CAD Design, Low-latency Communication Protocol 
+
+
+
+3lb Combat Robot
+At Employer: Texas Robo Rumble Competition, Texas Combat Robotics
+Job Title: Team Lead
+Challenge/Problem with Context: 
+Build a 3lb remote controlled robot with an active weapon to destroy other robots in a safe enclosure during battle day with a strict $300 limit.
+Action (what steps you put in place):
+•	Designed a robot with a horizontal drum spinner and front wedges capable of driving upside down on its two direct drive wheels. 
+•	Gained a deep understanding of additive manufacturing TPU/PLA/PETG and material science to ensure the best mechanical design to survive punctures, sheers, and other impacts.
+Result(s) – quantify with $, % or #:
+•	26,600
+•	YYYY
+Strategic Impact on Employer:
+ ZZZZ
+Themes (your strengths, skills, personality traits): 
+ DDDDD
+

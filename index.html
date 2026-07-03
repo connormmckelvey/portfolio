@@ -237,6 +237,93 @@
     .panel-nav-btn:disabled { opacity: 0.25; cursor: default; }
     .panel-nav-indicator { font-family: var(--font-mono); font-size: 9px; color: var(--ink-faint); letter-spacing: 0.08em; }
 
+    /* Resume Modal */
+    .resume-scrim { position: fixed; inset: 0; z-index: 400; background: rgba(26,58,42,0); pointer-events: none; transition: background 0.4s ease; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
+    .resume-scrim.open { background: rgba(26,58,42,0.18); pointer-events: all; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+    .resume-modal {
+      position: fixed;
+      top: 7.5%;
+      left: 50%;
+      transform: translate(-50%, 50px);
+      width: min(1000px, 90vw);
+      height: 80vh;
+      background: var(--white);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(26, 58, 42, 0.15);
+      z-index: 410;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.4s var(--ease-out), opacity 0.4s var(--ease-out);
+      overflow: hidden;
+    }
+    .resume-modal.open {
+      transform: translate(-50%, 0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    .resume-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 0.5px solid var(--border-light);
+      background: var(--off-white);
+      flex-shrink: 0;
+    }
+    .resume-modal-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--green-deep);
+      font-weight: 500;
+    }
+    .resume-modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .resume-modal-btn {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green-deep);
+      border: 0.5px solid var(--green-mid);
+      padding: 6px 14px;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+      transition: background 0.2s;
+      cursor: pointer;
+      background: none;
+      text-decoration: none;
+    }
+    .resume-modal-btn:hover {
+      background: var(--green-light);
+    }
+    .resume-modal-close {
+      font-size: 24px;
+      color: var(--ink-faint);
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .resume-modal-close:hover {
+      color: var(--green-deep);
+    }
+    .resume-modal-body {
+      flex: 1;
+      background: var(--off-white);
+      position: relative;
+    }
+    .resume-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
     /* About */
     #about { padding: 96px 80px; border-bottom: 0.5px solid var(--border); display: flex; gap: 80px; align-items: flex-start; }
     .about-left { flex: 1.4; }
@@ -471,6 +558,21 @@
   </div>
 </nav>
 
+<!-- Resume Viewer Modal -->
+<div class="resume-scrim" id="resumeScrim"></div>
+<div class="resume-modal" id="resumeModal" role="dialog" aria-modal="true" aria-label="Resume viewer">
+  <div class="resume-modal-header">
+    <div class="resume-modal-title">Connor McKelvey — Resume</div>
+    <div class="resume-modal-actions">
+      <a href="connor-mckelvey-resume.pdf" download class="resume-modal-btn">download PDF</a>
+      <button class="resume-modal-close" id="resumeClose" aria-label="Close modal">×</button>
+    </div>
+  </div>
+  <div class="resume-modal-body">
+    <iframe class="resume-iframe" src="connor-mckelvey-resume.pdf" title="Connor McKelvey Resume"></iframe>
+  </div>
+</div>
+
 <!-- Panel -->
 <div class="panel-scrim" id="panelScrim"></div>
 <div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Project details">
@@ -565,7 +667,7 @@
         <div style="flex:1;">
           <div class="building-pulse"><span class="pulse-dot"></span>active research</div>
           <h2 class="building-title">Vibrotactile Band<br><em>Teaching Large Motor Skills</em></h2>
-          <p class="building-desc">A low-cost wearable armband that uses targeted vibrational feedback to help users learn large motor skills. Built for the HERO Lab at Texas Robotics. Designed to make haptic-assisted learning accessible outside the lab using modular hardware customized through computer vision software.</p>
+          <p class="building-desc">A low-cost wearable armband system designed for the HERO Lab at Texas Robotics. Delivers direction-based haptic cues to guide motion through up to 4 vibration motor pods. Features a custom 3cm × 5cm Master Pod PCB with integrated charging, orientation tracking (IMU), and <1ms latency wireless communication. Built for under $25 per unit to enable accessible motor skill learning.</p>
           <div class="building-meta">
             <span class="meta-item">Texas Robotics HERO Lab</span>
             <span class="meta-item">haptics · embedded · wearable</span>
@@ -582,63 +684,15 @@
     <section id="projects">
       <div class="sec-header reveal"><span class="sec-label">// selected projects</span><span class="sec-rule"></span><span class="sec-count">05</span></div>
 
-      <div class="project-card reveal reveal-delay-1" data-project="0">
-        <div class="pc-body">
-          <div class="pc-top"><span class="pc-num">01</span><span class="pc-title">Haplink™</span><span class="pc-tag">robotics research</span></div>
-          <p class="pc-brief">Firmware and Python library for robust haptic serial communication. Increased reliablity by providing 100% error detection at 100Hz.</p>
-          <div class="pc-stack"><span class="chip">C++</span><span class="chip">Python</span><span class="chip">Arduino</span><span class="chip">Haptics</span></div>
-          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
-        </div>
-        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-1" data-project="1">
-        <div class="pc-body">
-          <div class="pc-top"><span class="pc-num">02</span><span class="pc-title">SkyLore™</span><span class="pc-tag">hackathon</span><span class="pc-award">🏆 1st · $1,000 · HackTX 2025</span></div>
-          <p class="pc-brief">Crowdsourced astronomy and light pollution mapping app. Won 1st place out of 5,000 participants at HackTX 2025 with AR, ML, and a live pollution database.</p>
-          <div class="pc-stack"><span class="chip">Python</span><span class="chip">ML</span><span class="chip">AR</span><span class="chip">Mobile</span></div>
-          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
-        </div>
-        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-2" data-project="2">
-        <div class="pc-body">
-          <div class="pc-top"><span class="pc-num">03</span><span class="pc-title">Drawing Robot Arm</span><span class="pc-tag">robotics · research</span></div>
-          <p class="pc-brief">Two-jointed arm that draws images using inverse kinematics. Built as a research instrument for an academic study on AI creativity bias at UT Austin.</p>
-          <div class="pc-stack"><span class="chip">Python</span><span class="chip">Inverse Kinematics</span><span class="chip">Serial Comms</span></div>
-          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
-        </div>
-        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-2" data-project="3">
-        <div class="pc-body">
-          <div class="pc-top"><span class="pc-num">04</span><span class="pc-title">Fireball Dice Roller</span><span class="pc-tag">software</span></div>
-          <p class="pc-brief">Verified Discord bot with 10,000+ users across 150 servers. Built to keep tabletop gaming communities rolling during the pandemic.</p>
-          <div class="pc-stack"><span class="chip">Python</span><span class="chip">Discord API</span><span class="chip">Algorithms</span></div>
-          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
-        </div>
-        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-3" data-project="4">
-        <div class="pc-body">
-          <div class="pc-top"><span class="pc-num">05</span><span class="pc-title">Circuit Board Logic Simulator</span><span class="pc-tag">education · software</span></div>
-          <p class="pc-brief">Drag-and-drop digital logic gate simulator in Godot. Interactive circuit design tool built to make Boolean algebra tangible for students.</p>
-          <div class="pc-stack"><span class="chip">GDScript</span><span class="chip">Godot</span><span class="chip">Digital Logic</span></div>
-          <div class="pc-footer"><span class="pc-cta">view project</span><span class="pc-arrow">→</span></div>
-        </div>
-        <div class="pc-preview"><div class="pc-preview-placeholder"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/><circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/><path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/></svg>add photo</div></div>
-      </div>
+      <div id="projects-container"></div>
     </section>
 
     <section id="about">
       <div class="about-left">
-        <div class="sec-header reveal" style="margin-bottom:40px;"><span class="sec-label">// off the clock</span><span class="sec-rule"></span></div>
-        <h2 class="about-heading reveal">More than circuits:<br><em>the human side of me.</em></h2>
-        <p class="about-body reveal reveal-delay-1">When I'm not building robots, I'm usually outside, moving, or making something for fun. I love pickup soccer, long walks around Austin with a playlist on, and hunting down the next coffee spot worth becoming a regular at.</p>
-        <p class="about-body reveal reveal-delay-2">I also like storytelling through photos and short journal-style posts. This part of my life keeps me grounded, curious, and creative, and it gives me better perspective when I come back to harder technical work.</p>
+        <div class="sec-header reveal" style="margin-bottom:40px;"><span class="sec-label">// outside the lab</span><span class="sec-rule"></span></div>
+        <h2 class="about-heading reveal">Outside the Lab<br><em>interests and hobbies.</em></h2>
+        <p class="about-body reveal reveal-delay-1">Outside of classes and research, I try to stay active and creative. You'll usually find me playing pickup soccer, hiking around Enchanted Rock or Joshua Tree, and scouting new coffee spots in Austin.</p>
+        <p class="about-body reveal reveal-delay-2">I also shoot photography and write about travel, design, and hardware projects on my blog. It's a simple way to step back from the computer, clear my head, and focus on other hobbies.</p>
         <div class="about-values reveal reveal-delay-3">
           <span class="value-pill">soccer</span><span class="value-pill">gym sessions</span><span class="value-pill">coffee scouting</span>
           <span class="value-pill">music rabbit holes</span><span class="value-pill">photography</span><span class="value-pill">hiking</span><span class="value-pill">journaling</span>
@@ -676,13 +730,30 @@
       <div class="exp-item reveal reveal-delay-2"><div class="exp-date">2023<br>2025</div><div class="exp-body"><div class="exp-top"><span class="exp-title">Founder & Software Developer</span><span class="exp-org">Krazy Studios</span></div><p class="exp-desc">Established a studio of programmers, artists, and writers to develop and publish Discord bots and games. Grew Fireball Dice Roller to 10,000+ users across 150 servers. Delivered private bots for clients and built community on social media.</p></div></div>
     </section>
 
-    <!-- <section id="education">
+    <section id="education">
       <div class="sec-header reveal"><span class="sec-label">// education</span><span class="sec-rule"></span></div>
       <div class="edu-card">
-        <div class="edu-left reveal"><div class="edu-school">University of Texas at Austin</div><div class="edu-degree">B.S. Electrical and Computer Engineering</div><div class="edu-meta">Computer Architecture Track · Robotics Minor · Expected 2029</div><div class="edu-courses"><span class="chip">Differential Equations</span><span class="chip">Electrical Engineering</span><span class="chip">Embedded Systems</span></div></div>
-        <div class="edu-right reveal reveal-delay-1"><div class="honor-item">Eagle Scout — Boy Scouts of America</div><div class="honor-item">AP Scholar with Distinction</div><div class="honor-item">Varsity Soccer Captain & Defensive MVP ×2</div><div class="honor-item">HPE CodeWars — Advanced Division</div><div class="honor-item">Robotics Academy — 3rd of 50 teams, UT Austin</div></div>
+        <div class="edu-left reveal">
+          <div class="edu-school">University of Texas at Austin</div>
+          <div class="edu-degree">B.S. Electrical and Computer Engineering</div>
+          <div class="edu-meta">Computer Architecture &amp; Embedded Systems Track &middot; Robotics Minor &middot; Expected 2029</div>
+          <div class="edu-courses">
+            <span class="chip">Computer Architecture</span>
+            <span class="chip">Embedded Systems</span>
+            <span class="chip">Digital Logic Design</span>
+            <span class="chip">Data Structures</span>
+            <span class="chip">Differential Equations</span>
+          </div>
+        </div>
+        <div class="edu-right reveal reveal-delay-1">
+          <div class="honor-item">3.9 / 4.0 Cumulative GPA</div>
+          <div class="honor-item">Eagle Scout — Boy Scouts of America</div>
+          <div class="honor-item">AP Scholar with Distinction</div>
+          <div class="honor-item">Robotics Academy — 3rd of 50 teams, UT Austin</div>
+          <div class="honor-item">Varsity Soccer Captain &amp; Defensive MVP &times;2</div>
+        </div>
       </div>
-    </section> -->
+    </section>
 
 
     <section id="skills">
@@ -733,65 +804,142 @@ const PROJECTS = [
     num:'01', title:'Haplink™',
     slug:'haplink',
     tags:['robotics research'],
-    desc:`Firmware and Python library for robust serial communication between haptic devices and robotic applications, built at the HERO Lab at Texas Robotics, UT Austin.
+    brief:'Modular firmware and Python library that outlines a communication protocol for haptic devices. Eliminates microcontroller reflashing during parameter tweaks and achieves 100% error detection in a 100Hz control loop.',
+    desc:`Modular firmware and Python library that implements a communication protocol for haptic devices, developed at the HERO Lab at Texas Robotics, UT Austin.
 
-The library solves two critical problems: data corruption over serial connections and the need to reflash firmware every time a parameter changed. Haplink implements a communication protocol that allows parameter updates without reflashing, with full data validation. Reduced packet size to 13 bytes with 100% error detection at a 100Hz control loop.
+Challenge: Our haptic devices had trouble with data corruption and sending data quickly over serial communication ports. Reflashing the microcontroller for every parameter tweak was time-consuming.
 
-Adopted by a class of 30 researchers, enabling them to build and tune haptic environments using off-board computation and visualization.`,
+Action: Built a C++ firmware library and Python library to update parameters without reflashing the microcontroller, implementing data validation to prevent corrupt data transmission.
+
+Key results:
+- Adopted by a research class of 30 students.
+- Reduced and set consistent serial packet size down to 13 bytes.
+- Achieved 100% error detection with low latency in a 100Hz control loop.
+- Significantly reduced tuning time and enabled researchers to build haptic environments using off-board computation and visualization.`,
     stack:['C++','Python','Arduino','Serial Comms','Haptics','Firmware'],
     github:'https://github.com/connormmckelvey/Haplink',
-    media:[] // e.g. ['cover.jpg','wiring.jpg']
+    media:[]
   },
   {
     num:'02', title:'SkyLore™',
     slug:'skylore',
-    tags:['hackathon','🏆 1st place · $1,000 · HackTX 2025'],
-    desc:`Won 1st place and $1,000 in the "best celestial" category out of 5,000 participants at HackTX 2025 at UT Austin.
+    tags:['hackathon','🏆 1st place · HackTX 2025'],
+    brief:'Crowdsourced astronomy and light pollution mapping app. Won 1st place out of 5,000 participants at HackTX 2025 with mobile AR, ML constellation recognition, and a live database visualization dashboard.',
+    desc:`Won 1st place in the "best celestial" category out of 5,000 participants at HackTX 2025, UT Austin's premier hackathon.
 
-Rather than building a simple star-gazing app, we identified a breakthrough: leveraging crowdsourced user data to build a living light pollution database to help city planners, researchers, and architects. The app features augmented reality constellation overlays, a machine learning pipeline for constellation recognition, a web dashboard for data visualization, and a database architecture that improves with every user.
+Challenge: Tasked to build an app inspired by the word "celestial" and present it in only one weekend.
 
-Built in a single hackathon weekend by a small team under tight time pressure.`,
-    stack:['Python','Machine Learning','Augmented Reality','Full Stack','Mobile','Database'],
+Action: Identified a breakthrough innovation leveraging citizen scientist data to build a living database and light pollution map to assist city planners, researchers, and builders, rather than simply building a constellation viewer. Built a full mobile app with augmented reality constellation overlays, a web dashboard, database implementation, and a machine learning constellation recognition classifier. Pitched the citizen scientist impact to the judges.
+
+Key results:
+- Won 1st place and $1,000 cash prize out of 5,000 participants.
+- Designed and delivered a fully functional end-to-end prototype under intense weekend time constraints.`,
+    stack:['Python','Machine Learning','Augmented Reality','SQL Database','Mobile App','Web Dashboard'],
+    github:'https://github.com/connormmckelvey',
     media:[]
   },
   {
     num:'03', title:'Drawing Robot Arm',
     slug:'drawing-robot-arm',
-    tags:['robotics','research'],
-    desc:`A two-jointed robotic arm that takes a digital image and draws it on paper using inverse kinematics. Built as a research instrument for Professor Dempster's "Being Creative" course at UT Austin.
+    tags:['robotics', 'research'],
+    brief:'Two-degree-of-freedom robotic drawing arm designed and fabricated using 3D-printed parts and embedded electronics. Generates G-code via inverse kinematics and runs simulation software to standardize AI creativity research.',
+    desc:`Designed and fabricated a 2-degree-of-freedom robotic drawing arm as the Principal Investigator for a study on AI creativity bias at UT Austin under Professor Dempster.
 
-The arm was used to standardize AI-generated artwork stimuli for a study on human bias against AI creativity. Key technical challenges included implementing inverse kinematics for smooth joint control, image simplification to extract drawable line paths, and serial communication and data buffering between the control software and motor hardware.
+Challenge: As AI generates increasingly creative ideas, society undervalues AI-led innovation due to bias. I needed to develop a robotic system that standardizes the physical medium of artwork stimuli, enabling us to test whether this anti-AI creativity bias exists.
 
-The project contributed to research exploring how people perceive and evaluate creativity in AI-generated versus human-generated artwork.`,
-    stack:['Python','Inverse Kinematics','Serial Communication','Image Processing','Robotics'],
+Action: Designed and fabricated a 2-degree-of-freedom robotic drawing arm using 3D-printed parts and embedded electronics. Developed an end-to-end software pipeline to simplify images, convert them to normalized coordinates, and run inverse kinematics to generate custom G-code. Created simulation software using the Ramer-Douglas-Peucker algorithm.
+
+Key results:
+- Executed a two-block psychometric study with 25+ participants.
+- Proved a statistically significant bias (p < 0.0001) where AI labels decreased perceived creativity ratings from 4.5 to 4.02 on a 5-point scale.
+- Achieved top marks on the project in class.`,
+    stack:['Python','Inverse Kinematics','G-Code Generator','RDP Algorithm','3D Printing','Embedded Electronics'],
     github:'https://github.com/connormmckelvey/Being-Creative-Research-Project',
     media:[]
   },
   {
-    num:'04', title:'Fireball Dice Roller',
-    slug:'fireball-dice-roller',
-    tags:['software'],
-    desc:`A verified Discord bot built to help tabletop role-playing game communities continue playing online during the COVID-19 pandemic. Grew to 10,000+ users across 150+ servers and is verified on the Discord platform.
+    num:'04', title:'3lb Combat Robot',
+    slug:'combat-robot',
+    tags:['mechanical design','robotics competition'],
+    brief:'Remote-controlled combat robot featuring a horizontal drum spinner and a low-profile chassis designed to drive flipped. Fabricated with impact-resistant TPU, PLA, and PETG under a strict $300 budget.',
+    desc:`Designed and constructed a 3lb remote-controlled combat robot for the Texas Robo Rumble competition under a strict $300 budget.
 
-The bot features a customizable randomization engine that handles complex dice mechanics, modifiers, and multiple TTRPG systems (D&D, Pathfinder, and more). Built as founder of Krazy Studios alongside a team of developers and community managers.
+Challenge: Build a 3lb remote-controlled robot with an active weapon to destroy other robots in a safe enclosure during battle day with a strict $300 limit.
 
-This was one of the first projects that showed me what it meant to ship software that real people depend on — and the responsibility that comes with that scale.`,
-    stack:['Python','Discord API','Algorithms','Randomization','Bot Architecture'],
+Action: Designed a robot with a high-speed horizontal drum spinner and front wedges, engineered to remain fully drivable even when flipped upside down. Gained a deep understanding of material selection and additive manufacturing using TPU, PLA, and PETG to survive punctures, shears, and impacts.
+
+Key results:
+- Built a fully functional, competitive combat robot within weight and cost limits.
+- Leveraged optimized power distribution and high-current drive setups to ensure survivability in the arena.`,
+    stack:['SolidWorks (CAD)','Additive Manufacturing','Material Science','Power Distribution','Remote Control Systems'],
+    github:'https://github.com/connormmckelvey',
     media:[]
   },
   {
-    num:'05', title:'Circuit Board Logic Simulator',
-    slug:'logic-simulator',
-    tags:['education','software'],
-    desc:`A drag-and-drop graphical simulator for digital logic gate design, built in the Godot game engine. Allows users to place logic gates and circuit components on a grid to design and simulate electronic circuit logic.
+    num:'05', title:'Fireball Dice Roller',
+    slug:'fireball-dice-roller',
+    tags:['software','Discord bot'],
+    brief:'Verified Discord chatbot with custom randomization algorithms handling complex nested dice mechanics. Grew to serve over 10,000 active users across 260+ Discord servers.',
+    desc:`Developed and published a verified Discord chatbot built to facilitate tabletop role-playing games online during the COVID-19 pandemic.
 
-Implements Boolean algebra operators (AND, OR, NOT, XOR, NAND, NOR) in an interactive interface so students can visualize circuit behavior and logic flow in real time. Designed as a teaching tool to make digital electronics concepts more accessible and hands-on.
+Challenge: During the pandemic, tabletop gaming groups needed to roll various dice to play together online. Discord lacked a powerful, easy-to-use, dice-rolling chatbot.
 
-This project grew out of my interest in making technical concepts tangible — the same instinct that drives a lot of my hardware work.`,
-    stack:['GDScript','Godot Engine','Digital Logic','Boolean Algebra','Education'],
+Action: Developed a Discord chatbot in Python using custom randomization algorithms designed to handle complex dice rolls, modifiers, and custom systems. Implemented 14 custom slash commands leveraging the Discord API.
+
+Key results:
+- Published bot, reaching 260+ concurrent servers and 10,000 active users.
+- Prompted official verification by the Discord platform.
+- Maintained hosting, customer support, and system operations.`,
+    stack:['Python','Discord API','Algorithms','Randomization','System Hosting'],
+    github:'https://github.com/connormmckelvey',
     media:[]
   }
 ];
+
+// ── Generate project cards dynamically ──────────────────────────────────
+const projectsContainer = document.getElementById('projects-container');
+if (projectsContainer) {
+  projectsContainer.innerHTML = PROJECTS.map((p, idx) => {
+    const delayClass = `reveal-delay-${(idx % 3) + 1}`;
+    let tagsHTML = '';
+    p.tags.forEach(t => {
+      if (t.startsWith('🏆')) {
+        tagsHTML += `<span class="pc-award">${t}</span>`;
+      } else {
+        tagsHTML += `<span class="pc-tag">${t}</span>`;
+      }
+    });
+    const chipsHTML = p.stack.map(s => `<span class="chip">${s}</span>`).join('');
+    
+    return `
+      <div class="project-card reveal ${delayClass}" data-project="${idx}">
+        <div class="pc-body">
+          <div class="pc-top">
+            <span class="pc-num">${p.num}</span>
+            <span class="pc-title">${p.title}</span>
+            ${tagsHTML}
+          </div>
+          <p class="pc-brief">${p.brief}</p>
+          <div class="pc-stack">${chipsHTML}</div>
+          <div class="pc-footer">
+            <span class="pc-cta">view project</span>
+            <span class="pc-arrow">→</span>
+          </div>
+        </div>
+        <div class="pc-preview">
+          <div class="pc-preview-placeholder">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="#b4b2a9" stroke-width="1"/>
+              <circle cx="8.5" cy="8.5" r="1.5" stroke="#b4b2a9" stroke-width="1"/>
+              <path d="M3 15l5-4 4 3 3-2 6 5" stroke="#b4b2a9" stroke-width="1" stroke-linejoin="round"/>
+            </svg>
+            add photo
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
 
 function normalizeAssetPath(asset) {
   return String(asset || '').replace(/\\/g, '/').trim();
@@ -916,8 +1064,42 @@ panelScrim.addEventListener('click', closePanel);
 document.getElementById('panelPrev').addEventListener('click', () => { if (activeIdx > 0) renderPanel(activeIdx-1); });
 document.getElementById('panelNext').addEventListener('click', () => { if (activeIdx < PROJECTS.length-1) renderPanel(activeIdx+1); });
 
+// ── Resume Modal Logic ───────────────────────────────────────────────────
+const resumeScrim = document.getElementById('resumeScrim');
+const resumeModal = document.getElementById('resumeModal');
+const resumeClose = document.getElementById('resumeClose');
+
+function openResume(e) {
+  if (window.innerWidth < 768) {
+    return; // Let native browser handle PDF on mobile screens
+  }
+  e.preventDefault();
+  resumeScrim.classList.add('open');
+  resumeModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeResume() {
+  resumeScrim.classList.remove('open');
+  resumeModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('a[href="connor-mckelvey-resume.pdf"]').forEach(link => {
+  if (!link.hasAttribute('download')) {
+    link.addEventListener('click', openResume);
+  }
+});
+
+resumeClose.addEventListener('click', closeResume);
+resumeScrim.addEventListener('click', closeResume);
+
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closePanel(); return; }
+  if (e.key === 'Escape') { 
+    closePanel(); 
+    closeResume();
+    return; 
+  }
   if (!panel.classList.contains('open')) return;
   if (e.key === 'ArrowLeft'  && activeIdx > 0)                   renderPanel(activeIdx-1);
   if (e.key === 'ArrowRight' && activeIdx < PROJECTS.length - 1) renderPanel(activeIdx+1);
