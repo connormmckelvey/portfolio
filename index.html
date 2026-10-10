@@ -539,12 +539,60 @@
         typeWriter();
       }
 
+      async function loadGalleryProjects() {
+        const container = document.querySelector('#projects .projects-grid');
+        if (!container) return;
+        try {
+          const res = await fetch('gallery/projects.json?v=' + Date.now());
+          if (!res.ok) return;
+          const projects = await res.json();
+          if (!Array.isArray(projects) || !projects.length) return;
+
+          const htmlArticles = projects.map((p) => {
+            const isVideo = p.mediaType === 'video' || /\.(mp4|webm|mov)$/i.test(p.mediaSrc || '');
+            const hasOverlay = Boolean(
+              (p.kicker && p.kicker.trim()) ||
+              (p.title && p.title.trim()) ||
+              (p.description && p.description.trim())
+            );
+
+            let overlayHtml = '';
+            if (hasOverlay) {
+              const parts = [];
+              if (p.kicker && p.kicker.trim()) parts.push(`          <p class="project-kicker">${p.kicker.trim()}</p>`);
+              if (p.title && p.title.trim()) parts.push(`          <h2 class="project-title">${p.title.trim()}</h2>`);
+              if (p.description && p.description.trim()) parts.push(`          <p class="project-description">${p.description.trim()}</p>`);
+              overlayHtml = `\n        <div class="project-overlay">\n${parts.join('\n')}\n        </div>`;
+            }
+
+            if (isVideo) {
+              return `      <article class="project-card">
+        <video class="project-img" autoplay loop muted playsinline${p.posterSrc ? ` poster="${p.posterSrc}"` : ''}>
+          <source src="${p.mediaSrc}" type="video/mp4" />
+          <img src="${p.posterSrc || p.mediaSrc}" alt="${p.title || 'Project video'}" class="project-img" />
+        </video>${overlayHtml}
+      </article>`;
+            } else {
+              return `      <article class="project-card">
+        <img src="${p.mediaSrc}" alt="${p.title || 'Project image'}" class="project-img" />${overlayHtml}
+      </article>`;
+            }
+          }).join('\n\n');
+
+          container.innerHTML = htmlArticles;
+        } catch {
+          // Fall back to pre-rendered HTML cards inside index.html
+        }
+      }
+
       window.addEventListener('DOMContentLoaded', () => {
         startTypewriter('heroGreeting', "Hi, I'm Connor McKelvey");
         startTypewriter('footerGreeting', "Thanks for getting to know me!");
+        void loadGalleryProjects();
       });
     })();
   </script>
+
 
 </body>
 </html>
