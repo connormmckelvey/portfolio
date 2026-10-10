@@ -36,6 +36,7 @@
   const logoutBtn = document.querySelector('[data-logout]');
 
   const newItemBtn = document.querySelector('[data-new-item]');
+  const bulkImportBtn = document.querySelector('[data-bulk-import]');
   const duplicateBtn = document.querySelector('[data-duplicate-item]');
   const deleteBtn = document.querySelector('[data-delete-item]');
   const saveBtn = document.querySelector('[data-save-draft]');
@@ -120,7 +121,7 @@
   const previewAssetPath = (path) => {
     const value = String(path || '').trim();
     if (!value) return '';
-    if (/^(https?:)?\/\//.test(value) || value.startsWith('/') || value.startsWith('../') || value.startsWith('./')) {
+    if (/^(https?:)?\/\//.test(value) || value.startsWith('/') || value.startsWith('../') || value.startsWith('./') || value.startsWith('blob:')) {
       return value;
     }
     return `../${value}`;
@@ -129,7 +130,7 @@
   const normalizeAssetPath = (path) => {
     const value = String(path || '').trim();
     if (!value) return '';
-    if (/^(https?:)?\/\//.test(value) || value.startsWith('/')) {
+    if (/^(https?:)?\/\//.test(value) || value.startsWith('/') || value.startsWith('blob:')) {
       return value;
     }
     return value.replace(/^\.\.\//, '').replace(/^\.\//, '');
@@ -398,14 +399,59 @@
 
   const createNewProject = () => ({
     id: `project-${Date.now()}`,
-    title: 'New Gallery Project',
-    kicker: 'Texas Robotics / HERO Lab',
-    description: 'Enter project details, firmware notes, hardware specifications, or research accomplishments here.',
+    title: '',
+    kicker: '',
+    description: '',
     mediaType: 'image',
     mediaSrc: 'gallery/new-project/image.jpg',
     posterSrc: '',
-    tags: ['Embedded', 'Robotics']
+    tags: []
   });
+
+  const handleBulkImportFiles = async (files) => {
+    if (!files || !files.length) return;
+    const newProjects = [];
+    if (publishStatus) publishStatus.textContent = `Processing ${files.length} media file(s)...`;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const nameStem = trimFileNameExt(file.name);
+      const folderSlug = slugifySegment(nameStem || `media-${Date.now()}-${i}`) || `media-${Date.now()}-${i}`;
+      const isVideo = String(file.type || '').toLowerCase().startsWith('video/') || /\.(mp4|webm|mov)$/i.test(file.name);
+
+      let mediaSrcPath = `gallery/${folderSlug}/${file.name}`;
+
+      if (!LOCAL_MODE && API_BASE && isAuthenticated) {
+        try {
+          const payload = await uploadMediaAsset({
+            file,
+            folder: `gallery/${folderSlug}`,
+            basename: `${folderSlug}-media`
+          });
+          if (payload?.path) mediaSrcPath = payload.path;
+        } catch (err) {
+          console.warn('Bulk upload failed for file:', file.name, err);
+        }
+      }
+
+      newProjects.push({
+        id: folderSlug,
+        title: '',
+        kicker: '',
+        description: '',
+        mediaType: isVideo ? 'video' : 'image',
+        mediaSrc: mediaSrcPath,
+        posterSrc: '',
+        tags: []
+      });
+    }
+
+    state.projects = [...newProjects, ...state.projects];
+    if (newProjects[0]) state.selectedId = newProjects[0].id;
+    persistState();
+    renderAll();
+    if (publishStatus) publishStatus.textContent = `Created ${newProjects.length} new gallery project(s) with clean image/video output.`;
+  };
 
   const writeCurrentProject = (updater) => {
     const currentId = state.selectedId;
@@ -428,7 +474,8 @@
   const deleteCurrentProject = () => {
     const current = getCurrentProject();
     if (!current) return;
-    if (!confirm(`Are you sure you want to delete "${current.title}" (${current.id})?`)) return;
+    const label = current.title || current.id;
+    if (!confirm(`Are you sure you want to delete "${label}"?`)) return;
 
     state.projects = state.projects.filter((p) => p.id !== current.id);
     state.selectedId = state.projects[0]?.id || '';
@@ -441,7 +488,7 @@
     if (!current) return;
     const copy = deepClone(current);
     copy.id = `${copy.id}-copy`;
-    copy.title = `${copy.title} (Copy)`;
+    if (copy.title) copy.title = `${copy.title} (Copy)`;
     state.projects.unshift(copy);
     state.selectedId = copy.id;
     persistState();
@@ -528,11 +575,11 @@
 
       const kicker = document.createElement('div');
       kicker.className = 'admin-item-meta';
-      kicker.textContent = item.kicker || item.id;
+      kicker.textContent = item.kicker || (item.title ? item.id : 'Image-only project');
 
       const note = document.createElement('div');
       note.className = 'admin-item-note';
-      note.textContent = item.description || '';
+      note.textContent = item.description || (item.mediaSrc ? `Src: ${item.mediaSrc}` : 'No description');
 
       const tags = document.createElement('div');
       tags.className = 'admin-tag-row';
@@ -562,7 +609,7 @@
       editorMeta.textContent = '';
       const empty = document.createElement('div');
       empty.className = 'admin-empty';
-      empty.textContent = 'Click "+ new project" to create a gallery project.';
+      empty.textContent = 'Click "+ new project" or "+ bulk import media" to create a project.';
       formRoot.replaceChildren(empty);
       return;
     }
@@ -587,13 +634,13 @@
 
     const fields = [
       field('project id (folder slug)', idInput),
-      field('project title', titleInput),
-      field('kicker / organization', kickerInput),
+      field('project title (optional)', titleInput),
+      field('kicker / organization (optional)', kickerInput),
       field('media type', mediaTypeSelect),
       field('media source file (image or video)', mediaSrcInput),
-      field('poster image source (video fallback image)', posterSrcInput),
-      field('tags (comma-separated)', tagsInput),
-      field('project description', descTextarea)
+      field('poster image source (video fallback - optional)', posterSrcInput),
+      field('tags (optional, comma-separated)', tagsInput),
+      field('project description (optional)', descTextarea)
     ];
 
     fields[0].classList.add('full');
@@ -606,7 +653,7 @@
 
     const note = document.createElement('div');
     note.className = 'admin-note';
-    note.textContent = 'Upload image or video files directly into gallery/<project-id>/. Videos play automatically on hover/autoplay with video poster fallback.';
+    note.textContent = 'All text fields (Title, Kicker, Description, Tags) are optional. If left blank, the project displays as a clean 1:1 image or video gallery tile on the site.';
 
     const uploadPanel = document.createElement('div');
     uploadPanel.className = 'admin-section';
@@ -721,23 +768,39 @@
       wrapper.append(img);
     }
 
-    const overlay = document.createElement('div');
-    overlay.className = 'project-overlay';
+    const hasOverlayText = Boolean(
+      (project.kicker && project.kicker.trim()) ||
+      (project.title && project.title.trim()) ||
+      (project.description && project.description.trim())
+    );
 
-    const kicker = document.createElement('p');
-    kicker.className = 'project-kicker';
-    kicker.textContent = project.kicker || 'Texas Robotics / HERO Lab';
+    if (hasOverlayText) {
+      const overlay = document.createElement('div');
+      overlay.className = 'project-overlay';
 
-    const title = document.createElement('h2');
-    title.className = 'project-title';
-    title.textContent = project.title || 'Untitled Project';
+      if (project.kicker && project.kicker.trim()) {
+        const kicker = document.createElement('p');
+        kicker.className = 'project-kicker';
+        kicker.textContent = project.kicker.trim();
+        overlay.append(kicker);
+      }
 
-    const desc = document.createElement('p');
-    desc.className = 'project-description';
-    desc.textContent = project.description || 'Project description...';
+      if (project.title && project.title.trim()) {
+        const title = document.createElement('h2');
+        title.className = 'project-title';
+        title.textContent = project.title.trim();
+        overlay.append(title);
+      }
 
-    overlay.append(kicker, title, desc);
-    wrapper.append(overlay);
+      if (project.description && project.description.trim()) {
+        const desc = document.createElement('p');
+        desc.className = 'project-description';
+        desc.textContent = project.description.trim();
+        overlay.append(desc);
+      }
+
+      wrapper.append(overlay);
+    }
 
     wrapper.addEventListener('click', () => {
       state.previewHover = !state.previewHover;
@@ -747,7 +810,6 @@
 
     previewCard.replaceChildren(wrapper);
   };
-
 
   const renderAll = () => {
     renderKindStatus();
@@ -770,26 +832,31 @@
   const exportProjectsHtml = () => {
     const htmlArticles = state.projects.map((p) => {
       const isVideo = p.mediaType === 'video';
+      const hasOverlay = Boolean(
+        (p.kicker && p.kicker.trim()) ||
+        (p.title && p.title.trim()) ||
+        (p.description && p.description.trim())
+      );
+
+      let overlayHtml = '';
+      if (hasOverlay) {
+        const parts = [];
+        if (p.kicker && p.kicker.trim()) parts.push(`          <p class="project-kicker">${p.kicker.trim()}</p>`);
+        if (p.title && p.title.trim()) parts.push(`          <h2 class="project-title">${p.title.trim()}</h2>`);
+        if (p.description && p.description.trim()) parts.push(`          <p class="project-description">${p.description.trim()}</p>`);
+        overlayHtml = `\n        <div class="project-overlay">\n${parts.join('\n')}\n        </div>`;
+      }
+
       if (isVideo) {
         return `      <article class="project-card">
         <video class="project-img" autoplay loop muted playsinline${p.posterSrc ? ` poster="${p.posterSrc}"` : ''}>
           <source src="${p.mediaSrc}" type="video/mp4" />
-          <img src="${p.posterSrc || p.mediaSrc}" alt="${p.title}" class="project-img" />
-        </video>
-        <div class="project-overlay">
-          <p class="project-kicker">${p.kicker}</p>
-          <h2 class="project-title">${p.title}</h2>
-          <p class="project-description">${p.description}</p>
-        </div>
+          <img src="${p.posterSrc || p.mediaSrc}" alt="${p.title || 'Project video'}" class="project-img" />
+        </video>${overlayHtml}
       </article>`;
       } else {
         return `      <article class="project-card">
-        <img src="${p.mediaSrc}" alt="${p.title}" class="project-img" />
-        <div class="project-overlay">
-          <p class="project-kicker">${p.kicker}</p>
-          <h2 class="project-title">${p.title}</h2>
-          <p class="project-description">${p.description}</p>
-        </div>
+        <img src="${p.mediaSrc}" alt="${p.title || 'Project image'}" class="project-img" />${overlayHtml}
       </article>`;
       }
     }).join('\n\n');
@@ -821,8 +888,14 @@
     try {
       const { response, payload: result } = await requestJson(apiUrl('/api/admin/publish'), {
         method: 'POST',
-        body: JSON.stringify({ projects: state.projects })
+        body: JSON.stringify({
+          projects: state.projects,
+          gallery: state.projects,
+          blog: [],
+          trip: []
+        })
       });
+
 
       if (!response.ok) {
         const detail = result?.error || result?.message || `Publish failed (${response.status})`;
@@ -834,6 +907,23 @@
       if (publishStatus) publishStatus.textContent = 'Network error reaching publish endpoint. Verify worker API URL and CORS configuration.';
     }
   };
+
+  const bulkPicker = document.createElement('input');
+  bulkPicker.type = 'file';
+  bulkPicker.multiple = true;
+  bulkPicker.accept = UPLOAD_ACCEPT;
+  bulkPicker.hidden = true;
+  document.body.append(bulkPicker);
+
+  bulkImportBtn?.addEventListener('click', () => {
+    bulkPicker.click();
+  });
+
+  bulkPicker.addEventListener('change', () => {
+    const files = Array.from(bulkPicker.files || []);
+    void handleBulkImportFiles(files);
+    bulkPicker.value = '';
+  });
 
   gateForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
