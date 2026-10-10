@@ -51,12 +51,11 @@ const sanitizeFileStem = (value) => {
 };
 
 const normalizeImageFolder = (value) => {
-  const raw = String(value || 'uploads').replace(/\\/g, '/').trim();
-  const cleaned = raw.startsWith('images/') ? raw.slice(7) : raw;
-  const pieces = cleaned.split('/').map(sanitizeSegment).filter(Boolean);
-  const folder = pieces.length ? pieces.join('/') : 'uploads';
-  return `images/${folder}`;
+  const raw = String(value || 'gallery').replace(/\\/g, '/').trim();
+  const pieces = raw.split('/').map(sanitizeSegment).filter(Boolean);
+  return pieces.length ? pieces.join('/') : 'gallery';
 };
+
 
 const extFromName = (name) => {
   const match = String(name || '').toLowerCase().match(/\.([a-z0-9]+)$/);

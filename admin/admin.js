@@ -315,8 +315,30 @@
     }
   };
 
+  const fetchCanonicalProjects = async () => {
+    try {
+      const res = await fetch('../gallery/projects.json?v=' + Date.now());
+      if (!res.ok) return;
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) {
+        // If localStorage has default seed or fewer items, sync with projects.json
+        const localProjects = state.projects || [];
+        if (data.length >= localProjects.length) {
+          state.projects = data;
+          if (!state.selectedId || !state.projects.some((p) => p.id === state.selectedId)) {
+            state.selectedId = state.projects[0]?.id || '';
+          }
+          persistState();
+        }
+      }
+    } catch {
+      // Keep local state fallback
+    }
+  };
+
   let state = loadState();
   let isAuthenticated = false;
+
 
   const configureGateUi = () => {
     if (gateMessage) {
@@ -1015,7 +1037,8 @@
 
   configureGateUi();
   await checkSession();
+  await fetchCanonicalProjects();
 
   if (searchInput) searchInput.value = state.search || '';
   if (isAuthenticated || LOCAL_MODE) renderAll();
-})();
+})();
