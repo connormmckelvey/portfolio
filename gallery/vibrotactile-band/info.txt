@@ -1,3 +1,0 @@
-Title: Vibrotactile Motion Feedback Band
-Kicker: Human Enabled Robotics Lab
-Description: Modular haptic band system with custom 3cm x 5cm PCB, integrated IMU tracking, directional motor pods, and 1ms low-latency wireless protocol.

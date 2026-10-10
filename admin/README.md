@@ -81,7 +81,8 @@ Then push your branch and confirm the workflow run succeeds.
 1. Deploy Worker and confirm its URL responds for `/api/admin/session`.
 2. Set admin API base using meta tag or `/admin/?api=...`.
 3. Log in at `/admin` and publish a small content edit.
-4. Verify `blog/posts.js` and `map/trips.json` receive commits.
+4. Verify `gallery/projects.json` receives commits.
+
 5. Rotate any previously exposed tokens/secrets.
 
 ## Security notes

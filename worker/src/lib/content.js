@@ -12,15 +12,6 @@ const normalizeBlogAssetPath = (path) => {
   return value.replace(/^\.\.\//, '').replace(/^\.\//, '');
 };
 
-const normalizeTripAssetPath = (path) => {
-  const value = String(path || '').trim();
-  if (!value) return '';
-  if (/^(https?:)?\/\//.test(value) || value.startsWith('../') || value.startsWith('./') || value.startsWith('/')) {
-    return value;
-  }
-  return `../${value}`;
-};
-
 const normalizeBlogPosts = (posts) => {
   if (!Array.isArray(posts)) throw new Error('Blog posts must be an array');
 
@@ -60,42 +51,7 @@ const normalizeBlogPosts = (posts) => {
   });
 };
 
-const normalizeTrips = (trips) => {
-  if (!Array.isArray(trips)) throw new Error('Trips must be an array');
-
-  return trips.map((trip) => {
-    if (!trip || typeof trip !== 'object') throw new Error('Each trip must be an object');
-    if (!String(trip.id || '').trim()) throw new Error('Each trip needs an id');
-
-    const coords = Array.isArray(trip.coords) && trip.coords.length === 2 ? trip.coords : [30, -97];
-
-    return {
-      id: String(trip.id).trim(),
-      title: String(trip.title || '').trim(),
-      place: String(trip.place || '').trim(),
-      region: String(trip.region || '').trim(),
-      year: String(trip.year || '').trim(),
-      sortDate: String(trip.sortDate || '').trim(),
-      dateLabel: String(trip.dateLabel || '').trim(),
-      coords: [Number(coords[0]), Number(coords[1])],
-      note: String(trip.note || '').trim(),
-      tags: Array.isArray(trip.tags)
-        ? trip.tags.map((tag) => String(tag).trim()).filter(Boolean)
-        : normalizeTags(trip.tags),
-      photos: Array.isArray(trip.photos)
-        ? trip.photos.map((photo) => ({
-            src: normalizeTripAssetPath(photo?.src),
-            alt: String(photo?.alt || '').trim(),
-            caption: String(photo?.caption || '').trim()
-          }))
-        : []
-    };
-  });
-};
-
 const serializeBlogPosts = (posts) => `window.BLOG_POSTS = ${JSON.stringify(posts, null, 2)};\n`;
-
-const serializeTrips = (trips) => `${JSON.stringify(trips, null, 2)}\n`;
 
 const normalizeProjects = (projects) => {
   if (!Array.isArray(projects)) throw new Error('Gallery projects must be an array');
@@ -123,10 +79,7 @@ const serializeProjects = (projects) => `${JSON.stringify(projects, null, 2)}\n`
 
 export {
   normalizeBlogPosts,
-  normalizeTrips,
   normalizeProjects,
   serializeBlogPosts,
-  serializeTrips,
   serializeProjects
 };
-

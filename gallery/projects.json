@@ -1,45 +1,5 @@
 [
   {
-    "id": "haplink",
-    "title": "Haplink™ Communication Protocol",
-    "kicker": "Texas Robotics / HERO Lab",
-    "description": "Bare-metal C++ firmware library and Python framework implementing low-latency serial data validation. Optimized packet sizes down to 13 bytes at 100Hz.",
-    "mediaType": "image",
-    "mediaSrc": "gallery/haplink/image.jpg",
-    "posterSrc": "",
-    "tags": ["Firmware", "C++", "Python", "Robotics"]
-  },
-  {
-    "id": "vibrotactile-band",
-    "title": "Vibrotactile Motion Feedback Band",
-    "kicker": "Human Enabled Robotics Lab",
-    "description": "Modular haptic band system with custom 3cm x 5cm PCB, integrated IMU tracking, directional motor pods, and 1ms low-latency wireless protocol.",
-    "mediaType": "image",
-    "mediaSrc": "gallery/vibrotactile-band/image.jpg",
-    "posterSrc": "",
-    "tags": ["Haptics", "PCB", "Firmware", "C++"]
-  },
-  {
-    "id": "drawing-robot",
-    "title": "2-DoF Drawing Robotic Arm",
-    "kicker": "UT Austin AI Perception Research",
-    "description": "Custom 2-degree-of-freedom robotic drawing arm with inverse kinematics software pipeline, Douglas-Peucker path optimization, and custom G-code compiler.",
-    "mediaType": "video",
-    "mediaSrc": "gallery/drawing-robot/video.mp4",
-    "posterSrc": "gallery/drawing-robot/image.jpg",
-    "tags": ["Robotics", "Kinematics", "C++", "Control"]
-  },
-  {
-    "id": "skylore",
-    "title": "SkyLore AR Celestial App",
-    "kicker": "1st Place HackTX 2025 Winner",
-    "description": "Crowdsourced astronomy platform leveraging user data for light pollution mapping. Built with real-time augmented reality and constellation recognition machine learning model.",
-    "mediaType": "image",
-    "mediaSrc": "gallery/skylore/image.jpg",
-    "posterSrc": "",
-    "tags": ["AR", "Mobile", "Machine Learning", "Hackathon"]
-  },
-  {
     "id": "img_0705",
     "title": "",
     "kicker": "",

@@ -10,11 +10,10 @@ import {
 import {
   normalizeBlogPosts,
   normalizeProjects,
-  normalizeTrips,
   serializeBlogPosts,
-  serializeProjects,
-  serializeTrips
+  serializeProjects
 } from './lib/content.js';
+
 import {
   corsForRequest,
   handlePreflight,
@@ -165,18 +164,13 @@ const publish = async (request, env) => {
     updatedFiles.push('blog/posts.js');
   }
 
-  if (body.trip) {
-    const normalizedTrips = normalizeTrips(body.trip);
-    await putContent(env, 'map/trips.json', serializeTrips(normalizedTrips), 'Update trip map from /admin');
-    updatedFiles.push('map/trips.json');
-  }
-
   const message = updatedFiles.length
     ? `Published changes to ${updatedFiles.join(', ')}.`
     : 'No content received to publish.';
 
   return json({ message }, 200);
 };
+
 
 
 const upload = async (request, env) => {

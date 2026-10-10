@@ -55,44 +55,84 @@
 
   const gallerySeed = [
     {
-      id: 'haplink',
-      title: 'Haplink™ Communication Protocol',
-      kicker: 'Texas Robotics / HERO Lab',
-      description: 'Bare-metal C++ firmware library and Python framework implementing low-latency serial data validation. Optimized packet sizes down to 13 bytes at 100Hz.',
+      id: 'img_0705',
+      title: '',
+      kicker: '',
+      description: '',
       mediaType: 'image',
-      mediaSrc: 'gallery/haplink/image.jpg',
+      mediaSrc: 'gallery/img_0705/img_0705-media-1791594590980.jpg',
       posterSrc: '',
-      tags: ['Firmware', 'C++', 'Python', 'Robotics']
+      tags: []
     },
     {
-      id: 'vibrotactile-band',
-      title: 'Vibrotactile Motion Feedback Band',
-      kicker: 'Human Enabled Robotics Lab',
-      description: 'Modular haptic band system with custom 3cm x 5cm PCB, integrated IMU tracking, directional motor pods, and 1ms low-latency wireless protocol.',
+      id: 'img_2149',
+      title: '',
+      kicker: '',
+      description: '',
       mediaType: 'image',
-      mediaSrc: 'gallery/vibrotactile-band/image.jpg',
+      mediaSrc: 'gallery/img_2149/img_2149-media-1791594495612.jpg',
       posterSrc: '',
-      tags: ['Haptics', 'PCB', 'Firmware', 'C++']
+      tags: []
     },
     {
-      id: 'drawing-robot',
-      title: '2-DoF Drawing Robotic Arm',
-      kicker: 'UT Austin AI Perception Research',
-      description: 'Custom 2-degree-of-freedom robotic drawing arm with inverse kinematics software pipeline, Douglas-Peucker path optimization, and custom G-code compiler.',
-      mediaType: 'video',
-      mediaSrc: 'gallery/drawing-robot/video.mp4',
-      posterSrc: 'gallery/drawing-robot/image.jpg',
-      tags: ['Robotics', 'Kinematics', 'C++', 'Control']
+      id: 'img_2191',
+      title: '',
+      kicker: '',
+      description: '',
+      mediaType: 'image',
+      mediaSrc: 'gallery/img_2191/img_2191-media-1791594477503.jpg',
+      posterSrc: '',
+      tags: []
     },
     {
-      id: 'skylore',
-      title: 'SkyLore AR Celestial App',
-      kicker: '1st Place HackTX 2025 Winner',
-      description: 'Crowdsourced astronomy platform leveraging user data for light pollution mapping. Built with real-time augmented reality and constellation recognition machine learning model.',
+      id: 'img_2468',
+      title: '',
+      kicker: '',
+      description: '',
       mediaType: 'image',
-      mediaSrc: 'gallery/skylore/image.jpg',
+      mediaSrc: 'gallery/img_2468/img_2468-media-1791594434766.jpg',
       posterSrc: '',
-      tags: ['AR', 'Mobile', 'Machine Learning', 'Hackathon']
+      tags: []
+    },
+    {
+      id: 'img_2519',
+      title: '',
+      kicker: '',
+      description: '',
+      mediaType: 'image',
+      mediaSrc: 'gallery/img_2519/img_2519-media-1791594420891.jpg',
+      posterSrc: '',
+      tags: []
+    },
+    {
+      id: 'img_2546',
+      title: '',
+      kicker: '',
+      description: '',
+      mediaType: 'image',
+      mediaSrc: 'gallery/img_2546/img_2546-media-1791594406526.jpg',
+      posterSrc: '',
+      tags: []
+    },
+    {
+      id: 'img_2610',
+      title: '',
+      kicker: '',
+      description: '',
+      mediaType: 'image',
+      mediaSrc: 'gallery/img_2610/img_2610-media-1791594464151.jpg',
+      posterSrc: '',
+      tags: []
+    },
+    {
+      id: 'img_2620',
+      title: '',
+      kicker: '',
+      description: '',
+      mediaType: 'image',
+      mediaSrc: 'gallery/img_2620/img_2620-media-1791594448625.jpg',
+      posterSrc: '',
+      tags: []
     }
   ];
 
@@ -785,7 +825,7 @@
     } else {
       const img = document.createElement('img');
       img.className = 'project-img';
-      img.src = mediaSrc || '../gallery/haplink/image.jpg';
+      img.src = mediaSrc || '';
       img.alt = project.title || 'Project image';
       wrapper.append(img);
     }
@@ -913,10 +953,10 @@
         body: JSON.stringify({
           projects: state.projects,
           gallery: state.projects,
-          blog: [],
-          trip: []
+          blog: []
         })
       });
+
 
 
       if (!response.ok) {
