@@ -1,0 +1,3 @@
+Title: 2-DoF Drawing Robotic Arm
+Kicker: UT Austin AI Perception Research
+Description: Custom 2-degree-of-freedom robotic drawing arm with inverse kinematics software pipeline, Douglas-Peucker path optimization, and custom G-code compiler.

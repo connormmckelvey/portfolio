@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connor McKelvey — Engineering & Robotics</title>
+  <meta name="description" content="Bold, nature-inspired engineering portfolio of Connor McKelvey — ECE & Robotics at UT Austin." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── RESET & VARS ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F8F7F2;
+      --surface: #FFFFFF;
+      --surface-subtle: #EFF1EB;
+      --border: #D8D6CB;
+      --border-dark: #1F3025;
+      
+      --moss-deep: #1A2E23;
+      --moss-mid: #2C4A38;
+      --moss-light: #446C53;
+      --sage-pale: #E2EAE3;
+      --copper: #C86D48;
+      --copper-hover: #AA5634;
+
+      --ink: #111613;
+      --ink-muted: #4A544C;
+      --ink-faint: #828E85;
+
+      --font-display: 'Newsreader', serif;
+      --font-serif-accent: 'Instrument Serif', serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --font-tech: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html { scroll-behavior: smooth; background-color: var(--bg); color: var(--ink); }
+    body { font-family: var(--font-sans); font-size: 15px; line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── HEADER / NAV BAR ────────────────────────────── */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 247, 242, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--moss-deep);
+      text-transform: uppercase;
+    }
+    .brand-mark {
+      width: 10px;
+      height: 10px;
+      background: var(--copper);
+      display: inline-block;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      transition: color 0.15s var(--ease);
+    }
+    .nav-link:hover { color: var(--moss-deep); }
+    .btn-resume {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--moss-deep);
+      padding: 10px 20px;
+      border: 1px solid var(--moss-deep);
+      transition: all 0.2s var(--ease);
+      display: inline-block;
+    }
+    .btn-resume:hover {
+      background: var(--copper);
+      border-color: var(--copper);
+    }
+
+    /* ─── HERO SECTION ─────────────────────────────────── */
+    .hero {
+      position: relative;
+      padding: 120px 40px 100px;
+      max-width: 1380px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-topo-bg {
+      position: absolute;
+      right: 0;
+      top: 20px;
+      width: 550px;
+      height: 100%;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+    .hero-kicker {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-kicker::before {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: var(--copper);
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 7.5vw, 108px);
+      line-height: 0.96;
+      color: var(--moss-deep);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      max-width: 1100px;
+      margin-bottom: 36px;
+    }
+    .hero-headline em {
+      font-family: var(--font-serif-accent);
+      font-style: italic;
+      color: var(--copper);
+      font-weight: 400;
+    }
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--ink-muted);
+      max-width: 680px;
+      margin-bottom: 48px;
+    }
+    .hero-meta-strip {
+      display: flex;
+      gap: 32px;
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+      flex-wrap: wrap;
+    }
+    .meta-col {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+    .meta-col .label {
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .meta-col .val {
+      color: var(--moss-deep);
+      font-weight: 500;
+    }
+
+    /* ─── PROJECTS SECTION ─────────────────────────────── */
+    .projects-section {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 60px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .section-title {
+      font-family: var(--font-tech);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--moss-deep);
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: all 0.15s var(--ease);
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--moss-deep);
+      border-color: var(--moss-deep);
+      color: var(--bg);
+    }
+
+    /* PROJECT CARDS (GRID LAYOUT) */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(620px, 1fr));
+      gap: 40px;
+    }
+    @media (max-width: 720px) {
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+      cursor: pointer;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--moss-deep);
+      box-shadow: 0 16px 36px rgba(26, 46, 35, 0.08);
+    }
+    .card-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 32px 18px;
+      border-bottom: 1px solid var(--surface-subtle);
+    }
+    .card-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--copper);
+      letter-spacing: 0.12em;
+    }
+    .card-award {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: #FFF4EE;
+      color: var(--copper);
+      border: 1px solid #F8D8C8;
+      padding: 4px 10px;
+    }
+    .card-content {
+      padding: 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 38px;
+      line-height: 1.1;
+      color: var(--moss-deep);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .card-brief {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink-muted);
+      margin-bottom: 28px;
+      flex: 1;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--moss-mid);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--surface-subtle);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--moss-deep);
+      font-weight: 600;
+    }
+    .card-arrow {
+      transition: transform 0.2s var(--ease);
+    }
+    .project-card:hover .card-arrow {
+      transform: translateX(6px);
+      color: var(--copper);
+    }
+
+    /* ─── STATEMENT BREAKOUT ────────────────────────────── */
+    .statement-breakout {
+      background: var(--moss-deep);
+      color: var(--bg);
+      padding: 100px 40px;
+      margin: 60px 0;
+    }
+    .statement-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .statement-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 24px;
+    }
+    .statement-quote {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1.15;
+      font-weight: 400;
+      margin-bottom: 32px;
+    }
+    .statement-quote em {
+      font-family: var(--font-serif-accent);
+      color: #E2C095;
+      font-style: italic;
+    }
+
+    /* ─── ABOUT & SKILLS SUMMARY ────────────────────────── */
+    .about-summary {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 80px 40px 120px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+    @media (max-width: 900px) {
+      .about-summary { grid-template-columns: 1fr; }
+    }
+    .about-block-title {
+      font-family: var(--font-tech);
+      font-size: 24px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--moss-deep);
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .skills-category {
+      margin-bottom: 24px;
+    }
+    .skills-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 10px;
+    }
+    .skills-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .skill-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--ink-muted);
+    }
+
+    /* ─── MODAL / DRAWER ────────────────────────────────── */
+    .modal-scrim {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 22, 19, 0.6);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease);
+    }
+    .modal-scrim.open { opacity: 1; pointer-events: auto; }
+
+    .modal-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(820px, 92vw);
+      background: var(--bg);
+      z-index: 210;
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.2);
+      transform: translateX(100%);
+      transition: transform 0.35s var(--ease);
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-drawer.open { transform: translateX(0); }
+
+    .drawer-head {
+      padding: 32px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+    }
+    .drawer-num {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--copper);
+      font-weight: 600;
+    }
+    .drawer-close {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      background: transparent;
+      border: none;
+      color: var(--ink-muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: color 0.15s;
+    }
+    .drawer-close:hover { color: var(--moss-deep); }
+
+    .drawer-body {
+      padding: 40px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .drawer-title {
+      font-family: var(--font-display);
+      font-size: 46px;
+      color: var(--moss-deep);
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .drawer-section-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin: 32px 0 12px;
+    }
+    .drawer-text {
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--ink-muted);
+      white-space: pre-line;
+    }
+    .drawer-footer {
+      padding: 28px 40px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-github {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      background: var(--moss-deep);
+      color: var(--bg);
+      border: 1px solid var(--moss-deep);
+      transition: background 0.2s var(--ease);
+      display: inline-block;
+    }
+    .btn-github:hover { background: var(--copper); border-color: var(--copper); }
+
+    /* ─── FOOTER ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 60px 40px;
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar / Navigation -->
+  <header class="top-bar">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      Connor McKelvey
+    </div>
+    <div class="nav-actions">
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="index.html" class="nav-link">Classic View</a>
+      <a href="connor-mckelvey-resume.pdf" target="_blank" rel="noopener noreferrer" class="btn-resume">Résumé ↗</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <svg class="hero-topo-bg" viewBox="0 0 500 500" fill="none">
+      <path d="M50 400 C150 250, 300 450, 450 300" stroke="#1A2E23" stroke-width="1.5"/>
+      <path d="M20 350 C120 200, 270 400, 420 250" stroke="#1A2E23" stroke-width="1.2"/>
+      <path d="M70 450 C170 300, 320 500, 470 350" stroke="#1A2E23" stroke-width="1"/>
+      <path d="M100 280 C200 130, 350 330, 490 180" stroke="#C86D48" stroke-width="1.2"/>
+    </svg>
+
+    <div class="hero-kicker">ECE & Robotics · UT Austin</div>
+    <h1 class="hero-headline">Nature routed traces<br>before <em>silicon did.</em></h1>
+    <p class="hero-sub">
+      I'm Connor McKelvey, an Eagle Scout & Honors Robotics researcher at UT Austin. I engineer high-performance firmware, wearable haptics, and autonomous physical systems built for real-world impact.
+    </p>
+
+    <div class="hero-meta-strip">
+      <div class="meta-col">
+        <span class="label">Focus</span>
+        <span class="val">Firmware & Robotics</span>
+      </div>
+      <div class="meta-col">
+        <span class="label">Institution</span>
+        <span class="val">UT Austin (2029)</span>
+      </div>
+      <div class="meta-col">
+        <span class="label">Research Lab</span>
+        <span class="val">HERO Lab · Texas Robotics</span>
+      </div>
+      <div class="meta-col">
+        <span class="label">Distinction</span>
+        <span class="val">1st Place · HackTX 2025</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Showcase Section -->
+  <section class="projects-section" id="projects">
+    <div class="section-header">
+      <div>
+        <div class="hero-kicker" style="margin-bottom:8px;">Portfolio</div>
+        <h2 class="section-title">Selected Projects</h2>
+      </div>
+
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">All (5)</button>
+        <button class="filter-btn" data-filter="robotics">Robotics</button>
+        <button class="filter-btn" data-filter="hardware">Hardware & Embedded</button>
+        <button class="filter-btn" data-filter="software">Software & ML</button>
+      </div>
+    </div>
+
+    <!-- Dynamic Projects Grid -->
+    <div class="projects-grid" id="projects-grid"></div>
+  </section>
+
+  <!-- Bold Statement Breakout -->
+  <section class="statement-breakout">
+    <div class="statement-inner">
+      <div class="statement-kicker">// Engineering Philosophy</div>
+      <blockquote class="statement-quote">
+        "Great robotics requires <em>relentless optimization</em>—from 13-byte serial loops to 3lb combat armor."
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- About & Skills Summary -->
+  <section class="about-summary" id="about">
+    <div>
+      <h3 class="about-block-title">Background & Approach</h3>
+      <p style="font-size:16px; line-height:1.8; color:var(--ink-muted); margin-bottom:20px;">
+        As an Eagle Scout and ECE student in the Honors Robotics Program at UT Austin, I approach engineering with equal respect for physical hardware constraints and low-level firmware architecture.
+      </p>
+      <p style="font-size:16px; line-height:1.8; color:var(--ink-muted);">
+        Whether developing error-free serial protocols for researchers at the HERO Lab or fabricating custom PCB boards, my goal is always clear: build high-reliability systems that work seamlessly under pressure.
+      </p>
+    </div>
+
+    <div>
+      <h3 class="about-block-title">Technical Capabilities</h3>
+
+      <div class="skills-category">
+        <div class="skills-label">Languages</div>
+        <div class="skills-pills">
+          <span class="skill-pill">C / C++</span>
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">Java</span>
+          <span class="skill-pill">GDScript</span>
+        </div>
+      </div>
+
+      <div class="skills-category">
+        <div class="skills-label">Hardware & Embedded</div>
+        <div class="skills-pills">
+          <span class="skill-pill">STM32 Microcontrollers</span>
+          <span class="skill-pill">Arduino</span>
+          <span class="skill-pill">Circuit Design</span>
+          <span class="skill-pill">Soldering</span>
+          <span class="skill-pill">SolidWorks (CAD)</span>
+        </div>
+      </div>
+
+      <div class="skills-category">
+        <div class="skills-label">Robotics & Systems</div>
+        <div class="skills-pills">
+          <span class="skill-pill">Vibrotactile Haptics</span>
+          <span class="skill-pill">Serial Communication</span>
+          <span class="skill-pill">Inverse Kinematics</span>
+          <span class="skill-pill">G-Code Control</span>
+          <span class="skill-pill">ROS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div>Connor McKelvey © 2026 · UT Austin</div>
+    <div>connormckelvey@utexas.edu</div>
+  </footer>
+
+  <!-- Drawer / Modal -->
+  <div class="modal-scrim" id="modal-scrim"></div>
+  <aside class="modal-drawer" id="modal-drawer" role="dialog" aria-modal="true">
+    <div class="drawer-head">
+      <span class="drawer-num" id="d-num">[ 01 ]</span>
+      <button class="drawer-close" id="d-close" aria-label="Close">✕</button>
+    </div>
+    <div class="drawer-body">
+      <h2 class="drawer-title" id="d-title">Project Title</h2>
+      <div class="card-tags" id="d-tags"></div>
+      <div class="drawer-section-title">// Technical Breakdown</div>
+      <div class="drawer-text" id="d-desc">Project description goes here.</div>
+      <div class="drawer-section-title">// Technologies</div>
+      <div class="card-tags" id="d-stack"></div>
+    </div>
+    <div class="drawer-footer">
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--ink-faint);">ENGINEERING SPECIFICATION</span>
+      <a href="#" target="_blank" rel="noopener noreferrer" class="btn-github" id="d-github">View GitHub Repository ↗</a>
+    </div>
+  </aside>
+
+  <!-- Script & Project Data -->
+  <script>
+    const PROJECTS = [
+      {
+        id: 'haplink',
+        num: '[ 01 ]',
+        title: 'Haplink™ Communication Framework',
+        category: 'robotics',
+        award: 'HERO Lab · UT Austin',
+        brief: 'Modular firmware and C++/Python library defining a low-latency communication protocol for haptic devices. Achieves 100% error detection in a 100Hz control loop.',
+        desc: `Modular firmware and Python library that implements a communication protocol for haptic devices, developed at the HERO Lab at Texas Robotics, UT Austin.
+
+Challenge: Our haptic devices had trouble with data corruption and sending data quickly over serial communication ports. Reflashing the microcontroller for every parameter tweak was time-consuming.
+
+Action: Built a C++ firmware library and Python library to update parameters without reflashing the microcontroller, implementing data validation to prevent corrupt data transmission.
+
+Key Results:
+• Adopted by a research class of 30 students.
+• Reduced and set consistent serial packet size down to 13 bytes.
+• Achieved 100% error detection with low latency in a 100Hz control loop.
+• Significantly reduced tuning time and enabled researchers to build haptic environments using off-board computation and visualization.`,
+        stack: ['C++', 'Python', 'Arduino', 'Serial Comms', 'Haptics', 'Firmware'],
+        github: 'https://github.com/connormmckelvey/Haplink'
+      },
+      {
+        id: 'skylore',
+        num: '[ 02 ]',
+        title: 'SkyLore™ Light Pollution Platform',
+        category: 'software',
+        award: '🏆 1st Place · HackTX 2025',
+        brief: 'Crowdsourced astronomy and light pollution mapping platform. Won 1st place out of 5,000 participants at HackTX 2025 with mobile AR and ML constellation recognition.',
+        desc: `Won 1st place in the "best celestial" category out of 5,000 participants at HackTX 2025, UT Austin's premier hackathon.
+
+Challenge: Tasked to build an app inspired by the word "celestial" and present it in only one weekend.
+
+Action: Identified a breakthrough innovation leveraging citizen scientist data to build a living database and light pollution map to assist city planners, researchers, and builders, rather than simply building a constellation viewer. Built a full mobile app with augmented reality constellation overlays, a web dashboard, database implementation, and a machine learning constellation recognition classifier.
+
+Key Results:
+• Won 1st place and $1,000 cash prize out of 5,000 participants.
+• Designed and delivered a fully functional end-to-end prototype under intense weekend time constraints.`,
+        stack: ['Python', 'Machine Learning', 'Augmented Reality', 'SQL Database', 'Web Dashboard'],
+        github: 'https://github.com/connormmckelvey'
+      },
+      {
+        id: 'drawing-robot',
+        num: '[ 03 ]',
+        title: '2-DOF Drawing Robot Arm',
+        category: 'robotics',
+        award: 'AI Creativity Research',
+        brief: 'Two-degree-of-freedom robotic drawing arm designed and fabricated to test AI creativity bias. Features inverse kinematics G-code generation and RDP simulation.',
+        desc: `Designed and fabricated a 2-degree-of-freedom robotic drawing arm as the Principal Investigator for a study on AI creativity bias at UT Austin under Professor Dempster.
+
+Challenge: As AI generates increasingly creative ideas, society undervalues AI-led innovation due to bias. I needed to develop a robotic system that standardizes the physical medium of artwork stimuli, enabling us to test whether this anti-AI creativity bias exists.
+
+Action: Designed and fabricated a 2-degree-of-freedom robotic drawing arm using 3D-printed parts and embedded electronics. Developed an end-to-end software pipeline to simplify images, convert them to normalized coordinates, and run inverse kinematics to generate custom G-code. Created simulation software using the Ramer-Douglas-Peucker algorithm.
+
+Key Results:
+• Executed a two-block psychometric study with 25+ participants.
+• Proved a statistically significant bias (p < 0.0001) where AI labels decreased perceived creativity ratings from 4.5 to 4.02 on a 5-point scale.`,
+        stack: ['Python', 'Inverse Kinematics', 'G-Code Control', '3D Printing', 'Embedded Systems'],
+        github: 'https://github.com/connormmckelvey/Being-Creative-Research-Project'
+      },
+      {
+        id: 'combat-robot',
+        num: '[ 04 ]',
+        title: '3lb Combat Robot',
+        category: 'hardware',
+        award: 'Robotics Competition',
+        brief: 'High-impact 3lb combat robot with a horizontal drum spinner and drive-anyway inverted chassis. Engineered with TPU/PETG materials under a strict $300 budget.',
+        desc: `Designed and constructed a 3lb remote-controlled combat robot for the Texas Robo Rumble competition under a strict $300 budget.
+
+Challenge: Build a 3lb remote-controlled robot with an active weapon to destroy other robots in a safe enclosure during battle day with a strict $300 limit.
+
+Action: Designed a robot with a high-speed horizontal drum spinner and front wedges, engineered to remain fully drivable even when flipped upside down. Gained a deep understanding of material selection and additive manufacturing using TPU, PLA, and PETG to survive punctures, shears, and impacts.
+
+Key Results:
+• Built a fully functional, competitive combat robot within weight and cost limits.
+• Leveraged optimized power distribution and high-current drive setups to ensure survivability in the arena.`,
+        stack: ['SolidWorks (CAD)', 'Additive Manufacturing', 'Material Science', 'Power Systems'],
+        github: 'https://github.com/connormmckelvey'
+      },
+      {
+        id: 'fireball-bot',
+        num: '[ 05 ]',
+        title: 'Fireball Dice Roller Bot',
+        category: 'software',
+        award: '10,000+ Active Users',
+        brief: 'Verified Discord chatbot with custom randomization algorithms handling complex TTRPG mechanics across 260+ servers.',
+        desc: `Developed and published a verified Discord chatbot built to facilitate tabletop role-playing games online during the COVID-19 pandemic.
+
+Challenge: During the pandemic, tabletop gaming groups needed to roll various dice to play together online. Discord lacked a powerful, easy-to-use, dice-rolling chatbot.
+
+Action: Developed a Discord chatbot in Python using custom randomization algorithms designed to handle complex dice rolls, modifiers, and custom systems. Implemented 14 custom slash commands leveraging the Discord API.
+
+Key Results:
+• Published bot, reaching 260+ concurrent servers and 10,000 active users.
+• Prompted official verification by the Discord platform.
+• Maintained hosting, customer support, and system operations.`,
+        stack: ['Python', 'Discord API', 'Algorithms', 'Randomization', 'System Hosting'],
+        github: 'https://github.com/connormmckelvey'
+      }
+    ];
+
+    // Render Grid
+    const gridEl = document.getElementById('projects-grid');
+    function renderProjects(filter = 'all') {
+      const filtered = filter === 'all' 
+        ? PROJECTS 
+        : PROJECTS.filter(p => p.category === filter || (filter === 'hardware' && p.category === 'robotics'));
+
+      gridEl.innerHTML = filtered.map(p => `
+        <article class="project-card" onclick="openDrawer('${p.id}')">
+          <div class="card-top-bar">
+            <span class="card-num">${p.num}</span>
+            <span class="card-award">${p.award}</span>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">${p.title}</h3>
+            <p class="card-brief">${p.brief}</p>
+            <div class="card-tags">
+              ${p.stack.map(s => `<span class="chip">${s}</span>`).join('')}
+            </div>
+            <div class="card-footer">
+              <span>Technical Specification</span>
+              <span class="card-arrow">Read Case Study →</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // Filter Buttons
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderProjects(btn.dataset.filter);
+      });
+    });
+
+    // Drawer Logic
+    const scrim = document.getElementById('modal-scrim');
+    const drawer = document.getElementById('modal-drawer');
+    const dNum = document.getElementById('d-num');
+    const dTitle = document.getElementById('d-title');
+    const dDesc = document.getElementById('d-desc');
+    const dTags = document.getElementById('d-tags');
+    const dStack = document.getElementById('d-stack');
+    const dGithub = document.getElementById('d-github');
+    const dClose = document.getElementById('d-close');
+
+    function openDrawer(id) {
+      const p = PROJECTS.find(item => item.id === id);
+      if (!p) return;
+
+      dNum.textContent = p.num;
+      dTitle.textContent = p.title;
+      dDesc.textContent = p.desc;
+      dTags.innerHTML = `<span class="card-award">${p.award}</span>`;
+      dStack.innerHTML = p.stack.map(s => `<span class="chip">${s}</span>`).join('');
+      dGithub.href = p.github;
+
+      scrim.classList.add('open');
+      drawer.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      scrim.classList.remove('open');
+      drawer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    dClose.addEventListener('click', closeDrawer);
+    scrim.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+
+    // Initial Render
+    renderProjects('all');
+  </script>
+</body>
+</html>

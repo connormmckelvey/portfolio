@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="admin-api-base" content="https://portfolio-admin-api.connormckelvey.workers.dev" />
-  <title>Connor McKelvey | Admin</title>
-  <meta name="description" content="Private content editor for Connor McKelvey's portfolio." />
+  <title>Connor McKelvey | Gallery Admin</title>
+  <meta name="description" content="Private gallery entry editor for Connor McKelvey's portfolio." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="admin.css" />
 </head>
@@ -20,11 +20,11 @@
     <header class="admin-topbar">
       <div>
         <p class="admin-kicker">// private workspace</p>
-        <h1>Admin</h1>
-        <p class="admin-summary">Create and edit blog posts and trips, preview changes, then export or publish back to the repo.</p>
+        <h1>Gallery Admin</h1>
+        <p class="admin-summary">Create, edit, and delete 1:1 portfolio project gallery entries (images & videos), preview changes live, and publish directly to your portfolio.</p>
       </div>
       <div class="admin-topbar-meta">
-        <span class="admin-chip" data-kind-status>blog</span>
+        <span class="admin-chip" data-kind-status>gallery</span>
         <span class="admin-chip" data-draft-status>drafts saved locally</span>
         <button class="admin-chip admin-chip-button" type="button" data-logout hidden>log out</button>
       </div>
@@ -34,7 +34,7 @@
       <section class="admin-gate" data-admin-gate>
         <div class="admin-gate-card">
           <p class="admin-kicker">access</p>
-          <h2>Unlock the workspace</h2>
+          <h2>Unlock the gallery workspace</h2>
           <p data-gate-message>This is a starter gate for local preview. On deployed /admin, this uses secure serverless login.</p>
           <form class="admin-gate-form" data-gate-form>
             <label>
@@ -50,16 +50,15 @@
       <section class="admin-app" data-admin-app hidden>
         <section class="admin-toolbar">
           <div class="admin-toolbar-left">
-            <button class="admin-btn admin-btn-primary" type="button" data-new-post>new blog post</button>
-            <button class="admin-btn" type="button" data-new-trip>new trip</button>
-            <button class="admin-btn" type="button" data-duplicate-item>duplicate</button>
-            <button class="admin-btn" type="button" data-delete-item>delete</button>
+            <button class="admin-btn admin-btn-primary" type="button" data-new-item>+ new project</button>
+            <button class="admin-btn" type="button" data-duplicate-item>duplicate project</button>
+            <button class="admin-btn admin-btn-danger" type="button" data-delete-item>delete project</button>
           </div>
           <div class="admin-toolbar-right">
             <button class="admin-btn" type="button" data-save-draft>save draft</button>
-            <button class="admin-btn" type="button" data-export-current>export current</button>
-            <button class="admin-btn" type="button" data-export-all>export all</button>
-            <button class="admin-btn admin-btn-primary" type="button" data-publish>publish</button>
+            <button class="admin-btn" type="button" data-export-json>export json</button>
+            <button class="admin-btn" type="button" data-export-html>export html snippet</button>
+            <button class="admin-btn admin-btn-primary" type="button" data-publish>publish gallery</button>
           </div>
         </section>
 
@@ -67,18 +66,18 @@
           <aside class="admin-library">
             <div class="admin-panel-head">
               <div>
-                <p class="admin-panel-label">content library</p>
-                <h2>Posts and trips</h2>
+                <p class="admin-panel-label">gallery library</p>
+                <h2>Projects</h2>
               </div>
-              <div class="admin-tabs" role="tablist" aria-label="Content type">
-                <button class="admin-tab is-active" type="button" data-filter-kind="blog">blog</button>
-                <button class="admin-tab" type="button" data-filter-kind="trip">trips</button>
-                <button class="admin-tab" type="button" data-filter-kind="all">all</button>
+              <div class="admin-tabs" role="tablist" aria-label="Media filter">
+                <button class="admin-tab is-active" type="button" data-filter-kind="all">all</button>
+                <button class="admin-tab" type="button" data-filter-kind="image">images</button>
+                <button class="admin-tab" type="button" data-filter-kind="video">videos</button>
               </div>
             </div>
             <label class="admin-search-wrap">
               <span class="admin-label">search</span>
-              <input class="admin-search" type="search" placeholder="Search titles, tags, ids, notes" data-search />
+              <input class="admin-search" type="search" placeholder="Search projects, kickers, tags..." data-search />
             </label>
             <div class="admin-list" data-content-list></div>
           </aside>
@@ -86,8 +85,8 @@
           <section class="admin-editor">
             <div class="admin-panel-head">
               <div>
-                <p class="admin-panel-label">editor</p>
-                <h2 data-editor-title>Select an item</h2>
+                <p class="admin-panel-label">project editor</p>
+                <h2 data-editor-title>Select a project</h2>
               </div>
               <p class="admin-muted" data-editor-meta></p>
             </div>
@@ -97,11 +96,16 @@
           <aside class="admin-preview">
             <div class="admin-panel-head">
               <div>
-                <p class="admin-panel-label">preview</p>
-                <h2>Live output</h2>
+                <p class="admin-panel-label">live preview</p>
+                <h2>1:1 Card Output</h2>
+              </div>
+              <div class="admin-mini-actions">
+                <button class="admin-btn admin-btn-small" type="button" data-toggle-overlay>toggle hover view</button>
               </div>
             </div>
-            <div class="admin-preview-card" data-preview-card></div>
+            <div class="admin-preview-stage">
+              <div class="admin-preview-card" data-preview-card></div>
+            </div>
             <div class="admin-log">
               <p class="admin-label">publish status</p>
               <p data-publish-status>Idle.</p>
@@ -112,7 +116,6 @@
     </main>
   </div>
 
-  <script src="../blog/posts.js"></script>
   <script src="admin.js"></script>
 </body>
-</html>
+</html>

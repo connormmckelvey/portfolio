@@ -1,0 +1,3 @@
+Title: SkyLore AR Celestial App
+Kicker: 1st Place HackTX 2025 Winner
+Description: Crowdsourced astronomy platform leveraging user data for light pollution mapping. Built with real-time augmented reality and constellation recognition machine learning model.

@@ -3,7 +3,7 @@
 ## Project snapshot
 - Static personal portfolio site: plain HTML + CSS (no build step, no framework).
 - Entry point: [index.html](../index.html)
-- Blog: [blog.html](../blog.html)
+- Blog: [blog/index.html](../blog/index.html)
 - Styling: [style.css](../style.css)
 - Assets: [images/](../images)
 
@@ -30,7 +30,7 @@
 ## Common edits
 - Add/modify project tiles in the Projects section in [index.html](../index.html) under `#projects`.
 - Change which repos load by updating `data-username` / `data-source` on `#github-repos` in [index.html](../index.html).
-- Add blog posts by editing the data entries in [blog/posts.js](../blog/posts.js) (rendered automatically in [blog.html](../blog.html)).
+- Add blog posts by editing the data entries in [blog/posts.js](../blog/posts.js) (rendered automatically in [blog/index.html](../blog/index.html)).
 - Update global theming, spacing, and responsive rules in [style.css](../style.css).
 - Use assets from [images/](../images) rather than introducing new external URLs when possible.
 - Keep the resume filename stable as `connor-mckelvey-resume.pdf` (linked from nav + contact).

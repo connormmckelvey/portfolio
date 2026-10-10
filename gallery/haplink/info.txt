@@ -1,0 +1,3 @@
+Title: Haplink™ Communication Protocol
+Kicker: Texas Robotics / HERO Lab
+Description: Bare-metal C++ firmware library and Python framework implementing low-latency serial data validation. Optimized packet sizes down to 13 bytes at 100Hz.

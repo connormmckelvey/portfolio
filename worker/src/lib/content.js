@@ -97,9 +97,36 @@ const serializeBlogPosts = (posts) => `window.BLOG_POSTS = ${JSON.stringify(post
 
 const serializeTrips = (trips) => `${JSON.stringify(trips, null, 2)}\n`;
 
+const normalizeProjects = (projects) => {
+  if (!Array.isArray(projects)) throw new Error('Gallery projects must be an array');
+
+  return projects.map((project) => {
+    if (!project || typeof project !== 'object') throw new Error('Each gallery project must be an object');
+    if (!String(project.id || '').trim()) throw new Error('Each project needs an id');
+
+    return {
+      id: String(project.id).trim(),
+      title: String(project.title || '').trim(),
+      kicker: String(project.kicker || '').trim(),
+      description: String(project.description || '').trim(),
+      mediaType: String(project.mediaType || 'image').toLowerCase() === 'video' ? 'video' : 'image',
+      mediaSrc: String(project.mediaSrc || '').trim(),
+      posterSrc: String(project.posterSrc || '').trim(),
+      tags: Array.isArray(project.tags)
+        ? project.tags.map((tag) => String(tag).trim()).filter(Boolean)
+        : normalizeTags(project.tags)
+    };
+  });
+};
+
+const serializeProjects = (projects) => `${JSON.stringify(projects, null, 2)}\n`;
+
 export {
   normalizeBlogPosts,
   normalizeTrips,
+  normalizeProjects,
   serializeBlogPosts,
-  serializeTrips
+  serializeTrips,
+  serializeProjects
 };
+

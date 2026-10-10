@@ -32,7 +32,7 @@ Use these block objects inside content:
 ## Deep links
 Each post opens with a URL hash:
 
-- blog.html#post-your-id
+- /blog/#post-your-id
 
 ## Example starter
 Copy an existing post object and modify values.

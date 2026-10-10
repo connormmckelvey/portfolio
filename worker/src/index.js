@@ -9,8 +9,10 @@ import {
 } from './lib/auth.js';
 import {
   normalizeBlogPosts,
+  normalizeProjects,
   normalizeTrips,
   serializeBlogPosts,
+  serializeProjects,
   serializeTrips
 } from './lib/content.js';
 import {
@@ -28,8 +30,12 @@ const ALLOWED_UPLOAD_TYPES = {
   'image/jpeg': 'jpg',
   'image/png': 'png',
   'image/webp': 'webp',
-  'image/gif': 'gif'
+  'image/gif': 'gif',
+  'video/mp4': 'mp4',
+  'video/webm': 'webm',
+  'video/quicktime': 'mov'
 };
+
 
 const MAX_UPLOAD_BYTES = 6 * 1024 * 1024;
 
@@ -146,14 +152,33 @@ const publish = async (request, env) => {
   }
 
   const body = await readJson(request);
-  const normalizedBlog = normalizeBlogPosts(body.blog);
-  const normalizedTrips = normalizeTrips(body.trip);
+  const updatedFiles = [];
 
-  await putContent(env, 'blog/posts.js', serializeBlogPosts(normalizedBlog), 'Update blog posts from /admin');
-  await putContent(env, 'map/trips.json', serializeTrips(normalizedTrips), 'Update trip map from /admin');
+  if (body.projects || body.gallery) {
+    const normalizedProjects = normalizeProjects(body.projects || body.gallery);
+    await putContent(env, 'gallery/projects.json', serializeProjects(normalizedProjects), 'Update gallery projects from /admin');
+    updatedFiles.push('gallery/projects.json');
+  }
 
-  return json({ message: 'Published changes to blog/posts.js and map/trips.json.' }, 200);
+  if (body.blog) {
+    const normalizedBlog = normalizeBlogPosts(body.blog);
+    await putContent(env, 'blog/posts.js', serializeBlogPosts(normalizedBlog), 'Update blog posts from /admin');
+    updatedFiles.push('blog/posts.js');
+  }
+
+  if (body.trip) {
+    const normalizedTrips = normalizeTrips(body.trip);
+    await putContent(env, 'map/trips.json', serializeTrips(normalizedTrips), 'Update trip map from /admin');
+    updatedFiles.push('map/trips.json');
+  }
+
+  const message = updatedFiles.length
+    ? `Published changes to ${updatedFiles.join(', ')}.`
+    : 'No content received to publish.';
+
+  return json({ message }, 200);
 };
+
 
 const upload = async (request, env) => {
   const methodError = assertMethod(request, ['POST']);

@@ -167,9 +167,8 @@
         imgWrap.setAttribute('aria-label', `Read ${post.title}`);
         imgWrap.addEventListener('click', () => openPost(post.id));
 
-        const img = document.createElement('img');
-        img.className = 'blog-card-image';
-        img.src = post.coverImage || 'images/about/weekend-reset.jpg';
+        const rawSrc = post.coverImage || 'images/about/weekend-reset.jpg';
+        img.src = (rawSrc.startsWith('http') || rawSrc.startsWith('/') || rawSrc.startsWith('../')) ? rawSrc : '../' + rawSrc;
         img.alt = post.coverAlt || post.title;
         img.loading = 'lazy';
         imgWrap.append(img);
