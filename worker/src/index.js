@@ -158,7 +158,7 @@ const publish = async (request, env) => {
     updatedFiles.push('gallery/projects.json');
   }
 
-  if (body.blog) {
+  if (body.blog && Array.isArray(body.blog) && body.blog.length > 0) {
     const normalizedBlog = normalizeBlogPosts(body.blog);
     await putContent(env, 'blog/posts.js', serializeBlogPosts(normalizedBlog), 'Update blog posts from /admin');
     updatedFiles.push('blog/posts.js');

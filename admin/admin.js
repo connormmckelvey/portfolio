@@ -952,15 +952,18 @@
         method: 'POST',
         body: JSON.stringify({
           projects: state.projects,
-          gallery: state.projects,
-          blog: []
+          gallery: state.projects
+
         })
       });
 
 
 
       if (!response.ok) {
-        const detail = result?.error || result?.message || `Publish failed (${response.status})`;
+        let detail = result?.error || result?.message || `Publish failed (${response.status})`;
+        if (typeof detail === 'string' && detail.toLowerCase().includes('trips')) {
+          detail = 'The Cloudflare Worker backend is running an outdated version. Please run "npx wrangler deploy" to update the live worker.';
+        }
         if (publishStatus) publishStatus.textContent = detail;
         return;
       }
