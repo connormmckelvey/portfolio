@@ -11,13 +11,18 @@
   },
   {
     "id": "img_2149",
-    "title": "",
-    "kicker": "",
-    "description": "",
+    "title": "Longhorn Hapkit",
+    "kicker": "Robotics Education Platform",
+    "description": "Deployed at UT Austin in a semester-long undergraduate introductory robotics courses and a week-long summer robotics program for high school students",
     "mediaType": "image",
     "mediaSrc": "gallery/img_2149/img_2149-media-1791594495612.jpg",
     "posterSrc": "",
-    "tags": []
+    "tags": [
+      "communication",
+      "haptics",
+      "firmware",
+      "hardware"
+    ]
   },
   {
     "id": "img_2191",
@@ -41,9 +46,9 @@
   },
   {
     "id": "img_2519",
-    "title": "",
-    "kicker": "",
-    "description": "",
+    "title": "Rehabilitation wearable",
+    "kicker": "UT HERO Lab",
+    "description": "Integrated EMG sensing to drive haptic feedback to cue specific muscle groups",
     "mediaType": "image",
     "mediaSrc": "gallery/img_2519/img_2519-media-1791594420891.jpg",
     "posterSrc": "",
@@ -51,8 +56,8 @@
   },
   {
     "id": "img_2546",
-    "title": "",
-    "kicker": "",
+    "title": "autonomous operating room contact cleaning robot",
+    "kicker": "UT HERO Lab",
     "description": "",
     "mediaType": "image",
     "mediaSrc": "gallery/img_2546/img_2546-media-1791594406526.jpg",
@@ -71,8 +76,8 @@
   },
   {
     "id": "img_2620",
-    "title": "",
-    "kicker": "",
+    "title": "Learning FPGA development",
+    "kicker": "Digital Logic Design",
     "description": "",
     "mediaType": "image",
     "mediaSrc": "gallery/img_2620/img_2620-media-1791594448625.jpg",
