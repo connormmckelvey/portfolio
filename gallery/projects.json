@@ -1,7 +1,7 @@
 [
   {
     "id": "img_0705",
-    "title": "",
+    "title": "Robotics Honors Banquet",
     "kicker": "",
     "description": "",
     "mediaType": "image",
@@ -48,7 +48,7 @@
     "id": "img_2519",
     "title": "Rehabilitation wearable",
     "kicker": "UT HERO Lab",
-    "description": "Integrated EMG sensing to drive haptic feedback to cue specific muscle groups",
+    "description": "Integrated EMG sensing to drive haptic feedback cueing specific muscle groups",
     "mediaType": "image",
     "mediaSrc": "gallery/img_2519/img_2519-media-1791594420891.jpg",
     "posterSrc": "",
@@ -66,9 +66,9 @@
   },
   {
     "id": "img_2610",
-    "title": "",
+    "title": "Testing EMG sensing",
     "kicker": "",
-    "description": "",
+    "description": "Using electrodes to measure bicep muscle activity",
     "mediaType": "image",
     "mediaSrc": "gallery/img_2610/img_2610-media-1791594464151.jpg",
     "posterSrc": "",
