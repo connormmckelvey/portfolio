@@ -65,6 +65,7 @@ const normalizeProjects = (projects) => {
       title: String(project.title || '').trim(),
       kicker: String(project.kicker || '').trim(),
       description: String(project.description || '').trim(),
+      link: String(project.link || project.url || '').trim(),
       mediaType: String(project.mediaType || 'image').toLowerCase() === 'video' ? 'video' : 'image',
       mediaSrc: String(project.mediaSrc || '').trim(),
       posterSrc: String(project.posterSrc || '').trim(),

@@ -740,3 +740,30 @@
     transition: none !important;
   }
 }
+.admin-preview-link-bar {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-btn-link-test {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-decoration: none;
+  background: var(--off-white);
+  border: 1px solid var(--border);
+  color: var(--green-deep);
+  border-radius: 6px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-btn-link-test:hover {
+  background: var(--green-deep);
+  color: var(--off-white);
+}

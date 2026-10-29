@@ -172,7 +172,13 @@
       overflow: hidden;
       background: #1A2E23;
       box-sizing: border-box;
-      cursor: pointer;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      cursor: none !important;
+    }
+    .project-card * {
+      cursor: none !important;
     }
     .project-img,
     video.project-img {
@@ -182,7 +188,8 @@
       display: block;
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .project-card:hover .project-img {
+    .project-card:hover .project-img,
+    .project-card.is-tapped .project-img {
       transform: scale(1.06);
     }
     .project-overlay {
@@ -198,7 +205,8 @@
       transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 2;
     }
-    .project-card:hover .project-overlay {
+    .project-card:hover .project-overlay,
+    .project-card.is-tapped .project-overlay {
       opacity: 1;
     }
     .project-kicker {
@@ -212,7 +220,8 @@
       transform: translateY(12px);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .project-card:hover .project-kicker {
+    .project-card:hover .project-kicker,
+    .project-card.is-tapped .project-kicker {
       transform: translateY(0);
     }
     .project-title {
@@ -226,7 +235,8 @@
       transform: translateY(16px);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
     }
-    .project-card:hover .project-title {
+    .project-card:hover .project-title,
+    .project-card.is-tapped .project-title {
       transform: translateY(0);
     }
     .project-description {
@@ -238,9 +248,109 @@
       transform: translateY(20px);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
     }
-    .project-card:hover .project-description {
+    .project-card:hover .project-description,
+    .project-card.is-tapped .project-description {
       transform: translateY(0);
     }
+
+    /* ─── CUSTOM HIKER STICK-FIGURE CURSOR ─── */
+    .hiker-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 54px;
+      height: 64px;
+      pointer-events: none;
+      z-index: 999999;
+      opacity: 0;
+      display: block;
+      transition: opacity 0.18s ease-out;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
+    }
+    .hiker-cursor.is-visible {
+      opacity: 1;
+    }
+    .hiker-inner {
+      width: 100%;
+      height: 100%;
+      transform-origin: 35px 50px;
+      transition: transform 0.16s ease-out;
+    }
+    .hiker-cursor.face-left .hiker-inner {
+      transform: scaleX(-1);
+    }
+    
+    /* Walking animation */
+    .hiker-cursor.is-moving .leg-front {
+      animation: hiker-stride-1 0.32s ease-in-out infinite alternate;
+      transform-origin: 24px 34px;
+    }
+    .hiker-cursor.is-moving .leg-back {
+      animation: hiker-stride-2 0.32s ease-in-out infinite alternate;
+      transform-origin: 24px 34px;
+    }
+    .hiker-cursor.is-moving .arm-front {
+      animation: hiker-arm-swing 0.32s ease-in-out infinite alternate;
+      transform-origin: 24px 22px;
+    }
+    .hiker-cursor.is-moving .hiking-stick {
+      animation: hiker-stick-swing 0.32s ease-in-out infinite alternate;
+      transform-origin: 24px 22px;
+    }
+    .hiker-cursor.is-moving .torso-group {
+      animation: hiker-torso-bob 0.32s ease-in-out infinite alternate;
+    }
+
+    /* Idle breathing */
+    .hiker-cursor:not(.is-moving) .torso-group {
+      animation: hiker-idle-breathe 2.2s ease-in-out infinite alternate;
+    }
+
+    /* Click / Push / Plant stick action */
+    .hiker-cursor.is-clicking .hiker-inner {
+      transform: rotate(14deg) translateY(4px);
+    }
+    .hiker-cursor.face-left.is-clicking .hiker-inner {
+      transform: scaleX(-1) rotate(14deg) translateY(4px);
+    }
+    .hiker-cursor.is-clicking .hiking-stick {
+      transform: rotate(12deg) translateY(2px);
+      transform-origin: 35px 50px;
+    }
+    .hiker-cursor.is-clicking .pole-ripple {
+      animation: hiker-ripple-tap 0.35s cubic-bezier(0.1, 1, 0.2, 1) forwards;
+    }
+
+    @keyframes hiker-stride-1 {
+      0% { transform: rotate(-18deg); }
+      100% { transform: rotate(22deg); }
+    }
+    @keyframes hiker-stride-2 {
+      0% { transform: rotate(20deg); }
+      100% { transform: rotate(-18deg); }
+    }
+    @keyframes hiker-arm-swing {
+      0% { transform: rotate(-12deg); }
+      100% { transform: rotate(16deg); }
+    }
+    @keyframes hiker-stick-swing {
+      0% { transform: rotate(-8deg); }
+      100% { transform: rotate(14deg); }
+    }
+    @keyframes hiker-torso-bob {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-2px); }
+    }
+    @keyframes hiker-idle-breathe {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-1.5px); }
+    }
+    @keyframes hiker-ripple-tap {
+      0% { r: 2; opacity: 1; stroke-width: 2.5; }
+      100% { r: 14; opacity: 0; stroke-width: 0.5; }
+    }
+
     /* ─── ABOUT SECTION (WARM PARCHMENT BACKGROUND) ─── */
     .about-section {
       background-color: #EAE6DF;
@@ -443,28 +553,28 @@
 
   <section id="projects" class="projects-container">
     <div class="projects-grid">
-      <article class="project-card">
+      <article class="project-card is-static">
         <img src="gallery/img_0705/img_0705-media-1791594590980.jpg" alt="Gallery Photo" class="project-img" />
       </article>
-      <article class="project-card">
+      <article class="project-card is-static">
         <img src="gallery/img_2149/img_2149-media-1791594495612.jpg" alt="Gallery Photo" class="project-img" />
       </article>
-      <article class="project-card">
+      <article class="project-card is-static">
         <img src="gallery/img_2191/img_2191-media-1791594477503.jpg" alt="Gallery Photo" class="project-img" />
       </article>
-      <article class="project-card">
+      <article class="project-card is-static">
         <img src="gallery/img_2468/img_2468-media-1791594434766.jpg" alt="Gallery Photo" class="project-img" />
       </article>
-      <article class="project-card">
+      <article class="project-card is-static">
         <img src="gallery/img_2519/img_2519-media-1791594420891.jpg" alt="Gallery Photo" class="project-img" />
       </article>
-      <article class="project-card">
+      <article class="project-card is-static">
         <img src="gallery/img_2546/img_2546-media-1791594406526.jpg" alt="Gallery Photo" class="project-img" />
       </article>
-      <article class="project-card">
+      <article class="project-card is-static">
         <img src="gallery/img_2610/img_2610-media-1791594464151.jpg" alt="Gallery Photo" class="project-img" />
       </article>
-      <article class="project-card">
+      <article class="project-card is-static">
         <img src="gallery/img_2620/img_2620-media-1791594448625.jpg" alt="Gallery Photo" class="project-img" />
       </article>
     </div>
@@ -528,6 +638,122 @@
         typeWriter();
       }
 
+      function initGalleryInteractions() {
+        const cursor = document.getElementById('hikerCursor');
+        if (!cursor) return;
+
+        let mouseX = -100;
+        let mouseY = -100;
+        let currentX = -100;
+        let currentY = -100;
+        let lastX = -100;
+        let isHovering = false;
+        let isRafActive = false;
+        let moveTimeout = null;
+
+        function updateCursorPosition() {
+          currentX += (mouseX - currentX) * 0.26;
+          currentY += (mouseY - currentY) * 0.26;
+          
+          // Place the tip of the trekking pole directly at mouse point
+          cursor.style.transform = `translate3d(${currentX - 35}px, ${currentY - 50}px, 0)`;
+
+          if (isHovering || Math.abs(mouseX - currentX) > 0.4 || Math.abs(mouseY - currentY) > 0.4) {
+            requestAnimationFrame(updateCursorPosition);
+          } else {
+            isRafActive = false;
+          }
+        }
+
+        window.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          if (currentX < 0) { currentX = mouseX; currentY = mouseY; }
+
+          const deltaX = mouseX - lastX;
+          if (Math.abs(deltaX) > 1.2) {
+            if (deltaX < 0) {
+              cursor.classList.add('face-left');
+            } else {
+              cursor.classList.remove('face-left');
+            }
+          }
+          lastX = mouseX;
+
+          // Walking leg stride cadence
+          cursor.classList.add('is-moving');
+          clearTimeout(moveTimeout);
+          moveTimeout = setTimeout(() => {
+            cursor.classList.remove('is-moving');
+          }, 90);
+
+          const targetCard = e.target.closest('.project-card');
+          if (targetCard && !isHovering) {
+            isHovering = true;
+            cursor.classList.add('is-visible');
+            if (!isRafActive) {
+              isRafActive = true;
+              requestAnimationFrame(updateCursorPosition);
+            }
+          } else if (!targetCard && isHovering) {
+            isHovering = false;
+            cursor.classList.remove('is-visible');
+            cursor.classList.remove('is-clicking');
+            cursor.classList.remove('is-moving');
+          }
+
+          if (isHovering && !isRafActive) {
+            isRafActive = true;
+            requestAnimationFrame(updateCursorPosition);
+          }
+        }, { passive: true });
+
+        // On mousedown over ANY project card: stick figure plants the hiking pole with a tap ripple
+        window.addEventListener('mousedown', (e) => {
+          if (e.target.closest('.project-card')) {
+            cursor.classList.add('is-clicking');
+            const ripple = cursor.querySelector('.pole-ripple');
+            if (ripple) {
+              ripple.style.animation = 'none';
+              void ripple.offsetWidth;
+              ripple.style.animation = 'hiker-ripple-tap 0.35s cubic-bezier(0.1, 1, 0.2, 1) forwards';
+            }
+          }
+        });
+
+        window.addEventListener('mouseup', () => {
+          cursor.classList.remove('is-clicking');
+        });
+
+        // Touch handling: 2-step tap for cards with links and overlays
+        const projectsContainer = document.querySelector('#projects');
+        if (projectsContainer) {
+          projectsContainer.addEventListener('click', (e) => {
+            const card = e.target.closest('.project-card.has-link');
+            if (!card) return;
+            const isTouch = window.matchMedia('(hover: none) or (pointer: coarse)').matches;
+            if (!isTouch) return;
+
+            const hasOverlay = card.querySelector('.project-overlay');
+            if (hasOverlay && !card.classList.contains('is-tapped')) {
+              e.preventDefault();
+              projectsContainer.querySelectorAll('.project-card.is-tapped').forEach((c) => {
+                if (c !== card) c.classList.remove('is-tapped');
+              });
+              card.classList.add('is-tapped');
+            }
+          });
+
+          document.addEventListener('click', (e) => {
+            if (!e.target.closest('.project-card')) {
+              projectsContainer.querySelectorAll('.project-card.is-tapped').forEach((c) => {
+                c.classList.remove('is-tapped');
+              });
+            }
+          });
+        }
+      }
+
       async function loadGalleryProjects() {
         const container = document.querySelector('#projects .projects-grid');
         if (!container) return;
@@ -544,6 +770,10 @@
               (p.title && p.title.trim()) ||
               (p.description && p.description.trim())
             );
+            const hasLink = Boolean(p.link && p.link.trim());
+            const tag = hasLink ? 'a' : 'article';
+            const linkAttrs = hasLink ? ` href="${p.link.trim()}" target="_blank" rel="noopener noreferrer"` : '';
+            const cardClass = hasLink ? 'project-card has-link' : 'project-card is-static';
 
             let overlayHtml = '';
             if (hasOverlay) {
@@ -555,22 +785,24 @@
             }
 
             if (isVideo) {
-              return `      <article class="project-card">
+              return `      <${tag} class="${cardClass}"${linkAttrs}>
         <video class="project-img" autoplay loop muted playsinline${p.posterSrc ? ` poster="${p.posterSrc}"` : ''}>
           <source src="${p.mediaSrc}" type="video/mp4" />
           <img src="${p.posterSrc || p.mediaSrc}" alt="${p.title || 'Project video'}" class="project-img" />
         </video>${overlayHtml}
-      </article>`;
+      </${tag}>`;
             } else {
-              return `      <article class="project-card">
+              return `      <${tag} class="${cardClass}"${linkAttrs}>
         <img src="${p.mediaSrc}" alt="${p.title || 'Project image'}" class="project-img" />${overlayHtml}
-      </article>`;
+      </${tag}>`;
             }
           }).join('\n\n');
 
           container.innerHTML = htmlArticles;
         } catch {
           // Fall back to pre-rendered HTML cards inside index.html
+        } finally {
+          initGalleryInteractions();
         }
       }
 
@@ -582,6 +814,57 @@
     })();
   </script>
 
+
+  <div class="hiker-cursor" id="hikerCursor" aria-hidden="true">
+    <div class="hiker-inner">
+      <svg width="54" height="64" viewBox="0 0 54 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ripple tap on pole contact/push -->
+        <circle class="pole-ripple" cx="37" cy="52" r="0" stroke="#A3B899" fill="none" opacity="0"/>
+        
+        <!-- Back leg (walking companion) -->
+        <g class="leg-back">
+          <line x1="24" y1="34" x2="18" y2="48" stroke="#8EA883" stroke-width="2.6" stroke-linecap="round"/>
+          <line x1="18" y1="48" x2="14" y2="52" stroke="#8EA883" stroke-width="2.6" stroke-linecap="round"/>
+        </g>
+
+        <!-- Torso, Backpack & Trail Cap -->
+        <g class="torso-group">
+          <!-- Backpack -->
+          <rect x="12" y="21" width="7" height="12" rx="2.5" fill="#8EA883" stroke="#0D140E" stroke-width="1"/>
+          <!-- Sleeping pad / bedroll on top of pack -->
+          <rect x="10" y="17" width="11" height="4" rx="2" fill="#DCD7CE" stroke="#0D140E" stroke-width="0.8"/>
+          
+          <!-- Torso line -->
+          <line x1="24" y1="20" x2="24" y2="34" stroke="#EAE6DF" stroke-width="3" stroke-linecap="round"/>
+          
+          <!-- Head with forward trail cap -->
+          <circle cx="24" cy="12" r="6" fill="#EAE6DF" stroke="#0D140E" stroke-width="1.2"/>
+          <path d="M 20 8 Q 25 6 29 9 L 32 9.5" stroke="#A3B899" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        </g>
+
+        <!-- Front leg -->
+        <g class="leg-front">
+          <line x1="24" y1="34" x2="28" y2="47" stroke="#EAE6DF" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="28" y1="47" x2="33" y2="52" stroke="#EAE6DF" stroke-width="2.8" stroke-linecap="round"/>
+        </g>
+
+        <!-- Hiking stick (planting in front) -->
+        <g class="hiking-stick">
+          <!-- Pole shaft -->
+          <line x1="31" y1="18" x2="37" y2="52" stroke="#EAE6DF" stroke-width="2.2" stroke-linecap="round"/>
+          <!-- Pole handle grip -->
+          <line x1="31" y1="18" x2="32.5" y2="26" stroke="#A3B899" stroke-width="3.4" stroke-linecap="round"/>
+          <!-- Trekking pole basket ring near bottom -->
+          <line x1="34" y1="48" x2="38" y2="49" stroke="#A3B899" stroke-width="2.2" stroke-linecap="round"/>
+        </g>
+
+        <!-- Front arm gripping the pole -->
+        <g class="arm-front">
+          <path d="M 24 22 L 29 25 L 32 21" stroke="#EAE6DF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
+    </div>
+  </div>
 
 </body>
 </html>

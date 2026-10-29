@@ -59,6 +59,7 @@
       title: '',
       kicker: '',
       description: '',
+      link: '',
       mediaType: 'image',
       mediaSrc: 'gallery/img_0705/img_0705-media-1791594590980.jpg',
       posterSrc: '',
@@ -69,6 +70,7 @@
       title: '',
       kicker: '',
       description: '',
+      link: '',
       mediaType: 'image',
       mediaSrc: 'gallery/img_2149/img_2149-media-1791594495612.jpg',
       posterSrc: '',
@@ -79,6 +81,7 @@
       title: '',
       kicker: '',
       description: '',
+      link: '',
       mediaType: 'image',
       mediaSrc: 'gallery/img_2191/img_2191-media-1791594477503.jpg',
       posterSrc: '',
@@ -89,6 +92,7 @@
       title: '',
       kicker: '',
       description: '',
+      link: '',
       mediaType: 'image',
       mediaSrc: 'gallery/img_2468/img_2468-media-1791594434766.jpg',
       posterSrc: '',
@@ -99,6 +103,7 @@
       title: '',
       kicker: '',
       description: '',
+      link: '',
       mediaType: 'image',
       mediaSrc: 'gallery/img_2519/img_2519-media-1791594420891.jpg',
       posterSrc: '',
@@ -109,6 +114,7 @@
       title: '',
       kicker: '',
       description: '',
+      link: '',
       mediaType: 'image',
       mediaSrc: 'gallery/img_2546/img_2546-media-1791594406526.jpg',
       posterSrc: '',
@@ -119,6 +125,7 @@
       title: '',
       kicker: '',
       description: '',
+      link: '',
       mediaType: 'image',
       mediaSrc: 'gallery/img_2610/img_2610-media-1791594464151.jpg',
       posterSrc: '',
@@ -129,6 +136,7 @@
       title: '',
       kicker: '',
       description: '',
+      link: '',
       mediaType: 'image',
       mediaSrc: 'gallery/img_2620/img_2620-media-1791594448625.jpg',
       posterSrc: '',
@@ -167,7 +175,14 @@
     return `../${value}`;
   };
 
-  const normalizeAssetPath = (path) => {
+    const sanitizeLinkUrl = (raw) => {
+    const val = String(raw || '').trim();
+    if (!val) return '';
+    if (/^(https?:\/\/|mailto:|tel:|\/|#)/i.test(val)) return val;
+    return `https://${val}`;
+  };
+
+const normalizeAssetPath = (path) => {
     const value = String(path || '').trim();
     if (!value) return '';
     if (/^(https?:)?\/\//.test(value) || value.startsWith('/') || value.startsWith('blob:')) {
@@ -464,6 +479,7 @@
     title: '',
     kicker: '',
     description: '',
+      link: '',
     mediaType: 'image',
     mediaSrc: 'gallery/new-project/image.jpg',
     posterSrc: '',
@@ -501,6 +517,7 @@
         title: '',
         kicker: '',
         description: '',
+      link: '',
         mediaType: isVideo ? 'video' : 'image',
         mediaSrc: mediaSrcPath,
         posterSrc: '',
@@ -685,6 +702,8 @@
     const idInput = makeInput(project.id);
     const titleInput = makeInput(project.title);
     const kickerInput = makeInput(project.kicker);
+    const linkInput = makeInput(project.link || '');
+    linkInput.placeholder = 'https://... (opens in new tab on click)';
     const mediaTypeSelect = makeSelect([
       { value: 'image', label: 'Image (JPG, PNG, WebP, GIF)' },
       { value: 'video', label: 'Video (MP4, WebM)' }
@@ -698,6 +717,7 @@
       field('project id (folder slug)', idInput),
       field('project title (optional)', titleInput),
       field('kicker / organization (optional)', kickerInput),
+      field('project link / destination URL (optional, opens in new tab)', linkInput),
       field('media type', mediaTypeSelect),
       field('media source file (image or video)', mediaSrcInput),
       field('poster image source (video fallback - optional)', posterSrcInput),
@@ -708,10 +728,11 @@
     fields[0].classList.add('full');
     fields[1].classList.add('full');
     fields[2].classList.add('full');
-    fields[4].classList.add('full');
+    fields[3].classList.add('full');
     fields[5].classList.add('full');
     fields[6].classList.add('full');
     fields[7].classList.add('full');
+    fields[8].classList.add('full');
 
     const note = document.createElement('div');
     note.className = 'admin-note';
@@ -764,6 +785,7 @@
         item.mediaType = mediaTypeSelect.value;
         item.mediaSrc = normalizeAssetPath(mediaSrcInput.value.trim());
         item.posterSrc = normalizeAssetPath(posterSrcInput.value.trim());
+        item.link = linkInput.value.trim();
         item.tags = normalizeTags(tagsInput.value);
         item.description = descTextarea.value.trim();
         return item;
@@ -776,11 +798,19 @@
       renderPreview();
     };
 
-    [idInput, titleInput, kickerInput, mediaTypeSelect, mediaSrcInput, posterSrcInput, tagsInput, descTextarea]
+    [idInput, titleInput, kickerInput, linkInput, mediaTypeSelect, mediaSrcInput, posterSrcInput, tagsInput, descTextarea]
       .forEach((input) => {
         input.addEventListener('input', commit);
         input.addEventListener('change', commit);
       });
+
+    linkInput.addEventListener('blur', () => {
+      const sanitized = sanitizeLinkUrl(linkInput.value);
+      if (sanitized !== linkInput.value) {
+        linkInput.value = sanitized;
+        commit();
+      }
+    });
   };
 
   const renderPreview = () => {
@@ -871,6 +901,20 @@
     });
 
     previewCard.replaceChildren(wrapper);
+
+    let testBar = previewCard.parentElement.querySelector('.admin-preview-link-bar');
+    if (!testBar) {
+      testBar = document.createElement('div');
+      testBar.className = 'admin-preview-link-bar';
+      previewCard.after(testBar);
+    }
+    if (project.link && project.link.trim()) {
+      testBar.innerHTML = `<a class="admin-btn admin-btn-small admin-btn-link-test" href="${project.link.trim()}" target="_blank" rel="noopener noreferrer">test link: ${project.link.trim()} ↗</a>`;
+      testBar.hidden = false;
+    } else {
+      testBar.innerHTML = '';
+      testBar.hidden = true;
+    }
   };
 
   const renderAll = () => {
@@ -899,6 +943,10 @@
         (p.title && p.title.trim()) ||
         (p.description && p.description.trim())
       );
+      const hasLink = Boolean(p.link && p.link.trim());
+      const tag = hasLink ? 'a' : 'article';
+      const linkAttrs = hasLink ? ` href="${p.link.trim()}" target="_blank" rel="noopener noreferrer"` : '';
+      const cardClass = hasLink ? 'project-card has-link' : 'project-card is-static';
 
       let overlayHtml = '';
       if (hasOverlay) {
@@ -910,16 +958,16 @@
       }
 
       if (isVideo) {
-        return `      <article class="project-card">
+        return `      <${tag} class="${cardClass}"${linkAttrs}>
         <video class="project-img" autoplay loop muted playsinline${p.posterSrc ? ` poster="${p.posterSrc}"` : ''}>
           <source src="${p.mediaSrc}" type="video/mp4" />
           <img src="${p.posterSrc || p.mediaSrc}" alt="${p.title || 'Project video'}" class="project-img" />
         </video>${overlayHtml}
-      </article>`;
+      </${tag}>`;
       } else {
-        return `      <article class="project-card">
+        return `      <${tag} class="${cardClass}"${linkAttrs}>
         <img src="${p.mediaSrc}" alt="${p.title || 'Project image'}" class="project-img" />${overlayHtml}
-      </article>`;
+      </${tag}>`;
       }
     }).join('\n\n');
 

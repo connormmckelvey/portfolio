@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141F16" />
+      <stop offset="100%" stop-color="#0A0F0B" />
+    </linearGradient>
+    <linearGradient id="mGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B8CBB0" />
+      <stop offset="100%" stop-color="#8EA883" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Squircle -->
+  <rect x="16" y="16" width="480" height="480" rx="128" fill="url(#bgGrad)" stroke="#273C2C" stroke-width="14" />
+
+  <!-- Subtle Inner Framing -->
+  <rect x="36" y="36" width="440" height="440" rx="108" fill="none" stroke="#A3B899" stroke-width="2" stroke-opacity="0.25" />
+
+  <!-- Geometric "CM" Monogram -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Letter C in Warm Parchment -->
+    <path d="M 220 185
+             C 200 155, 140 155, 115 195
+             C 85 245, 85 270, 115 318
+             C 140 358, 200 358, 220 328"
+          stroke="#EAE6DF" stroke-width="52" />
+
+    <!-- Letter M in Sage Green -->
+    <path d="M 270 338
+             L 270 174
+             L 340 268
+             L 410 174
+             L 410 338"
+          stroke="url(#mGrad)" stroke-width="50" />
+  </g>
+
+  <!-- Terminal Tech Accent Dot -->
+  <circle cx="230" cy="184" r="8" fill="#A3B899" />
+</svg>
