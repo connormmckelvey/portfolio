@@ -20,12 +20,12 @@
     "tags": []
   },
   {
-    "id": "tactus",
+    "id": "tactus-better",
     "title": "",
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_1765/img_1765-media-1793313710092.jpg",
+    "mediaSrc": "images/gallery/img_2468/img_2468-media-1791594434766.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -70,7 +70,7 @@
     "tags": []
   },
   {
-    "id": "img_1417",
+    "id": "buck-converter",
     "title": "",
     "kicker": "",
     "description": "",
@@ -80,17 +80,7 @@
     "tags": []
   },
   {
-    "id": "img_1142",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_1142/img_1142-media-1793313730711.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_6755",
+    "id": "isle-royale",
     "title": "",
     "kicker": "",
     "description": "",
@@ -100,7 +90,7 @@
     "tags": []
   },
   {
-    "id": "img_0875",
+    "id": "monkey-bridge",
     "title": "",
     "kicker": "",
     "description": "",
@@ -110,32 +100,12 @@
     "tags": []
   },
   {
-    "id": "img_0389",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_0389/img_0389-media-1793313742904.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "de4e4103-999d-4740-aad4-ef739120a8ec",
+    "id": "france",
     "title": "",
     "kicker": "",
     "description": "",
     "mediaType": "image",
     "mediaSrc": "gallery/de4e4103-999d-4740-aad4-ef739120a8ec/de4e4103-999d-4740-aad4-ef739120a8ec-media-1793313747179.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2610",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2610/img_2610-media-1791594394940.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -150,17 +120,7 @@
     "tags": []
   },
   {
-    "id": "img_2546",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2546/img_2546-media-1791594406526.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2519",
+    "id": "emg-r2-board",
     "title": "",
     "kicker": "",
     "description": "",
@@ -170,7 +130,7 @@
     "tags": []
   },
   {
-    "id": "img_2468",
+    "id": "tactus-better",
     "title": "",
     "kicker": "",
     "description": "",
@@ -180,27 +140,7 @@
     "tags": []
   },
   {
-    "id": "img_2235",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_2235/IMG_2235.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2223",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "video",
-    "mediaSrc": "gallery/img_2223/IMG_2223.mov",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2191",
+    "id": "world-cup",
     "title": "",
     "kicker": "",
     "description": "",
@@ -210,7 +150,7 @@
     "tags": []
   },
   {
-    "id": "img_2149",
+    "id": "2dof-hapkit",
     "title": "",
     "kicker": "",
     "description": "",
@@ -220,47 +160,7 @@
     "tags": []
   },
   {
-    "id": "1d478317-ac23-4af2-bcfe-108dc766ea2f",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/1d478317-ac23-4af2-bcfe-108dc766ea2f/1D478317-AC23-4AF2-BCFE-108DC766EA2F.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2106",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_2106/IMG_2106.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_1126",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_1126/IMG_1126.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_1744",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_1744/IMG_1744.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_0705",
+    "id": "robotics-llc",
     "title": "",
     "kicker": "",
     "description": "",
@@ -270,32 +170,12 @@
     "tags": []
   },
   {
-    "id": "img_2620",
+    "id": "fpga",
     "title": "",
     "kicker": "",
     "description": "",
     "mediaType": "image",
     "mediaSrc": "images/gallery/img_2620/img_2620-media-1791594448625.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2610",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2610/img_2610-media-1791594464151.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2611",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_2611/IMG_2611.jpeg",
     "posterSrc": "",
     "tags": []
   },
