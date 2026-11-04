@@ -60,16 +60,6 @@
     "tags": []
   },
   {
-    "id": "drawing-robot",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_1436/img_1436-media-1793313723241.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
     "id": "buck-converter",
     "title": "",
     "kicker": "",
@@ -180,34 +170,6 @@
     "tags": []
   },
   {
-    "id": "316-lab3",
-    "title": "FPGA 7-Segment Display",
-    "kicker": "ECE Digital Logic Design",
-    "description": "Programmed a 7-segment display in Verilog",
-    "mediaType": "image",
-    "mediaSrc": "gallery/new-project/image.jpg",
-    "posterSrc": "",
-    "tags": [
-      "Embedded",
-      "Robotics"
-    ]
-  },
-  {
-    "id": "haplink",
-    "title": "Haplink™ Communication Protocol",
-    "kicker": "Texas Robotics, HERO Lab",
-    "description": "Bare-metal C++ firmware library and Python framework implementing low-latency serial data validation. Optimized packet sizes down to 13 bytes at 100Hz.",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/haplink/haplink-media-1791592483478.jpg",
-    "posterSrc": "",
-    "tags": [
-      "Firmware",
-      "C++",
-      "Python",
-      "Robotics"
-    ]
-  },
-  {
     "id": "vibrotactile-band",
     "title": "Vibrotactile Motion Feedback Band",
     "kicker": "Human Enabled Robotics Lab",
@@ -220,31 +182,6 @@
       "PCB",
       "Firmware",
       "C++"
-    ]
-  },
-  {
-    "id": "drawing-robot",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_1436/img_1436-media-1793313723241.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "skylore",
-    "title": "SkyLore AR Celestial App",
-    "kicker": "1st Place HackTX 2025 Winner",
-    "description": "Crowdsourced astronomy platform leveraging user data for light pollution mapping. Built with real-time augmented reality and constellation recognition machine learning model.",
-    "mediaType": "image",
-    "mediaSrc": "gallery/skylore/image.jpg",
-    "posterSrc": "",
-    "tags": [
-      "AR",
-      "Mobile",
-      "Machine Learning",
-      "Hackathon"
     ]
   }
 ]
