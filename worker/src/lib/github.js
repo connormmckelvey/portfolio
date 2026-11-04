@@ -1,9 +1,14 @@
 const encodeContentPath = (path) => encodeURIComponent(path).replace(/%2F/g, '/');
 
 const bytesToBase64 = (bytes) => {
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString('base64');
+  }
   let binary = '';
-  for (let i = 0; i < bytes.length; i += 1) {
-    binary += String.fromCharCode(bytes[i]);
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode.apply(null, chunk);
   }
   return btoa(binary);
 };
@@ -68,56 +73,68 @@ const getContentSha = async (env, path) => {
   return payload.sha || null;
 };
 
-const putContent = async (env, path, content, message) => {
+const putContent = async (env, path, content, message, retries = 2) => {
   const { owner, repo, branch } = repoConfig(env);
   const encodedPath = encodeContentPath(path);
-  const sha = await getContentSha(env, path);
 
-  const body = {
-    message,
-    content: textToBase64(content),
-    branch
-  };
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const sha = await getContentSha(env, path);
 
-  if (sha) body.sha = sha;
+    const body = {
+      message,
+      content: textToBase64(content),
+      branch
+    };
 
-  const { response, payload } = await githubRequest(env, `/repos/${owner}/${repo}/contents/${encodedPath}`, {
-    method: 'PUT',
-    body: JSON.stringify(body)
-  });
+    if (sha) body.sha = sha;
 
-  if (!response.ok) {
+    const { response, payload } = await githubRequest(env, `/repos/${owner}/${repo}/contents/${encodedPath}`, {
+      method: 'PUT',
+      body: JSON.stringify(body)
+    });
+
+    if (response.ok) return payload;
+
+    if (response.status === 409 && attempt < retries) {
+      await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
+      continue;
+    }
+
     const detail = payload?.message || 'Unknown GitHub API error';
     throw new Error(`Failed to update ${path}: ${detail}`);
   }
-
-  return payload;
 };
 
-const putBinaryContent = async (env, path, bytes, message) => {
+const putBinaryContent = async (env, path, bytes, message, retries = 2) => {
   const { owner, repo, branch } = repoConfig(env);
   const encodedPath = encodeContentPath(path);
-  const sha = await getContentSha(env, path);
 
-  const body = {
-    message,
-    content: bytesToBase64(bytes),
-    branch
-  };
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const sha = await getContentSha(env, path);
 
-  if (sha) body.sha = sha;
+    const body = {
+      message,
+      content: bytesToBase64(bytes),
+      branch
+    };
 
-  const { response, payload } = await githubRequest(env, `/repos/${owner}/${repo}/contents/${encodedPath}`, {
-    method: 'PUT',
-    body: JSON.stringify(body)
-  });
+    if (sha) body.sha = sha;
 
-  if (!response.ok) {
+    const { response, payload } = await githubRequest(env, `/repos/${owner}/${repo}/contents/${encodedPath}`, {
+      method: 'PUT',
+      body: JSON.stringify(body)
+    });
+
+    if (response.ok) return payload;
+
+    if (response.status === 409 && attempt < retries) {
+      await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
+      continue;
+    }
+
     const detail = payload?.message || 'Unknown GitHub API error';
     throw new Error(`Failed to update ${path}: ${detail}`);
   }
-
-  return payload;
 };
 
 export {

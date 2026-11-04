@@ -30,13 +30,27 @@ const ALLOWED_UPLOAD_TYPES = {
   'image/png': 'png',
   'image/webp': 'webp',
   'image/gif': 'gif',
+  'image/heic': 'heic',
+  'image/heif': 'heif',
   'video/mp4': 'mp4',
   'video/webm': 'webm',
   'video/quicktime': 'mov'
 };
 
+const EXT_TO_MIME = {
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  webp: 'image/webp',
+  gif: 'image/gif',
+  heic: 'image/heic',
+  heif: 'image/heif',
+  mp4: 'video/mp4',
+  webm: 'video/webm',
+  mov: 'video/quicktime'
+};
 
-const MAX_UPLOAD_BYTES = 6 * 1024 * 1024;
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 
 const sanitizeSegment = (value) => String(value || '')
   .toLowerCase()
@@ -54,7 +68,6 @@ const normalizeImageFolder = (value) => {
   const pieces = raw.split('/').map(sanitizeSegment).filter(Boolean);
   return pieces.length ? pieces.join('/') : 'gallery';
 };
-
 
 const extFromName = (name) => {
   const match = String(name || '').toLowerCase().match(/\.([a-z0-9]+)$/);
@@ -171,8 +184,6 @@ const publish = async (request, env) => {
   return json({ message }, 200);
 };
 
-
-
 const upload = async (request, env) => {
   const methodError = assertMethod(request, ['POST']);
   if (methodError) return methodError;
@@ -188,18 +199,23 @@ const upload = async (request, env) => {
     return json({ error: 'Missing file upload' }, 400);
   }
 
-  const mimeType = String(file.type || '').toLowerCase();
+  let mimeType = String(file.type || '').toLowerCase();
+  const fileExt = extFromName(file.name);
+  if (!ALLOWED_UPLOAD_TYPES[mimeType] && EXT_TO_MIME[fileExt]) {
+    mimeType = EXT_TO_MIME[fileExt];
+  }
+
   if (!ALLOWED_UPLOAD_TYPES[mimeType]) {
-    return json({ error: 'Unsupported file type. Allowed: JPEG, PNG, WebP, GIF.' }, 415);
+    return json({ error: 'Unsupported file type. Allowed: JPEG, PNG, WebP, GIF, MP4, WebM, MOV.' }, 415);
   }
 
   const maxBytes = Number(env.MAX_UPLOAD_BYTES || MAX_UPLOAD_BYTES) || MAX_UPLOAD_BYTES;
   if (file.size > maxBytes) {
-    return json({ error: `File too large. Max ${Math.floor(maxBytes / (1024 * 1024))} MB.` }, 413);
+    return json({ error: `File too large (${(file.size / (1024 * 1024)).toFixed(1)} MB). Max ${Math.floor(maxBytes / (1024 * 1024))} MB.` }, 413);
   }
 
-  const folder = String(form.get('folder') || 'uploads');
-  const basename = String(form.get('basename') || 'image');
+  const folder = String(form.get('folder') || 'gallery');
+  const basename = String(form.get('basename') || 'media');
   const path = buildUploadPath({
     folder,
     originalName: file.name,
@@ -208,10 +224,10 @@ const upload = async (request, env) => {
   });
 
   const bytes = new Uint8Array(await file.arrayBuffer());
-  await putBinaryContent(env, path, bytes, `Upload image asset ${path} from /admin`);
+  await putBinaryContent(env, path, bytes, `Upload media asset ${path} from /admin`);
 
   return json({
-    message: 'Uploaded image asset.',
+    message: 'Uploaded media asset.',
     path,
     mimeType,
     size: file.size

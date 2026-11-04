@@ -5,12 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="admin-api-base" content="https://portfolio-admin-api.connormckelvey.workers.dev" />
   <title>Connor McKelvey | Gallery Admin</title>
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=3" />
-  <link rel="icon" type="image/png" sizes="512x512" href="../favicon.png?v=3" />
-  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png?v=3" />
-  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png?v=3" />
-  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png?v=3" />
-  <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico?v=3" />
+  <link rel="icon" type="image/jpeg" href="../initals_watermark.jpg" />
+  <link rel="apple-touch-icon" href="../initals_watermark.jpg" />
+  <link rel="shortcut icon" href="../favicon.ico" />
   <link rel="manifest" href="../site.webmanifest" />
   <meta name="description" content="Private gallery entry editor for Connor McKelvey's portfolio." />
 
@@ -70,6 +67,37 @@
             <button class="admin-btn admin-btn-primary" type="button" data-publish>publish gallery</button>
           </div>
         </section>
+
+        <!-- Floating / Sticky Upload Progress Banner -->
+        <div class="admin-progress-banner" data-upload-progress hidden aria-live="polite">
+          <div class="admin-progress-header">
+            <div class="admin-progress-title-row">
+              <span class="admin-progress-spinner" data-progress-spinner></span>
+              <strong class="admin-progress-title" data-progress-title>Uploading Media...</strong>
+            </div>
+            <button class="admin-btn admin-btn-small" type="button" data-progress-dismiss hidden>dismiss</button>
+          </div>
+          <div class="admin-progress-bar-wrap">
+            <div class="admin-progress-bar-fill" data-progress-bar style="width: 0%"></div>
+          </div>
+          <p class="admin-progress-detail" data-progress-detail></p>
+          <div class="admin-progress-actions" data-progress-actions hidden>
+            <button class="admin-btn admin-btn-primary admin-btn-small" type="button" data-progress-publish>publish to portfolio now ↗</button>
+          </div>
+        </div>
+
+        <!-- Mobile view switcher (visible on screens <= 1024px) -->
+        <nav class="admin-mobile-nav" data-mobile-nav aria-label="Mobile workspace view">
+          <button class="admin-mobile-tab is-active" type="button" data-mobile-view="library">
+            <span class="admin-tab-icon">📚</span> Projects <span class="admin-tab-count" data-mobile-count></span>
+          </button>
+          <button class="admin-mobile-tab" type="button" data-mobile-view="editor">
+            <span class="admin-tab-icon">✏️</span> Editor
+          </button>
+          <button class="admin-mobile-tab" type="button" data-mobile-view="preview">
+            <span class="admin-tab-icon">👁️</span> Preview
+          </button>
+        </nav>
 
         <section class="admin-board">
           <aside class="admin-library">

@@ -19,10 +19,10 @@
   const savedApiBase = String(localStorage.getItem(API_BASE_KEY) || '').trim();
   const API_BASE = String(window.ADMIN_API_BASE || queryApiBase || savedApiBase || apiBaseMeta?.content || '').trim().replace(/\/$/, '');
   const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
-  const UPLOAD_ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm';
+  const UPLOAD_ACCEPT = 'image/*,video/mp4,video/webm,video/quicktime,.jpg,.jpeg,.png,.webp,.gif,.mp4,.webm,.mov,.heic,.heif';
   const ALLOWED_UPLOAD_TYPES = new Set([
-    'image/jpeg', 'image/png', 'image/webp', 'image/gif',
-    'video/mp4', 'video/webm'
+    'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif',
+    'video/mp4', 'video/webm', 'video/quicktime'
   ]);
 
   const gate = document.querySelector('[data-admin-gate]');
@@ -52,6 +52,19 @@
   const publishStatus = document.querySelector('[data-publish-status]');
   const editorTitle = document.querySelector('[data-editor-title]');
   const editorMeta = document.querySelector('[data-editor-meta]');
+
+  // Progress Banner & Mobile Navigation elements
+  const progressBanner = document.querySelector('[data-upload-progress]');
+  const progressTitle = document.querySelector('[data-progress-title]');
+  const progressSpinner = document.querySelector('[data-progress-spinner]');
+  const progressBar = document.querySelector('[data-progress-bar]');
+  const progressDetail = document.querySelector('[data-progress-detail]');
+  const progressActions = document.querySelector('[data-progress-actions]');
+  const progressPublishBtn = document.querySelector('[data-progress-publish]');
+  const progressDismissBtn = document.querySelector('[data-progress-dismiss]');
+  const mobileCount = document.querySelector('[data-mobile-count]');
+  const boardSection = document.querySelector('.admin-board');
+  const mobileTabs = document.querySelectorAll('[data-mobile-view]');
 
   const gallerySeed = [
     {
@@ -169,23 +182,23 @@
   const previewAssetPath = (path) => {
     const value = String(path || '').trim();
     if (!value) return '';
-    if (/^(https?:)?\/\//.test(value) || value.startsWith('/') || value.startsWith('../') || value.startsWith('./') || value.startsWith('blob:')) {
+    if (/^(https?:)?\/\//.test(value) || value.startsWith('/') || value.startsWith('../') || value.startsWith('./') || value.startsWith('blob:') || value.startsWith('data:')) {
       return value;
     }
     return `../${value}`;
   };
 
-    const sanitizeLinkUrl = (raw) => {
+  const sanitizeLinkUrl = (raw) => {
     const val = String(raw || '').trim();
     if (!val) return '';
     if (/^(https?:\/\/|mailto:|tel:|\/|#)/i.test(val)) return val;
     return `https://${val}`;
   };
 
-const normalizeAssetPath = (path) => {
+  const normalizeAssetPath = (path) => {
     const value = String(path || '').trim();
     if (!value) return '';
-    if (/^(https?:)?\/\//.test(value) || value.startsWith('/') || value.startsWith('blob:')) {
+    if (/^(https?:)?\/\//.test(value) || value.startsWith('/') || value.startsWith('blob:') || value.startsWith('data:')) {
       return value;
     }
     return value.replace(/^\.\.\//, '').replace(/^\.\//, '');
@@ -198,6 +211,10 @@ const normalizeAssetPath = (path) => {
     .slice(0, 48);
 
   const trimFileNameExt = (name) => String(name || '').replace(/\.[a-z0-9]+$/i, '');
+  const extFromName = (name) => {
+    const match = String(name || '').toLowerCase().match(/\.([a-z0-9]+)$/);
+    return match?.[1] || '';
+  };
 
   const formatBytes = (val) => {
     const bytes = Number(val || 0);
@@ -215,7 +232,119 @@ const normalizeAssetPath = (path) => {
     }
   };
 
-  const uploadMediaAsset = async ({ file, folder, basename }) => {
+  // Client-side image downscaling/compression to prevent 413s & mobile upload timeouts
+  const optimizeImageFile = async (file, maxDim = 2400, quality = 0.88) => {
+    const mime = String(file.type || '').toLowerCase();
+    const name = file.name.toLowerCase();
+    const isImage = (mime.startsWith('image/') || /\.(jpe?g|png|webp|heic|heif)$/i.test(name)) &&
+                    !mime.includes('gif') && !mime.includes('svg');
+
+    if (!isImage) return file;
+    // If already under 1.8MB, pass through untouched
+    if (file.size <= 1.8 * 1024 * 1024) return file;
+
+    return new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        let { width, height } = img;
+        if (!width || !height) {
+          resolve(file);
+          return;
+        }
+
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(file);
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (!blob || blob.size >= file.size) {
+              resolve(file);
+              return;
+            }
+            const cleanName = trimFileNameExt(file.name) + '.jpg';
+            const optimized = new File([blob], cleanName, {
+              type: 'image/jpeg',
+              lastModified: Date.now()
+            });
+            resolve(optimized);
+          },
+          'image/jpeg',
+          quality
+        );
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        resolve(file);
+      };
+
+      img.src = url;
+    });
+  };
+
+  let hasUnsaved = false;
+  const markUnsaved = () => {
+    hasUnsaved = true;
+    if (publishBtn) {
+      publishBtn.classList.add('admin-btn-publish-alert');
+      publishBtn.textContent = 'publish gallery *';
+    }
+    if (draftStatus) draftStatus.textContent = 'Unsaved changes (ready to publish)';
+  };
+
+  const markSaved = () => {
+    hasUnsaved = false;
+    if (publishBtn) {
+      publishBtn.classList.remove('admin-btn-publish-alert');
+      publishBtn.textContent = 'publish gallery';
+    }
+    if (draftStatus) draftStatus.textContent = 'All changes published live';
+  };
+
+  const showProgressBanner = ({ title, progress = 0, detail = '', isBusy = true, isSuccess = false, isError = false, showPublish = false }) => {
+    if (!progressBanner) return;
+    progressBanner.hidden = false;
+    progressBanner.classList.toggle('is-success', isSuccess);
+    progressBanner.classList.toggle('is-error', isError);
+    if (progressTitle) progressTitle.textContent = title;
+    if (progressSpinner) progressSpinner.classList.toggle('is-hidden', !isBusy);
+    if (progressBar) progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    if (progressDetail) progressDetail.textContent = detail;
+    if (progressActions) progressActions.hidden = !showPublish;
+    if (progressDismissBtn) progressDismissBtn.hidden = isBusy;
+  };
+
+  const hideProgressBanner = () => {
+    if (progressBanner) progressBanner.hidden = true;
+  };
+
+  progressDismissBtn?.addEventListener('click', hideProgressBanner);
+  progressPublishBtn?.addEventListener('click', () => {
+    void publish();
+  });
+
+  const uploadMediaAsset = async ({ file, folder, basename, onProgress }) => {
     if (LOCAL_MODE) {
       throw new Error('Upload requires deployed /admin route connected to Worker backend.');
     }
@@ -228,18 +357,31 @@ const normalizeAssetPath = (path) => {
     if (!(file instanceof File)) {
       throw new Error('No file selected.');
     }
-    const mime = String(file.type || '').toLowerCase();
-    if (!ALLOWED_UPLOAD_TYPES.has(mime)) {
-      throw new Error('Unsupported file type. Use JPEG, PNG, WebP, GIF, MP4, or WebM.');
-    }
-    if (file.size > MAX_UPLOAD_BYTES) {
-      throw new Error(`File too large (${formatBytes(file.size)}). Max ${formatBytes(MAX_UPLOAD_BYTES)}.`);
+
+    let fileToUpload = file;
+    try {
+      if (onProgress) onProgress({ status: 'optimizing', file });
+      fileToUpload = await optimizeImageFile(file);
+    } catch {
+      fileToUpload = file;
     }
 
+    const mime = String(fileToUpload.type || '').toLowerCase();
+    const ext = extFromName(fileToUpload.name);
+    const isAllowed = ALLOWED_UPLOAD_TYPES.has(mime) || /^(jpe?g|png|webp|gif|mp4|webm|mov|heic|heif)$/i.test(ext);
+    if (!isAllowed) {
+      throw new Error('Unsupported file type. Use JPEG, PNG, WebP, GIF, MP4, WebM, or MOV.');
+    }
+    if (fileToUpload.size > MAX_UPLOAD_BYTES) {
+      throw new Error(`File too large (${formatBytes(fileToUpload.size)}). Max ${formatBytes(MAX_UPLOAD_BYTES)}.`);
+    }
+
+    if (onProgress) onProgress({ status: 'uploading', file: fileToUpload });
+
     const body = new FormData();
-    body.append('file', file);
+    body.append('file', fileToUpload);
     body.append('folder', String(folder || 'gallery'));
-    body.append('basename', String(basename || trimFileNameExt(file.name) || 'media'));
+    body.append('basename', String(basename || trimFileNameExt(fileToUpload.name) || 'media'));
 
     const response = await fetch(apiUrl('/api/admin/upload'), {
       method: 'POST',
@@ -256,6 +398,7 @@ const normalizeAssetPath = (path) => {
       throw new Error('Upload succeeded but did not return a file path.');
     }
 
+    markUnsaved();
     return payload;
   };
 
@@ -271,8 +414,13 @@ const normalizeAssetPath = (path) => {
     zone.className = 'admin-upload-dropzone';
     zone.tabIndex = 0;
     zone.setAttribute('role', 'button');
-    zone.setAttribute('aria-label', `${title}. Drag & drop an image or video, or click to browse.`);
-    zone.textContent = 'Drop image or video here (or click to browse)';
+    zone.setAttribute('aria-label', `${title}. Tap to select photo or video, or drag and drop.`);
+    
+    zone.innerHTML = `
+      <div class="admin-upload-icon" aria-hidden="true">📸</div>
+      <div class="admin-upload-primary-text">Tap to select photo or video</div>
+      <div class="admin-upload-subtext">or drag & drop here (auto-optimized for mobile)</div>
+    `;
 
     const helper = document.createElement('p');
     helper.className = 'admin-upload-hint';
@@ -281,6 +429,10 @@ const normalizeAssetPath = (path) => {
     const status = document.createElement('p');
     status.className = 'admin-upload-status';
     status.setAttribute('aria-live', 'polite');
+
+    const previewWrap = document.createElement('div');
+    previewWrap.className = 'admin-upload-preview-wrap';
+    previewWrap.hidden = true;
 
     const picker = document.createElement('input');
     picker.type = 'file';
@@ -296,12 +448,34 @@ const normalizeAssetPath = (path) => {
 
     const handleFile = async (file) => {
       if (!file) return;
-      setStatus(`Uploading ${file.name} (${formatBytes(file.size)})...`);
+      setStatus(`Optimizing & uploading ${file.name} (${formatBytes(file.size)})...`);
       zone.classList.add('is-busy');
+
       try {
-        const payload = await uploadMediaAsset({ file, folder, basename });
+        const payload = await uploadMediaAsset({
+          file,
+          folder,
+          basename,
+          onProgress: ({ status: s }) => {
+            setStatus(s === 'optimizing' ? `Compressing ${file.name} for speed...` : `Uploading ${file.name}...`);
+          }
+        });
+
         onUploaded(payload.path, file, payload);
-        setStatus(`Uploaded to ${payload.path}`);
+        setStatus(`✓ Uploaded to ${payload.path}`);
+
+        const isVideo = file.type?.startsWith('video/') || /\.(mp4|webm|mov)$/i.test(payload.path);
+        previewWrap.hidden = false;
+        previewWrap.innerHTML = `
+          ${isVideo 
+            ? `<div class="admin-upload-thumb" style="display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">🎬</div>`
+            : `<img class="admin-upload-preview-thumb" src="${URL.createObjectURL(file)}" alt="Uploaded thumbnail" />`
+          }
+          <div class="admin-upload-preview-info">
+            <span class="admin-upload-preview-name">${file.name}</span>
+            <span class="admin-upload-preview-meta">${payload.path} • ${formatBytes(file.size)}</span>
+          </div>
+        `;
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Media upload failed.';
         setStatus(message, true);
@@ -339,7 +513,7 @@ const normalizeAssetPath = (path) => {
       void handleFile(file);
     });
 
-    wrap.append(widgetTitle, zone, helper, status, picker);
+    wrap.append(widgetTitle, zone, helper, status, previewWrap, picker);
     return wrap;
   };
 
@@ -348,7 +522,8 @@ const normalizeAssetPath = (path) => {
     selectedId: gallerySeed[0]?.id || '',
     search: '',
     mediaFilter: 'all',
-    previewHover: true
+    previewHover: true,
+    mobileView: 'library'
   });
 
   const loadState = () => {
@@ -363,7 +538,8 @@ const normalizeAssetPath = (path) => {
         selectedId: parsed.selectedId || gallerySeed[0]?.id || '',
         search: parsed.search || '',
         mediaFilter: parsed.mediaFilter || 'all',
-        previewHover: parsed.previewHover !== false
+        previewHover: parsed.previewHover !== false,
+        mobileView: parsed.mobileView || 'library'
       };
     } catch {
       return defaultState();
@@ -375,16 +551,15 @@ const normalizeAssetPath = (path) => {
       const res = await fetch('../gallery/projects.json?v=' + Date.now());
       if (!res.ok) return;
       const data = await res.json();
-      if (Array.isArray(data) && data.length) {
-        // If localStorage has default seed or fewer items, sync with projects.json
-        const localProjects = state.projects || [];
-        if (data.length >= localProjects.length) {
-          state.projects = data;
-          if (!state.selectedId || !state.projects.some((p) => p.id === state.selectedId)) {
-            state.selectedId = state.projects[0]?.id || '';
-          }
-          persistState();
-        }
+      if (!Array.isArray(data) || !data.length) return;
+
+      const hasLocalCustomDraft = Boolean(localStorage.getItem(STORAGE_KEY));
+      // Only initialize state with canonical data if user hasn't saved local drafts yet
+      if (!hasLocalCustomDraft) {
+        state.projects = data;
+        state.selectedId = data[0]?.id || '';
+        persistState();
+        renderAll();
       }
     } catch {
       // Keep local state fallback
@@ -394,6 +569,25 @@ const normalizeAssetPath = (path) => {
   let state = loadState();
   let isAuthenticated = false;
 
+  const setMobileView = (viewName) => {
+    state.mobileView = viewName;
+    if (boardSection) {
+      boardSection.setAttribute('data-active-view', viewName);
+    }
+    mobileTabs.forEach((tab) => {
+      tab.classList.toggle('is-active', tab.dataset.mobileView === viewName);
+    });
+    if (window.innerWidth <= 1024) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  mobileTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.mobileView;
+      if (target) setMobileView(target);
+    });
+  });
 
   const configureGateUi = () => {
     if (gateMessage) {
@@ -479,7 +673,7 @@ const normalizeAssetPath = (path) => {
     title: '',
     kicker: '',
     description: '',
-      link: '',
+    link: '',
     mediaType: 'image',
     mediaSrc: 'gallery/new-project/image.jpg',
     posterSrc: '',
@@ -488,27 +682,55 @@ const normalizeAssetPath = (path) => {
 
   const handleBulkImportFiles = async (files) => {
     if (!files || !files.length) return;
-    const newProjects = [];
-    if (publishStatus) publishStatus.textContent = `Processing ${files.length} media file(s)...`;
+    const total = files.length;
+    if (bulkImportBtn) bulkImportBtn.disabled = true;
 
-    for (let i = 0; i < files.length; i++) {
+    showProgressBanner({
+      title: `Starting batch import of ${total} file(s)...`,
+      progress: 5,
+      detail: 'Preparing media files...',
+      isBusy: true
+    });
+
+    const newProjects = [];
+    const failures = [];
+
+    for (let i = 0; i < total; i++) {
       const file = files[i];
+      const currentNum = i + 1;
+      const pct = Math.round((i / total) * 90) + 5;
       const nameStem = trimFileNameExt(file.name);
       const folderSlug = slugifySegment(nameStem || `media-${Date.now()}-${i}`) || `media-${Date.now()}-${i}`;
       const isVideo = String(file.type || '').toLowerCase().startsWith('video/') || /\.(mp4|webm|mov)$/i.test(file.name);
 
       let mediaSrcPath = `gallery/${folderSlug}/${file.name}`;
 
+      showProgressBanner({
+        title: `Uploading ${currentNum} of ${total}: ${file.name}`,
+        progress: pct,
+        detail: `File size: ${formatBytes(file.size)} • Processing...`,
+        isBusy: true
+      });
+
       if (!LOCAL_MODE && API_BASE && isAuthenticated) {
         try {
           const payload = await uploadMediaAsset({
             file,
             folder: `gallery/${folderSlug}`,
-            basename: `${folderSlug}-media`
+            basename: `${folderSlug}-media`,
+            onProgress: ({ status, file: f }) => {
+              showProgressBanner({
+                title: `${status === 'optimizing' ? 'Compressing' : 'Uploading'} ${currentNum} of ${total}: ${f.name}`,
+                progress: pct,
+                detail: `${status === 'optimizing' ? 'Optimizing photo for mobile speed...' : 'Uploading to GitHub...'}`
+              });
+            }
           });
           if (payload?.path) mediaSrcPath = payload.path;
         } catch (err) {
-          console.warn('Bulk upload failed for file:', file.name, err);
+          const msg = err instanceof Error ? err.message : 'Upload failed';
+          failures.push({ name: file.name, error: msg });
+          console.warn('Upload failed for file:', file.name, err);
         }
       }
 
@@ -517,19 +739,54 @@ const normalizeAssetPath = (path) => {
         title: '',
         kicker: '',
         description: '',
-      link: '',
+        link: '',
         mediaType: isVideo ? 'video' : 'image',
         mediaSrc: mediaSrcPath,
         posterSrc: '',
         tags: []
       });
+
+      // Small pause between sequential commits to allow GitHub branch ref to settle
+      if (i < total - 1 && !LOCAL_MODE && API_BASE) {
+        await new Promise((r) => setTimeout(r, 400));
+      }
     }
 
+    if (bulkImportBtn) bulkImportBtn.disabled = false;
+
+    // Add newly created projects to state
     state.projects = [...newProjects, ...state.projects];
     if (newProjects[0]) state.selectedId = newProjects[0].id;
     persistState();
+    markUnsaved();
     renderAll();
-    if (publishStatus) publishStatus.textContent = `Created ${newProjects.length} new gallery project(s) with clean image/video output.`;
+
+    // On mobile, automatically show the editor for the first new item
+    if (window.innerWidth <= 1024) {
+      setMobileView('editor');
+    }
+
+    const successCount = total - failures.length;
+    if (failures.length === 0) {
+      showProgressBanner({
+        title: `✓ Bulk import complete! (${successCount}/${total} files)`,
+        progress: 100,
+        detail: `Added ${successCount} new project cards. Click "Publish to Portfolio" to push changes live!`,
+        isBusy: false,
+        isSuccess: true,
+        showPublish: true
+      });
+    } else {
+      const failSummary = failures.map(f => `${f.name}: ${f.error}`).join('; ');
+      showProgressBanner({
+        title: `Import completed with warnings (${successCount}/${total} uploaded)`,
+        progress: 100,
+        detail: `${failures.length} file(s) failed: ${failSummary}. Other ${successCount} projects added.`,
+        isBusy: false,
+        isError: true,
+        showPublish: successCount > 0
+      });
+    }
   };
 
   const writeCurrentProject = (updater) => {
@@ -541,6 +798,7 @@ const normalizeAssetPath = (path) => {
     state.projects = state.projects.map((p) => (p.id === currentId ? updated : p));
     state.selectedId = updated.id;
     persistState();
+    markUnsaved();
     return updated;
   };
 
@@ -548,6 +806,10 @@ const normalizeAssetPath = (path) => {
     state.projects.unshift(project);
     state.selectedId = project.id;
     persistState();
+    markUnsaved();
+    if (window.innerWidth <= 1024) {
+      setMobileView('editor');
+    }
   };
 
   const deleteCurrentProject = () => {
@@ -559,6 +821,7 @@ const normalizeAssetPath = (path) => {
     state.projects = state.projects.filter((p) => p.id !== current.id);
     state.selectedId = state.projects[0]?.id || '';
     persistState();
+    markUnsaved();
     renderAll();
   };
 
@@ -571,7 +834,11 @@ const normalizeAssetPath = (path) => {
     state.projects.unshift(copy);
     state.selectedId = copy.id;
     persistState();
+    markUnsaved();
     renderAll();
+    if (window.innerWidth <= 1024) {
+      setMobileView('editor');
+    }
   };
 
   const field = (label, input) => {
@@ -611,6 +878,7 @@ const normalizeAssetPath = (path) => {
 
   const renderKindStatus = () => {
     if (kindStatus) kindStatus.textContent = `gallery (${state.projects.length})`;
+    if (mobileCount) mobileCount.textContent = `${state.projects.length}`;
     document.querySelectorAll('[data-filter-kind]').forEach((button) => {
       button.classList.toggle('is-active', button.dataset.filterKind === state.mediaFilter);
     });
@@ -673,6 +941,10 @@ const normalizeAssetPath = (path) => {
         state.selectedId = item.id;
         persistState();
         renderAll();
+        // On mobile, tapping a project opens it directly in the editor!
+        if (window.innerWidth <= 1024) {
+          setMobileView('editor');
+        }
       });
       return button;
     });
@@ -706,7 +978,7 @@ const normalizeAssetPath = (path) => {
     linkInput.placeholder = 'https://... (opens in new tab on click)';
     const mediaTypeSelect = makeSelect([
       { value: 'image', label: 'Image (JPG, PNG, WebP, GIF)' },
-      { value: 'video', label: 'Video (MP4, WebM)' }
+      { value: 'video', label: 'Video (MP4, WebM, QuickTime)' }
     ], project.mediaType || 'image');
     const mediaSrcInput = makeInput(project.mediaSrc);
     const posterSrcInput = makeInput(project.posterSrc || '');
@@ -736,7 +1008,7 @@ const normalizeAssetPath = (path) => {
 
     const note = document.createElement('div');
     note.className = 'admin-note';
-    note.textContent = 'All text fields (Title, Kicker, Description, Tags) are optional. If left blank, the project displays as a clean 1:1 image or video gallery tile on the site.';
+    note.textContent = 'All text fields (Title, Kicker, Description, Tags, Link) are optional. If left blank, the project displays as a clean 1:1 image or video gallery tile on the site.';
 
     const uploadPanel = document.createElement('div');
     uploadPanel.className = 'admin-section';
@@ -744,7 +1016,7 @@ const normalizeAssetPath = (path) => {
     const folderSlug = slugifySegment(project.id || project.title || 'project') || 'project';
     const uploadWidget = createUploadWidget({
       title: 'upload project media',
-      hint: 'Drag & drop image (JPG, PNG, WebP, GIF) or video (MP4, WebM). Automatically sets media source.',
+      hint: 'Tap or drop image (JPG, PNG, WebP, GIF) or video (MP4, WebM, MOV). Auto-optimized for web.',
       folder: `gallery/${folderSlug}`,
       basename: `${folderSlug}-media`,
       onUploaded: (path, file) => {
@@ -773,7 +1045,6 @@ const normalizeAssetPath = (path) => {
     });
 
     uploadPanel.replaceChildren(uploadWidget);
-
     formRoot.replaceChildren(grid, note, uploadPanel);
     grid.replaceChildren(...fields);
 
@@ -922,6 +1193,9 @@ const normalizeAssetPath = (path) => {
     renderList();
     renderEditor();
     renderPreview();
+    if (boardSection) {
+      boardSection.setAttribute('data-active-view', state.mobileView || 'library');
+    }
   };
 
   const exportProjectsJson = () => {
@@ -994,6 +1268,12 @@ const normalizeAssetPath = (path) => {
     }
 
     if (publishStatus) publishStatus.textContent = 'Publishing gallery to repository...';
+    showProgressBanner({
+      title: 'Publishing Gallery...',
+      progress: 50,
+      detail: 'Committing projects.json to GitHub repository...',
+      isBusy: true
+    });
 
     try {
       const { response, payload: result } = await requestJson(apiUrl('/api/admin/publish'), {
@@ -1001,11 +1281,8 @@ const normalizeAssetPath = (path) => {
         body: JSON.stringify({
           projects: state.projects,
           gallery: state.projects
-
         })
       });
-
-
 
       if (!response.ok) {
         let detail = result?.error || result?.message || `Publish failed (${response.status})`;
@@ -1013,11 +1290,36 @@ const normalizeAssetPath = (path) => {
           detail = 'The Cloudflare Worker backend is running an outdated version. Please run "npx wrangler deploy" to update the live worker.';
         }
         if (publishStatus) publishStatus.textContent = detail;
+        showProgressBanner({
+          title: 'Publish Failed',
+          progress: 100,
+          detail,
+          isBusy: false,
+          isError: true
+        });
         return;
       }
-      if (publishStatus) publishStatus.textContent = result.message || 'Published projects to gallery/projects.json.';
+
+      markSaved();
+      const successMsg = result.message || 'Published projects to gallery/projects.json.';
+      if (publishStatus) publishStatus.textContent = successMsg;
+      showProgressBanner({
+        title: '✓ Gallery Published Live!',
+        progress: 100,
+        detail: `${successMsg} Changes will be visible on your live site within ~30-60 seconds.`,
+        isBusy: false,
+        isSuccess: true
+      });
     } catch {
-      if (publishStatus) publishStatus.textContent = 'Network error reaching publish endpoint. Verify worker API URL and CORS configuration.';
+      const netMsg = 'Network error reaching publish endpoint. Verify worker API URL and CORS configuration.';
+      if (publishStatus) publishStatus.textContent = netMsg;
+      showProgressBanner({
+        title: 'Network Error',
+        progress: 100,
+        detail: netMsg,
+        isBusy: false,
+        isError: true
+      });
     }
   };
 
@@ -1114,6 +1416,8 @@ const normalizeAssetPath = (path) => {
 
   saveBtn?.addEventListener('click', () => {
     persistState();
+    markSaved();
+    if (publishStatus) publishStatus.textContent = 'Draft saved to browser storage.';
   });
 
   exportJsonBtn?.addEventListener('click', exportProjectsJson);
@@ -1131,5 +1435,8 @@ const normalizeAssetPath = (path) => {
   await fetchCanonicalProjects();
 
   if (searchInput) searchInput.value = state.search || '';
-  if (isAuthenticated || LOCAL_MODE) renderAll();
-})();
+  if (isAuthenticated || LOCAL_MODE) {
+    renderAll();
+    setMobileView(state.mobileView || 'library');
+  }
+})();

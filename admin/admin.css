@@ -767,3 +767,302 @@
   background: var(--green-deep);
   color: var(--off-white);
 }
+
+
+/* ─── MOBILE VIEW SWITCHER (NAV) ─── */
+.admin-mobile-nav {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .admin-mobile-nav {
+    display: flex;
+    gap: 6px;
+    margin: 8px 0 16px;
+    background: #e8e5df;
+    padding: 4px;
+    border-radius: 10px;
+    border: 0.5px solid var(--border);
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  }
+
+  .admin-mobile-tab {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    padding: 10px 8px;
+    border-radius: 7px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink-mid);
+    cursor: pointer;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 160ms ease, color 160ms ease;
+    min-height: 44px;
+  }
+
+  .admin-mobile-tab.is-active {
+    background: var(--green-deep);
+    color: var(--off-white);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .admin-tab-count {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+  }
+
+  .admin-mobile-tab:not(.is-active) .admin-tab-count {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  /* Single-panel view toggling on mobile */
+  .admin-board[data-active-view="library"] .admin-editor,
+  .admin-board[data-active-view="library"] .admin-preview {
+    display: none !important;
+  }
+
+  .admin-board[data-active-view="editor"] .admin-library,
+  .admin-board[data-active-view="editor"] .admin-preview {
+    display: none !important;
+  }
+
+  .admin-board[data-active-view="preview"] .admin-library,
+  .admin-board[data-active-view="preview"] .admin-editor {
+    display: none !important;
+  }
+
+  .admin-board {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+}
+
+/* ─── UPLOAD PROGRESS & BATCH BANNER ─── */
+.admin-progress-banner {
+  background: #ffffff;
+  border: 1.5px solid var(--green-mid);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 10px 30px rgba(26, 58, 42, 0.12);
+  margin-bottom: 16px;
+  animation: admin-slide-in 0.22s ease-out;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.admin-progress-banner.is-success {
+  border-color: #2e7d32;
+  background: #f6fbf6;
+}
+
+.admin-progress-banner.is-error {
+  border-color: #c62828;
+  background: #fff8f8;
+}
+
+.admin-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.admin-progress-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-progress-title {
+  font-family: var(--font-serif);
+  color: var(--green-deep);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.admin-progress-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2.5px solid var(--green-light);
+  border-top-color: var(--green-deep);
+  border-radius: 50%;
+  animation: admin-spin 0.75s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.admin-progress-spinner.is-hidden {
+  display: none !important;
+}
+
+@keyframes admin-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes admin-slide-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-progress-bar-wrap {
+  width: 100%;
+  height: 8px;
+  background: #e5ede7;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.admin-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-mid), var(--green-deep));
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+.admin-progress-detail {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.admin-progress-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ─── STREAMLINED DROPZONE & UPLOAD PREVIEW ─── */
+.admin-upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 96px;
+  padding: 18px 14px;
+}
+
+.admin-upload-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.admin-upload-primary-text {
+  font-weight: 700;
+  color: var(--green-deep);
+  font-size: 12px;
+}
+
+.admin-upload-subtext {
+  font-size: 10px;
+  color: var(--ink-muted);
+}
+
+.admin-upload-preview-wrap {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+}
+
+.admin-upload-preview-thumb {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #111;
+  flex-shrink: 0;
+}
+
+.admin-upload-preview-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.admin-upload-preview-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green-deep);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-upload-preview-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-muted);
+}
+
+/* ─── PUBLISH ALERT BADGE ─── */
+.admin-btn-publish-alert {
+  position: relative;
+  box-shadow: 0 0 0 2px var(--green-mid) !important;
+}
+
+.admin-btn-publish-alert::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  background: #f59e0b;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  animation: admin-pulse 1.8s infinite;
+}
+
+@keyframes admin-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.8; }
+}
+
+/* ─── MOBILE FORM INPUT FIX (STOP IOS ZOOM) ─── */
+@media (max-width: 760px) {
+  .admin-gate-form input,
+  .admin-search,
+  .admin-field input,
+  .admin-field textarea,
+  .admin-field select {
+    font-size: 16px !important; /* Critical: Stops iOS Safari from auto-zooming viewport */
+    min-height: 44px;
+  }
+
+  .admin-btn,
+  .admin-tab {
+    min-height: 44px;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .admin-item {
+    min-height: 48px;
+    padding: 14px 12px;
+  }
+}
