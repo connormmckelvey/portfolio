@@ -1,6 +1,6 @@
 [
   {
-    "id": "img_2575",
+    "id": "hookem-with-cleaning-arm",
     "title": "",
     "kicker": "",
     "description": "",
@@ -10,7 +10,7 @@
     "tags": []
   },
   {
-    "id": "img_2208",
+    "id": "onedof-hapkit",
     "title": "",
     "kicker": "",
     "description": "",
@@ -20,7 +20,7 @@
     "tags": []
   },
   {
-    "id": "img_1765",
+    "id": "tactus",
     "title": "",
     "kicker": "",
     "description": "",
@@ -30,7 +30,7 @@
     "tags": []
   },
   {
-    "id": "img_0886",
+    "id": "joshua-tree",
     "title": "",
     "kicker": "",
     "description": "",
@@ -40,7 +40,7 @@
     "tags": []
   },
   {
-    "id": "img_6853",
+    "id": "robo-rumble",
     "title": "",
     "kicker": "",
     "description": "",
@@ -50,7 +50,7 @@
     "tags": []
   },
   {
-    "id": "img_1485",
+    "id": "roboticshonors-bday",
     "title": "",
     "kicker": "",
     "description": "",
@@ -60,7 +60,7 @@
     "tags": []
   },
   {
-    "id": "img_1436",
+    "id": "drawing-robot",
     "title": "",
     "kicker": "",
     "description": "",
@@ -135,7 +135,17 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_2610/img_2610-media-1791594394940.jpg",
+    "mediaSrc": "images/gallery/img_2610/img_2610-media-1791594394940.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "hookem-with-cleaning-arm",
+    "title": "",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_2575/img_2575-media-1793313698213.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -145,7 +155,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_2546/img_2546-media-1791594406526.jpg",
+    "mediaSrc": "images/gallery/img_2546/img_2546-media-1791594406526.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -155,7 +165,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_2519/img_2519-media-1791594420891.jpg",
+    "mediaSrc": "images/gallery/img_2519/img_2519-media-1791594420891.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -165,7 +175,27 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_2468/img_2468-media-1791594434766.jpg",
+    "mediaSrc": "images/gallery/img_2468/img_2468-media-1791594434766.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "img_2235",
+    "title": "",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_2235/IMG_2235.jpeg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "img_2223",
+    "title": "",
+    "kicker": "",
+    "description": "",
+    "mediaType": "video",
+    "mediaSrc": "gallery/img_2223/IMG_2223.mov",
     "posterSrc": "",
     "tags": []
   },
@@ -175,7 +205,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_2191/img_2191-media-1791594477503.jpg",
+    "mediaSrc": "images/gallery/img_2191/img_2191-media-1791594477503.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -185,7 +215,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_2149/img_2149-media-1791594495612.jpg",
+    "mediaSrc": "images/gallery/img_2149/img_2149-media-1791594495612.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -195,7 +225,37 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/1d478317-ac23-4af2-bcfe-108dc766ea2f/1d478317-ac23-4af2-bcfe-108dc766ea2f-media-1791594504626.jpg",
+    "mediaSrc": "gallery/1d478317-ac23-4af2-bcfe-108dc766ea2f/1D478317-AC23-4AF2-BCFE-108DC766EA2F.jpeg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "img_2106",
+    "title": "",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_2106/IMG_2106.jpeg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "img_1126",
+    "title": "",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_1126/IMG_1126.jpeg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "img_1744",
+    "title": "",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_1744/IMG_1744.jpeg",
     "posterSrc": "",
     "tags": []
   },
@@ -205,7 +265,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_0705/img_0705-media-1791594590980.jpg",
+    "mediaSrc": "images/gallery/img_0705/img_0705-media-1791594590980.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -215,7 +275,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_2620/img_2620-media-1791594448625.jpg",
+    "mediaSrc": "images/gallery/img_2620/img_2620-media-1791594448625.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -225,9 +285,32 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_2610/img_2610-media-1791594464151.jpg",
+    "mediaSrc": "images/gallery/img_2610/img_2610-media-1791594464151.jpg",
     "posterSrc": "",
     "tags": []
+  },
+  {
+    "id": "img_2611",
+    "title": "",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_2611/IMG_2611.jpeg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "316-lab3",
+    "title": "FPGA 7-Segment Display",
+    "kicker": "ECE Digital Logic Design",
+    "description": "Programmed a 7-segment display in Verilog",
+    "mediaType": "image",
+    "mediaSrc": "gallery/new-project/image.jpg",
+    "posterSrc": "",
+    "tags": [
+      "Embedded",
+      "Robotics"
+    ]
   },
   {
     "id": "haplink",
@@ -235,7 +318,7 @@
     "kicker": "Texas Robotics, HERO Lab",
     "description": "Bare-metal C++ firmware library and Python framework implementing low-latency serial data validation. Optimized packet sizes down to 13 bytes at 100Hz.",
     "mediaType": "image",
-    "mediaSrc": "gallery/haplink/haplink-media-1791592483478.jpg",
+    "mediaSrc": "images/gallery/haplink/haplink-media-1791592483478.jpg",
     "posterSrc": "",
     "tags": [
       "Firmware",
@@ -245,13 +328,43 @@
     ]
   },
   {
-    "id": "project-1791593753833",
+    "id": "vibrotactile-band",
+    "title": "Vibrotactile Motion Feedback Band",
+    "kicker": "Human Enabled Robotics Lab",
+    "description": "Modular haptic band system with custom 3cm x 5cm PCB, integrated IMU tracking, directional motor pods, and 1ms low-latency wireless protocol.",
+    "mediaType": "image",
+    "mediaSrc": "gallery/vibrotactile-band/image.jpg",
+    "posterSrc": "",
+    "tags": [
+      "Haptics",
+      "PCB",
+      "Firmware",
+      "C++"
+    ]
+  },
+  {
+    "id": "drawing-robot",
     "title": "",
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/project-1791593753833/project-1791593753833-media-1791593766657.jpg",
+    "mediaSrc": "gallery/img_1436/img_1436-media-1793313723241.jpg",
     "posterSrc": "",
     "tags": []
+  },
+  {
+    "id": "skylore",
+    "title": "SkyLore AR Celestial App",
+    "kicker": "1st Place HackTX 2025 Winner",
+    "description": "Crowdsourced astronomy platform leveraging user data for light pollution mapping. Built with real-time augmented reality and constellation recognition machine learning model.",
+    "mediaType": "image",
+    "mediaSrc": "gallery/skylore/image.jpg",
+    "posterSrc": "",
+    "tags": [
+      "AR",
+      "Mobile",
+      "Machine Learning",
+      "Hackathon"
+    ]
   }
 ]
