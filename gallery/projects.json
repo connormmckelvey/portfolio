@@ -20,16 +20,6 @@
     "tags": []
   },
   {
-    "id": "img_1140",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_1140/IMG_1140.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
     "id": "img_1765",
     "title": "",
     "kicker": "",
@@ -100,16 +90,6 @@
     "tags": []
   },
   {
-    "id": "img_0841",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_0841/IMG_0841.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
     "id": "img_6755",
     "title": "",
     "kicker": "",
@@ -155,17 +135,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2610/img_2610-media-1791594394940.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2575",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_2575/IMG_2575.jpeg",
+    "mediaSrc": "gallery/img_2610/img_2610-media-1791594394940.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -175,7 +145,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2546/img_2546-media-1791594406526.jpg",
+    "mediaSrc": "gallery/img_2546/img_2546-media-1791594406526.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -185,7 +155,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2519/img_2519-media-1791594420891.jpg",
+    "mediaSrc": "gallery/img_2519/img_2519-media-1791594420891.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -195,27 +165,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2468/img_2468-media-1791594434766.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2235",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_2235/IMG_2235.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2223",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "video",
-    "mediaSrc": "gallery/img_2223/IMG_2223.mov",
+    "mediaSrc": "gallery/img_2468/img_2468-media-1791594434766.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -225,7 +175,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2191/img_2191-media-1791594477503.jpg",
+    "mediaSrc": "gallery/img_2191/img_2191-media-1791594477503.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -235,7 +185,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2149/img_2149-media-1791594495612.jpg",
+    "mediaSrc": "gallery/img_2149/img_2149-media-1791594495612.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -245,37 +195,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/1d478317-ac23-4af2-bcfe-108dc766ea2f/1D478317-AC23-4AF2-BCFE-108DC766EA2F.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_2106",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_2106/IMG_2106.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_1126",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_1126/IMG_1126.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "img_1744",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_1744/IMG_1744.jpeg",
+    "mediaSrc": "gallery/1d478317-ac23-4af2-bcfe-108dc766ea2f/1d478317-ac23-4af2-bcfe-108dc766ea2f-media-1791594504626.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -285,7 +205,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/img_0705/img_0705-media-1791594590980.jpg",
+    "mediaSrc": "gallery/img_0705/img_0705-media-1791594590980.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -295,7 +215,7 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2620/img_2620-media-1791594448625.jpg",
+    "mediaSrc": "gallery/img_2620/img_2620-media-1791594448625.jpg",
     "posterSrc": "",
     "tags": []
   },
@@ -305,32 +225,9 @@
     "kicker": "",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2610/img_2610-media-1791594464151.jpg",
+    "mediaSrc": "gallery/img_2610/img_2610-media-1791594464151.jpg",
     "posterSrc": "",
     "tags": []
-  },
-  {
-    "id": "img_2611",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_2611/IMG_2611.jpeg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "316-lab3",
-    "title": "FPGA 7-Segment Display",
-    "kicker": "ECE Digital Logic Design",
-    "description": "Programmed a 7-segment display in Verilog",
-    "mediaType": "image",
-    "mediaSrc": "gallery/new-project/image.jpg",
-    "posterSrc": "",
-    "tags": [
-      "Embedded",
-      "Robotics"
-    ]
   },
   {
     "id": "haplink",
@@ -338,7 +235,7 @@
     "kicker": "Texas Robotics, HERO Lab",
     "description": "Bare-metal C++ firmware library and Python framework implementing low-latency serial data validation. Optimized packet sizes down to 13 bytes at 100Hz.",
     "mediaType": "image",
-    "mediaSrc": "images/gallery/haplink/haplink-media-1791592483478.jpg",
+    "mediaSrc": "gallery/haplink/haplink-media-1791592483478.jpg",
     "posterSrc": "",
     "tags": [
       "Firmware",
@@ -348,48 +245,13 @@
     ]
   },
   {
-    "id": "vibrotactile-band",
-    "title": "Vibrotactile Motion Feedback Band",
-    "kicker": "Human Enabled Robotics Lab",
-    "description": "Modular haptic band system with custom 3cm x 5cm PCB, integrated IMU tracking, directional motor pods, and 1ms low-latency wireless protocol.",
+    "id": "project-1791593753833",
+    "title": "",
+    "kicker": "",
+    "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/vibrotactile-band/image.jpg",
+    "mediaSrc": "gallery/project-1791593753833/project-1791593753833-media-1791593766657.jpg",
     "posterSrc": "",
-    "tags": [
-      "Haptics",
-      "PCB",
-      "Firmware",
-      "C++"
-    ]
-  },
-  {
-    "id": "drawing-robot",
-    "title": "2-DoF Drawing Robotic Arm",
-    "kicker": "UT Austin AI Perception Research",
-    "description": "Custom 2-degree-of-freedom robotic drawing arm with inverse kinematics software pipeline, Douglas-Peucker path optimization, and custom G-code compiler.",
-    "mediaType": "video",
-    "mediaSrc": "gallery/drawing-robot/video.mp4",
-    "posterSrc": "gallery/drawing-robot/image.jpg",
-    "tags": [
-      "Robotics",
-      "Kinematics",
-      "C++",
-      "Control"
-    ]
-  },
-  {
-    "id": "skylore",
-    "title": "SkyLore AR Celestial App",
-    "kicker": "1st Place HackTX 2025 Winner",
-    "description": "Crowdsourced astronomy platform leveraging user data for light pollution mapping. Built with real-time augmented reality and constellation recognition machine learning model.",
-    "mediaType": "image",
-    "mediaSrc": "gallery/skylore/image.jpg",
-    "posterSrc": "",
-    "tags": [
-      "AR",
-      "Mobile",
-      "Machine Learning",
-      "Hackathon"
-    ]
+    "tags": []
   }
 ]

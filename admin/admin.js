@@ -39,6 +39,18 @@
   const bulkImportBtn = document.querySelector('[data-bulk-import]');
   const duplicateBtn = document.querySelector('[data-duplicate-item]');
   const deleteBtn = document.querySelector('[data-delete-item]');
+  const moveUpBtn = document.querySelector('[data-move-up]');
+  const moveDownBtn = document.querySelector('[data-move-down]');
+  const openReorderBtns = document.querySelectorAll('[data-open-reorder]');
+  const closeReorderBtns = document.querySelectorAll('[data-close-reorder]');
+  const reorderModal = document.querySelector('[data-reorder-modal]');
+  const reorderGrid = document.querySelector('[data-reorder-grid]');
+  const reorderCount = document.querySelector('[data-reorder-count]');
+  const reorderSearch = document.querySelector('[data-reorder-search]');
+  const reorderReverseBtn = document.querySelector('[data-reorder-reverse]');
+  const reorderSortTitleBtn = document.querySelector('[data-reorder-sort-title]');
+  const reorderSortIdBtn = document.querySelector('[data-reorder-sort-id]');
+  let activeReorderDragId = null;
   const saveBtn = document.querySelector('[data-save-draft]');
   const exportJsonBtn = document.querySelector('[data-export-json]');
   const exportHtmlBtn = document.querySelector('[data-export-html]');
@@ -971,10 +983,290 @@
     });
   };
 
+  const moveProjectIndex = (fromIndex, toIndex) => {
+    if (fromIndex < 0 || fromIndex >= state.projects.length) return;
+    if (toIndex < 0 || toIndex >= state.projects.length) return;
+    if (fromIndex === toIndex) return;
+
+    const [moved] = state.projects.splice(fromIndex, 1);
+    state.projects.splice(toIndex, 0, moved);
+    persistState();
+    markUnsaved();
+    renderAll();
+    if (reorderModal && !reorderModal.hidden) {
+      renderReorderGrid();
+    }
+  };
+
+  const moveProjectById = (id, delta) => {
+    const idx = state.projects.findIndex((p) => p.id === id);
+    if (idx === -1) return;
+    moveProjectIndex(idx, idx + delta);
+  };
+
+  const moveProjectToEdge = (id, edge) => {
+    const idx = state.projects.findIndex((p) => p.id === id);
+    if (idx === -1) return;
+    const targetIdx = edge === 'top' ? 0 : state.projects.length - 1;
+    moveProjectIndex(idx, targetIdx);
+  };
+
+  const moveProjectRelativeTo = (draggedId, targetId, insertAfter = false) => {
+    if (!draggedId || !targetId || draggedId === targetId) return;
+    const fromIdx = state.projects.findIndex((p) => p.id === draggedId);
+    const toTargetIdx = state.projects.findIndex((p) => p.id === targetId);
+    if (fromIdx === -1 || toTargetIdx === -1) return;
+
+    const [moved] = state.projects.splice(fromIdx, 1);
+    let finalTargetIdx = state.projects.findIndex((p) => p.id === targetId);
+    if (insertAfter) {
+      finalTargetIdx += 1;
+    }
+    state.projects.splice(finalTargetIdx, 0, moved);
+    persistState();
+    markUnsaved();
+    renderAll();
+    if (reorderModal && !reorderModal.hidden) {
+      renderReorderGrid();
+    }
+  };
+
+  const reverseAllProjects = () => {
+    if (state.projects.length <= 1) return;
+    state.projects.reverse();
+    persistState();
+    markUnsaved();
+    renderAll();
+    if (reorderModal && !reorderModal.hidden) {
+      renderReorderGrid();
+    }
+  };
+
+  const sortProjectsAlphabetical = (byTitle = true) => {
+    if (state.projects.length <= 1) return;
+    state.projects.sort((a, b) => {
+      const strA = (byTitle ? (a.title || a.id) : a.id).toLowerCase();
+      const strB = (byTitle ? (b.title || b.id) : b.id).toLowerCase();
+      return strA.localeCompare(strB, undefined, { numeric: true, sensitivity: 'base' });
+    });
+    persistState();
+    markUnsaved();
+    renderAll();
+    if (reorderModal && !reorderModal.hidden) {
+      renderReorderGrid();
+    }
+  };
+
+  const openReorderModal = () => {
+    if (!reorderModal) return;
+    reorderModal.hidden = false;
+    reorderModal.removeAttribute('aria-hidden');
+    document.body.style.overflow = 'hidden';
+    renderReorderGrid();
+  };
+
+  const closeReorderModal = () => {
+    if (!reorderModal) return;
+    reorderModal.hidden = true;
+    reorderModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  const renderReorderGrid = () => {
+    if (!reorderGrid) return;
+    const total = state.projects.length;
+    if (reorderCount) {
+      reorderCount.textContent = `${total} ${total === 1 ? 'project' : 'projects'}`;
+    }
+
+    const query = String(reorderSearch?.value || '').trim().toLowerCase();
+    const visibleProjects = state.projects
+      .map((p, idx) => ({ project: p, globalIdx: idx }))
+      .filter(({ project }) => {
+        if (!query) return true;
+        const haystack = `${project.title || ''} ${project.id || ''} ${project.kicker || ''} ${project.description || ''}`.toLowerCase();
+        return haystack.includes(query);
+      });
+
+    if (!visibleProjects.length) {
+      const empty = document.createElement('div');
+      empty.className = 'admin-empty';
+      empty.style.gridColumn = '1 / -1';
+      empty.textContent = query
+        ? 'No projects match your filter query in the reorganizer.'
+        : 'No projects in gallery. Create projects to organize them.';
+      reorderGrid.replaceChildren(empty);
+      return;
+    }
+
+    const cards = visibleProjects.map(({ project, globalIdx }) => {
+      const card = document.createElement('article');
+      card.className = 'admin-reorder-card';
+      card.draggable = true;
+      card.setAttribute('data-id', project.id);
+      if (project.id === state.selectedId) {
+        card.classList.add('is-active-project');
+      }
+
+      // Media thumbnail (Image or Video)
+      const isVideo = project.mediaType === 'video' || /.(mp4|webm|mov)$/i.test(project.mediaSrc || '');
+      const assetSrc = previewAssetPath(project.posterSrc || project.mediaSrc);
+      if (assetSrc) {
+        if (isVideo && !project.posterSrc) {
+          const video = document.createElement('video');
+          video.className = 'admin-reorder-media';
+          video.muted = true;
+          video.playsInline = true;
+          video.preload = 'metadata';
+          const srcEl = document.createElement('source');
+          srcEl.src = assetSrc;
+          video.append(srcEl);
+          card.append(video);
+        } else {
+          const img = document.createElement('img');
+          img.className = 'admin-reorder-media';
+          img.src = assetSrc;
+          img.alt = project.title || project.id;
+          img.loading = 'lazy';
+          card.append(img);
+        }
+      }
+
+      // Top bar (Position badge + Drag grip)
+      const topBar = document.createElement('div');
+      topBar.className = 'admin-reorder-top';
+
+      const posBadge = document.createElement('span');
+      posBadge.className = 'admin-reorder-pos';
+      posBadge.textContent = `#${globalIdx + 1}`;
+
+      const grip = document.createElement('span');
+      grip.className = 'admin-reorder-grip';
+      grip.setAttribute('aria-hidden', 'true');
+      grip.textContent = '⋮⋮';
+      grip.title = 'Drag to reorder in gallery';
+
+      topBar.append(posBadge, grip);
+
+      // Bottom bar (Title + Arrow Action Buttons)
+      const bottomBar = document.createElement('div');
+      bottomBar.className = 'admin-reorder-bottom';
+
+      const titleEl = document.createElement('div');
+      titleEl.className = 'admin-reorder-title';
+      titleEl.textContent = project.title || project.id;
+      titleEl.title = project.title ? `${project.title} (${project.id})` : project.id;
+
+      const actions = document.createElement('div');
+      actions.className = 'admin-reorder-actions';
+
+      const firstBtn = document.createElement('button');
+      firstBtn.type = 'button';
+      firstBtn.className = 'admin-reorder-btn';
+      firstBtn.textContent = '⤒';
+      firstBtn.title = 'Move to top (#1)';
+      firstBtn.disabled = globalIdx === 0;
+      firstBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moveProjectToEdge(project.id, 'top');
+      });
+
+      const prevBtn = document.createElement('button');
+      prevBtn.type = 'button';
+      prevBtn.className = 'admin-reorder-btn';
+      prevBtn.textContent = '◄';
+      prevBtn.title = 'Move earlier (left)';
+      prevBtn.disabled = globalIdx === 0;
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moveProjectById(project.id, -1);
+      });
+
+      const nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'admin-reorder-btn';
+      nextBtn.textContent = '►';
+      nextBtn.title = 'Move later (right)';
+      nextBtn.disabled = globalIdx === total - 1;
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moveProjectById(project.id, 1);
+      });
+
+      const lastBtn = document.createElement('button');
+      lastBtn.type = 'button';
+      lastBtn.className = 'admin-reorder-btn';
+      lastBtn.textContent = '⤓';
+      lastBtn.title = 'Move to end';
+      lastBtn.disabled = globalIdx === total - 1;
+      lastBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moveProjectToEdge(project.id, 'bottom');
+      });
+
+      actions.append(firstBtn, prevBtn, nextBtn, lastBtn);
+      bottomBar.append(titleEl, actions);
+
+      card.append(topBar, bottomBar);
+
+      // Click card to select & return to editor
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        state.selectedId = project.id;
+        persistState();
+        renderAll();
+        closeReorderModal();
+      });
+
+      // Drag and drop events
+      card.addEventListener('dragstart', (e) => {
+        activeReorderDragId = project.id;
+        e.dataTransfer.setData('text/plain', project.id);
+        e.dataTransfer.effectAllowed = 'move';
+        card.classList.add('is-dragging');
+      });
+
+      card.addEventListener('dragend', () => {
+        activeReorderDragId = null;
+        card.classList.remove('is-dragging');
+        reorderGrid.querySelectorAll('.admin-reorder-card').forEach((c) => {
+          c.classList.remove('is-drag-target');
+        });
+      });
+
+      card.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (activeReorderDragId && activeReorderDragId !== project.id) {
+          card.classList.add('is-drag-target');
+        }
+      });
+
+      card.addEventListener('dragleave', () => {
+        card.classList.remove('is-drag-target');
+      });
+
+      card.addEventListener('drop', (e) => {
+        e.preventDefault();
+        card.classList.remove('is-drag-target');
+        const draggedId = e.dataTransfer.getData('text/plain') || activeReorderDragId;
+        if (!draggedId || draggedId === project.id) return;
+        const rect = card.getBoundingClientRect();
+        const insertAfter = e.clientX >= (rect.left + rect.width / 2);
+        moveProjectRelativeTo(draggedId, project.id, insertAfter);
+      });
+
+      return card;
+    });
+
+    reorderGrid.replaceChildren(...cards);
+  };
+
   const renderList = () => {
     if (!listRoot) return;
     const query = String(state.search || '').trim().toLowerCase();
     const filter = state.mediaFilter;
+    const totalProjects = state.projects.length;
 
     const items = state.projects.filter((item) => {
       const matchesFilter = filter === 'all' || item.mediaType === filter;
@@ -990,22 +1282,65 @@
       return;
     }
 
-    const buttons = items.map((item) => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'admin-item';
-      button.classList.toggle('is-active', item.id === state.selectedId);
+    const cards = items.map((item) => {
+      const globalIdx = state.projects.findIndex((p) => p.id === item.id);
+      const row = document.createElement('div');
+      row.className = 'admin-item';
+      row.setAttribute('role', 'button');
+      row.setAttribute('tabindex', '0');
+      row.setAttribute('data-id', item.id);
+      row.draggable = true;
+      if (item.id === state.selectedId) {
+        row.classList.add('is-active');
+      }
+
+      // Drag handle
+      const handle = document.createElement('span');
+      handle.className = 'admin-item-handle';
+      handle.setAttribute('aria-hidden', 'true');
+      handle.textContent = '⋮⋮';
+      handle.title = 'Drag to reorder in gallery sequence';
+
+      // Thumbnail preview
+      const thumb = document.createElement('div');
+      thumb.className = 'admin-item-thumb';
+      const assetSrc = previewAssetPath(item.posterSrc || item.mediaSrc);
+      if (assetSrc) {
+        const img = document.createElement('img');
+        img.src = assetSrc;
+        img.alt = '';
+        img.loading = 'lazy';
+        img.onerror = () => {
+          thumb.innerHTML = '<span class="admin-item-thumb-placeholder">' + (item.mediaType === 'video' ? 'VID' : 'IMG') + '</span>';
+        };
+        thumb.append(img);
+      } else {
+        const placeholder = document.createElement('span');
+        placeholder.className = 'admin-item-thumb-placeholder';
+        placeholder.textContent = item.mediaType === 'video' ? 'VID' : 'IMG';
+        thumb.append(placeholder);
+      }
+
+      // Main content
+      const main = document.createElement('div');
+      main.className = 'admin-item-main';
 
       const top = document.createElement('div');
       top.className = 'admin-item-top';
+
+      const pos = document.createElement('span');
+      pos.className = 'admin-item-pos';
+      pos.textContent = `#${globalIdx + 1}`;
+
       const title = document.createElement('div');
       title.className = 'admin-item-title';
       title.textContent = item.title || item.id;
 
       const badge = document.createElement('span');
-      badge.className = `admin-item-badge ${item.mediaType}`;
+      badge.className = `admin-item-badge ${item.mediaType || 'image'}`;
       badge.textContent = item.mediaType || 'image';
-      top.append(title, badge);
+
+      top.append(pos, title, badge);
 
       const kicker = document.createElement('div');
       kicker.className = 'admin-item-meta';
@@ -1023,20 +1358,109 @@
         tags.append(span);
       }
 
-      button.append(top, kicker, note, tags);
-      button.addEventListener('click', () => {
+      main.append(top, kicker, note, tags);
+
+      // Reorder buttons column (Up / Down)
+      const tools = document.createElement('div');
+      tools.className = 'admin-item-reorder-tools';
+
+      const upBtn = document.createElement('button');
+      upBtn.type = 'button';
+      upBtn.className = 'admin-item-arrow';
+      upBtn.textContent = '▲';
+      upBtn.title = 'Move up in gallery sequence';
+      upBtn.disabled = globalIdx === 0;
+      upBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moveProjectIndex(globalIdx, globalIdx - 1);
+      });
+
+      const downBtn = document.createElement('button');
+      downBtn.type = 'button';
+      downBtn.className = 'admin-item-arrow';
+      downBtn.textContent = '▼';
+      downBtn.title = 'Move down in gallery sequence';
+      downBtn.disabled = globalIdx === totalProjects - 1;
+      downBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moveProjectIndex(globalIdx, globalIdx + 1);
+      });
+
+      tools.append(upBtn, downBtn);
+
+      row.append(handle, thumb, main, tools);
+
+      // Click / Keydown to select
+      const selectItem = () => {
         state.selectedId = item.id;
         persistState();
         renderAll();
-        // On mobile, tapping a project opens it directly in the editor!
         if (window.innerWidth <= 1024) {
           setMobileView('editor');
         }
+      };
+
+      row.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        selectItem();
       });
-      return button;
+
+      row.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          if (e.target.closest('button')) return;
+          e.preventDefault();
+          selectItem();
+        }
+      });
+
+      // Drag and drop events on sidebar item
+      row.addEventListener('dragstart', (e) => {
+        activeReorderDragId = item.id;
+        e.dataTransfer.setData('text/plain', item.id);
+        e.dataTransfer.effectAllowed = 'move';
+        row.classList.add('is-dragging');
+      });
+
+      row.addEventListener('dragend', () => {
+        activeReorderDragId = null;
+        row.classList.remove('is-dragging');
+        listRoot.querySelectorAll('.admin-item').forEach((el) => {
+          el.classList.remove('is-drop-above', 'is-drop-below');
+        });
+      });
+
+      row.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        const rect = row.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        if (e.clientY < midY) {
+          row.classList.add('is-drop-above');
+          row.classList.remove('is-drop-below');
+        } else {
+          row.classList.add('is-drop-below');
+          row.classList.remove('is-drop-above');
+        }
+      });
+
+      row.addEventListener('dragleave', () => {
+        row.classList.remove('is-drop-above', 'is-drop-below');
+      });
+
+      row.addEventListener('drop', (e) => {
+        e.preventDefault();
+        row.classList.remove('is-drop-above', 'is-drop-below');
+        const draggedId = e.dataTransfer.getData('text/plain') || activeReorderDragId;
+        if (!draggedId || draggedId === item.id) return;
+        const rect = row.getBoundingClientRect();
+        const insertAfter = e.clientY >= (rect.top + rect.height / 2);
+        moveProjectRelativeTo(draggedId, item.id, insertAfter);
+      });
+
+      return row;
     });
 
-    listRoot.replaceChildren(...buttons);
+    listRoot.replaceChildren(...cards);
   };
 
   const renderEditor = () => {
@@ -1131,8 +1555,95 @@
       }
     });
 
+    // Editor sequence control bar
+    const currentIndex = state.projects.findIndex((p) => p.id === project.id);
+    const totalCount = state.projects.length;
+
+    const orderBar = document.createElement('div');
+    orderBar.className = 'admin-order-bar';
+
+    const orderSummary = document.createElement('div');
+    orderSummary.className = 'admin-order-summary';
+
+    const orderBadge = document.createElement('span');
+    orderBadge.className = 'admin-order-badge';
+    orderBadge.textContent = `Position #${currentIndex + 1} of ${totalCount}`;
+
+    const orderHelp = document.createElement('span');
+    orderHelp.className = 'admin-order-help';
+    orderHelp.textContent = 'in portfolio sequence';
+
+    orderSummary.append(orderBadge, orderHelp);
+
+    const orderControls = document.createElement('div');
+    orderControls.className = 'admin-order-controls';
+
+    const topBtn = document.createElement('button');
+    topBtn.type = 'button';
+    topBtn.className = 'admin-btn admin-btn-small';
+    topBtn.textContent = '⤒ first';
+    topBtn.title = 'Move to first spot in gallery (#1)';
+    topBtn.disabled = currentIndex <= 0;
+    topBtn.addEventListener('click', () => moveProjectToEdge(project.id, 'top'));
+
+    const upBtn = document.createElement('button');
+    upBtn.type = 'button';
+    upBtn.className = 'admin-btn admin-btn-small';
+    upBtn.textContent = '↑ up';
+    upBtn.title = 'Move up 1 position in gallery';
+    upBtn.disabled = currentIndex <= 0;
+    upBtn.addEventListener('click', () => moveProjectIndex(currentIndex, currentIndex - 1));
+
+    const downBtn = document.createElement('button');
+    downBtn.type = 'button';
+    downBtn.className = 'admin-btn admin-btn-small';
+    downBtn.textContent = '↓ down';
+    downBtn.title = 'Move down 1 position in gallery';
+    downBtn.disabled = currentIndex === -1 || currentIndex >= totalCount - 1;
+    downBtn.addEventListener('click', () => moveProjectIndex(currentIndex, currentIndex + 1));
+
+    const bottomBtn = document.createElement('button');
+    bottomBtn.type = 'button';
+    bottomBtn.className = 'admin-btn admin-btn-small';
+    bottomBtn.textContent = '⤓ last';
+    bottomBtn.title = 'Move to last spot in gallery';
+    bottomBtn.disabled = currentIndex === -1 || currentIndex >= totalCount - 1;
+    bottomBtn.addEventListener('click', () => moveProjectToEdge(project.id, 'bottom'));
+
+    const jumpWrap = document.createElement('label');
+    jumpWrap.className = 'admin-order-jump-wrap';
+    const jumpLabel = document.createElement('span');
+    jumpLabel.textContent = 'jump to:';
+    const jumpSelect = document.createElement('select');
+    jumpSelect.className = 'admin-order-select';
+    jumpSelect.title = 'Jump this project to any position';
+    for (let i = 1; i <= totalCount; i++) {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = `#${i}`;
+      if (i === currentIndex + 1) opt.selected = true;
+      jumpSelect.append(opt);
+    }
+    jumpSelect.addEventListener('change', (e) => {
+      const targetPos = parseInt(e.target.value, 10);
+      if (Number.isFinite(targetPos) && targetPos >= 1 && targetPos <= totalCount) {
+        moveProjectIndex(currentIndex, targetPos - 1);
+      }
+    });
+    jumpWrap.append(jumpLabel, jumpSelect);
+
+    const visualBtn = document.createElement('button');
+    visualBtn.type = 'button';
+    visualBtn.className = 'admin-btn admin-btn-small admin-btn-reorder';
+    visualBtn.textContent = '⇄ visual grid';
+    visualBtn.title = 'Open full visual gallery reorganizer';
+    visualBtn.addEventListener('click', openReorderModal);
+
+    orderControls.append(topBtn, upBtn, downBtn, bottomBtn, jumpWrap, visualBtn);
+    orderBar.append(orderSummary, orderControls);
+
     uploadPanel.replaceChildren(uploadWidget);
-    formRoot.replaceChildren(grid, note, uploadPanel);
+    formRoot.replaceChildren(orderBar, grid, note, uploadPanel);
     grid.replaceChildren(...fields);
 
     const commit = () => {
@@ -1280,6 +1791,16 @@
     renderList();
     renderEditor();
     renderPreview();
+    if (moveUpBtn && moveDownBtn) {
+      const currIdx = state.projects.findIndex((p) => p.id === state.selectedId);
+      if (currIdx === -1 || state.projects.length <= 1) {
+        moveUpBtn.disabled = true;
+        moveDownBtn.disabled = true;
+      } else {
+        moveUpBtn.disabled = currIdx <= 0;
+        moveDownBtn.disabled = currIdx >= state.projects.length - 1;
+      }
+    }
     if (boardSection) {
       boardSection.setAttribute('data-active-view', state.mobileView || 'library');
     }
@@ -1501,6 +2022,40 @@
 
   deleteBtn?.addEventListener('click', () => {
     deleteCurrentProject();
+  });
+
+  moveUpBtn?.addEventListener('click', () => {
+    moveProjectById(state.selectedId, -1);
+  });
+
+  moveDownBtn?.addEventListener('click', () => {
+    moveProjectById(state.selectedId, 1);
+  });
+
+  openReorderBtns.forEach((btn) => {
+    btn.addEventListener('click', openReorderModal);
+  });
+
+  closeReorderBtns.forEach((btn) => {
+    btn.addEventListener('click', closeReorderModal);
+  });
+
+  reorderReverseBtn?.addEventListener('click', reverseAllProjects);
+  reorderSortTitleBtn?.addEventListener('click', () => sortProjectsAlphabetical(true));
+  reorderSortIdBtn?.addEventListener('click', () => sortProjectsAlphabetical(false));
+  reorderSearch?.addEventListener('input', renderReorderGrid);
+
+  // Close modal when clicking backdrop or pressing Esc
+  reorderModal?.addEventListener('click', (e) => {
+    if (e.target === reorderModal) {
+      closeReorderModal();
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && reorderModal && !reorderModal.hidden) {
+      closeReorderModal();
+    }
   });
 
   saveBtn?.addEventListener('click', () => {

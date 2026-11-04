@@ -59,6 +59,9 @@
           <div class="admin-toolbar-left">
             <button class="admin-btn admin-btn-primary" type="button" data-new-item>+ new project</button>
             <button class="admin-btn" type="button" data-bulk-import>+ bulk import media</button>
+            <button class="admin-btn admin-btn-reorder" type="button" data-open-reorder title="Open visual grid reorganizer to rearrange gallery sequence">⇄ reorganize gallery</button>
+            <button class="admin-btn" type="button" data-move-up title="Move selected project earlier in gallery sequence">↑ move up</button>
+            <button class="admin-btn" type="button" data-move-down title="Move selected project later in gallery sequence">↓ move down</button>
             <button class="admin-btn" type="button" data-duplicate-item>duplicate project</button>
             <button class="admin-btn admin-btn-danger" type="button" data-delete-item>delete project</button>
           </div>
@@ -134,6 +137,9 @@
               <span class="admin-label">search</span>
               <input class="admin-search" type="search" placeholder="Search projects, kickers, tags..." data-search />
             </label>
+            <div class="admin-library-reorder-banner">
+              <button class="admin-btn admin-btn-small admin-btn-full admin-btn-reorder-alt" type="button" data-open-reorder title="Rearrange all gallery projects in visual grid">⇄ visual gallery reorganizer</button>
+            </div>
             <div class="admin-list" data-content-list></div>
           </aside>
 
@@ -167,6 +173,44 @@
             </div>
           </aside>
         </section>
+
+        <!-- Visual Gallery Reorganizer Modal -->
+        <div class="admin-modal-backdrop" data-reorder-modal hidden aria-hidden="true">
+          <div class="admin-modal-card" role="dialog" aria-modal="true" aria-labelledby="reorder-modal-title">
+            <header class="admin-modal-head">
+              <div class="admin-modal-head-text">
+                <p class="admin-kicker">// visual sequence editor</p>
+                <h2 id="reorder-modal-title">Reorganize Gallery Sequence</h2>
+                <p class="admin-modal-subtitle">Drag tiles or use arrow controls to rearrange the visual order of your portfolio. Project #1 displays first at the top-left of the site.</p>
+              </div>
+              <div class="admin-modal-head-actions">
+                <span class="admin-chip" data-reorder-count>0 projects</span>
+                <button type="button" class="admin-btn admin-btn-primary" data-close-reorder>Done &amp; Close</button>
+              </div>
+            </header>
+
+            <div class="admin-reorder-toolbar">
+              <div class="admin-reorder-tools-left">
+                <span class="admin-reorder-label">quick sort:</span>
+                <button type="button" class="admin-btn admin-btn-small" data-reorder-reverse title="Reverse current sequence">⇄ reverse sequence</button>
+                <button type="button" class="admin-btn admin-btn-small" data-reorder-sort-title title="Sort alphabetically by title">sort A–Z (title)</button>
+                <button type="button" class="admin-btn admin-btn-small" data-reorder-sort-id title="Sort alphabetically by project id">sort by id</button>
+              </div>
+              <div class="admin-reorder-tools-right">
+                <input type="search" class="admin-search admin-reorder-search" placeholder="Filter projects in reorganizer..." data-reorder-search />
+              </div>
+            </div>
+
+            <div class="admin-reorder-grid" data-reorder-grid tabindex="0" role="region" aria-label="Visual gallery grid sequence">
+              <!-- Reorder cards rendered dynamically by admin.js -->
+            </div>
+
+            <footer class="admin-modal-foot">
+              <span class="admin-modal-tip">💡 Tip: Drag &amp; drop cards to reorder, or use the ◄ and ► buttons on mobile. Changes are saved to your draft automatically. Click 'Publish Gallery' when you're ready to push live.</span>
+              <button type="button" class="admin-btn admin-btn-primary" data-close-reorder>Done &amp; Close</button>
+            </footer>
+          </div>
+        </div>
       </section>
     </main>
   </div>
