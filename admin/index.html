@@ -31,6 +31,7 @@
       </div>
       <div class="admin-topbar-meta">
         <span class="admin-chip" data-kind-status>gallery</span>
+        <button class="admin-chip admin-chip-button" type="button" data-sync-live title="Sync with live site (reloads published gallery)">🔄 sync live site</button>
         <span class="admin-chip" data-draft-status>drafts saved locally</span>
         <button class="admin-chip admin-chip-button" type="button" data-logout hidden>log out</button>
       </div>
@@ -62,13 +63,28 @@
             <button class="admin-btn admin-btn-danger" type="button" data-delete-item>delete project</button>
           </div>
           <div class="admin-toolbar-right">
-
+            <button class="admin-btn" type="button" data-sync-live title="Reload latest live projects from your site">🔄 sync live site</button>
             <button class="admin-btn" type="button" data-save-draft>save draft</button>
             <button class="admin-btn" type="button" data-export-json>export json</button>
             <button class="admin-btn" type="button" data-export-html>export html snippet</button>
             <button class="admin-btn admin-btn-primary" type="button" data-publish>publish gallery</button>
           </div>
         </section>
+
+        <!-- Live Sync Alert Banner -->
+        <div class="admin-sync-banner" data-sync-banner hidden role="alert">
+          <div class="admin-sync-banner-content">
+            <span class="admin-sync-icon" aria-hidden="true">⚠️</span>
+            <div class="admin-sync-text">
+              <strong data-sync-banner-title>Live site has updated projects.</strong>
+              <p data-sync-banner-desc>Your browser has an older local draft saved, so live site updates are not showing.</p>
+            </div>
+          </div>
+          <div class="admin-sync-banner-actions">
+            <button class="admin-btn admin-btn-primary admin-btn-small" type="button" data-sync-confirm>🔄 load live site changes</button>
+            <button class="admin-btn admin-btn-small" type="button" data-sync-dismiss>keep local draft</button>
+          </div>
+        </div>
 
         <!-- Floating / Sticky Upload Progress Banner -->
         <div class="admin-progress-banner" data-upload-progress hidden aria-live="polite">

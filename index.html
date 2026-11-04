@@ -427,7 +427,7 @@
   <section id="about" class="about-section">
     <div class="about-container">
       <div class="about-photo-wrapper">
-        <img src="images/connor_mckelvey_hero.png" alt="Connor McKelvey" class="about-photo" />
+        <img src="images/connor_mckelvey_hero.png" alt="Connor McKelvey" class="about-photo" loading="lazy" decoding="async" />
         <p class="about-photo-caption">“Leadership is about making others better, and ensuring that impact lasts in your absence.” </p>
         <p class="about-photo-caption">— Coach Cabrera</p>
       </div>
@@ -459,28 +459,28 @@
   <section id="projects" class="projects-container">
     <div class="projects-grid">
       <article class="project-card is-static">
-        <img src="gallery/img_0705/img_0705-media-1791594590980.jpg" alt="Gallery Photo" class="project-img" />
+        <img src="gallery/img_0705/img_0705-media-1791594590980.jpg" alt="Gallery Photo" class="project-img" loading="lazy" decoding="async" />
       </article>
       <article class="project-card is-static">
-        <img src="gallery/img_2149/img_2149-media-1791594495612.jpg" alt="Gallery Photo" class="project-img" />
+        <img src="gallery/img_2149/img_2149-media-1791594495612.jpg" alt="Gallery Photo" class="project-img" loading="lazy" decoding="async" />
       </article>
       <article class="project-card is-static">
-        <img src="gallery/img_2191/img_2191-media-1791594477503.jpg" alt="Gallery Photo" class="project-img" />
+        <img src="gallery/img_2191/img_2191-media-1791594477503.jpg" alt="Gallery Photo" class="project-img" loading="lazy" decoding="async" />
       </article>
       <article class="project-card is-static">
-        <img src="gallery/img_2468/img_2468-media-1791594434766.jpg" alt="Gallery Photo" class="project-img" />
+        <img src="gallery/img_2468/img_2468-media-1791594434766.jpg" alt="Gallery Photo" class="project-img" loading="lazy" decoding="async" />
       </article>
       <article class="project-card is-static">
-        <img src="gallery/img_2519/img_2519-media-1791594420891.jpg" alt="Gallery Photo" class="project-img" />
+        <img src="gallery/img_2519/img_2519-media-1791594420891.jpg" alt="Gallery Photo" class="project-img" loading="lazy" decoding="async" />
       </article>
       <article class="project-card is-static">
-        <img src="gallery/img_2546/img_2546-media-1791594406526.jpg" alt="Gallery Photo" class="project-img" />
+        <img src="gallery/img_2546/img_2546-media-1791594406526.jpg" alt="Gallery Photo" class="project-img" loading="lazy" decoding="async" />
       </article>
       <article class="project-card is-static">
-        <img src="gallery/img_2610/img_2610-media-1791594464151.jpg" alt="Gallery Photo" class="project-img" />
+        <img src="gallery/img_2610/img_2610-media-1791594464151.jpg" alt="Gallery Photo" class="project-img" loading="lazy" decoding="async" />
       </article>
       <article class="project-card is-static">
-        <img src="gallery/img_2620/img_2620-media-1791594448625.jpg" alt="Gallery Photo" class="project-img" />
+        <img src="gallery/img_2620/img_2620-media-1791594448625.jpg" alt="Gallery Photo" class="project-img" loading="lazy" decoding="async" />
       </article>
     </div>
   </section>
@@ -582,7 +582,7 @@
           const projects = await res.json();
           if (!Array.isArray(projects) || !projects.length) return;
 
-          const htmlArticles = projects.map((p) => {
+          const htmlArticles = projects.map((p, idx) => {
             const isVideo = p.mediaType === 'video' || /\.(mp4|webm|mov)$/i.test(p.mediaSrc || '');
             const hasOverlay = Boolean(
               (p.kicker && p.kicker.trim()) ||
@@ -605,14 +605,15 @@
 
             if (isVideo) {
               return `      <${tag} class="${cardClass}"${linkAttrs}>
-        <video class="project-img" autoplay loop muted playsinline${p.posterSrc ? ` poster="${p.posterSrc}"` : ''}>
+        <video class="project-img" autoplay loop muted playsinline preload="metadata"${p.posterSrc ? ` poster="${p.posterSrc}"` : ''}>
           <source src="${p.mediaSrc}" type="video/mp4" />
-          <img src="${p.posterSrc || p.mediaSrc}" alt="${p.title || 'Project video'}" class="project-img" />
+          <img src="${p.posterSrc || p.mediaSrc}" alt="${p.title || 'Project video'}" class="project-img" loading="lazy" decoding="async" />
         </video>${overlayHtml}
       </${tag}>`;
             } else {
+              const loadingAttr = idx < 2 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
               return `      <${tag} class="${cardClass}"${linkAttrs}>
-        <img src="${p.mediaSrc}" alt="${p.title || 'Project image'}" class="project-img" />${overlayHtml}
+        <img src="${p.mediaSrc}" alt="${p.title || 'Project image'}" class="project-img" ${loadingAttr} decoding="async" />${overlayHtml}
       </${tag}>`;
             }
           }).join('\n\n');

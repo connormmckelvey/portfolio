@@ -65,6 +65,11 @@
   const mobileCount = document.querySelector('[data-mobile-count]');
   const boardSection = document.querySelector('.admin-board');
   const mobileTabs = document.querySelectorAll('[data-mobile-view]');
+  const syncBanner = document.querySelector('[data-sync-banner]');
+  const syncConfirmBtn = document.querySelector('[data-sync-confirm]');
+  const syncDismissBtn = document.querySelector('[data-sync-dismiss]');
+  const syncLiveBtns = document.querySelectorAll('[data-sync-live]');
+  let latestLiveData = null;
 
   const gallerySeed = [
     {
@@ -546,6 +551,72 @@
     }
   };
 
+  const isSeedState = (projects) => {
+    if (!Array.isArray(projects) || !projects.length) return true;
+    if (projects.length === gallerySeed.length) {
+      const matchCount = gallerySeed.filter((s, i) => projects[i]?.id === s.id).length;
+      if (matchCount >= 6) return true;
+    }
+    return false;
+  };
+
+  const showSyncBanner = (liveData) => {
+    latestLiveData = liveData;
+    if (!syncBanner) return;
+    syncBanner.hidden = false;
+    const titleEl = syncBanner.querySelector('[data-sync-banner-title]');
+    const descEl = syncBanner.querySelector('[data-sync-banner-desc]');
+    if (titleEl) {
+      titleEl.textContent = `Live site has updated projects (Live: ${liveData.length}, Local draft: ${state.projects.length})`;
+    }
+    if (descEl) {
+      descEl.textContent = 'Your browser currently has a local draft saved. Click "Load live site changes" to view and edit the live content.';
+    }
+  };
+
+  const hideSyncBanner = () => {
+    if (syncBanner) syncBanner.hidden = true;
+  };
+
+  const syncWithLiveSite = async (askConfirm = true) => {
+    if (askConfirm) {
+      const ok = confirm('Discard local browser draft and load the latest projects live from your site? Any unsaved edits will be replaced with live site content.');
+      if (!ok) return;
+    }
+
+    try {
+      let data = latestLiveData;
+      if (!data) {
+        const res = await fetch('../gallery/projects.json?v=' + Date.now());
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        data = await res.json();
+      }
+      if (!Array.isArray(data) || !data.length) {
+        alert('Live projects file was empty or invalid.');
+        return;
+      }
+
+      latestLiveData = data;
+      state.projects = deepClone(data);
+      state.selectedId = data[0]?.id || '';
+      persistState();
+      markSaved();
+      hideSyncBanner();
+      renderAll();
+
+      if (publishStatus) publishStatus.textContent = `✓ Synced with live site (${data.length} projects loaded).`;
+      showProgressBanner({
+        title: '✓ Synced with Live Site',
+        progress: 100,
+        detail: `Successfully loaded all ${data.length} projects currently live on your site!`,
+        isBusy: false,
+        isSuccess: true
+      });
+    } catch (err) {
+      alert('Error fetching live projects: ' + (err.message || err));
+    }
+  };
+
   const fetchCanonicalProjects = async () => {
     try {
       const res = await fetch('../gallery/projects.json?v=' + Date.now());
@@ -553,14 +624,30 @@
       const data = await res.json();
       if (!Array.isArray(data) || !data.length) return;
 
-      const hasLocalCustomDraft = Boolean(localStorage.getItem(STORAGE_KEY));
-      // Only initialize state with canonical data if user hasn't saved local drafts yet
-      if (!hasLocalCustomDraft) {
-        state.projects = data;
+      latestLiveData = data;
+      const canonicalStr = JSON.stringify(data);
+      const localStr = JSON.stringify(state.projects);
+
+      // If local state is still the default seed or empty, automatically sync to live!
+      if (isSeedState(state.projects)) {
+        state.projects = deepClone(data);
         state.selectedId = data[0]?.id || '';
         persistState();
+        markSaved();
         renderAll();
+        return;
       }
+
+      // If local draft matches live site, update status to Synced
+      if (canonicalStr === localStr) {
+        markSaved();
+        if (draftStatus) draftStatus.textContent = 'Synced with live site';
+        hideSyncBanner();
+        return;
+      }
+
+      // Local draft differs from live site! Show notification banner
+      showSyncBanner(data);
     } catch {
       // Keep local state fallback
     }
@@ -1301,6 +1388,8 @@
       }
 
       markSaved();
+      latestLiveData = deepClone(state.projects);
+      hideSyncBanner();
       const successMsg = result.message || 'Published projects to gallery/projects.json.';
       if (publishStatus) publishStatus.textContent = successMsg;
       showProgressBanner({
@@ -1428,6 +1517,16 @@
     state.previewHover = !state.previewHover;
     persistState();
     renderPreview();
+  });
+
+  syncDismissBtn?.addEventListener('click', hideSyncBanner);
+  syncConfirmBtn?.addEventListener('click', () => {
+    void syncWithLiveSite(false);
+  });
+  syncLiveBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      void syncWithLiveSite(true);
+    });
   });
 
   configureGateUi();

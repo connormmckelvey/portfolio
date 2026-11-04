@@ -1066,3 +1066,55 @@
     padding: 14px 12px;
   }
 }
+
+
+/* ─── LIVE SYNC ALERT BANNER ─── */
+.admin-sync-banner {
+  background: #fffbeb;
+  border: 1.5px solid #f59e0b;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.12);
+  animation: admin-slide-in 0.22s ease-out;
+}
+
+.admin-sync-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-sync-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.admin-sync-text strong {
+  display: block;
+  font-family: var(--font-sans);
+  color: #92400e;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.admin-sync-text p {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #78350f;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.admin-sync-banner-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
