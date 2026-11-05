@@ -590,11 +590,10 @@
 .admin-preview-card .project-kicker {
   font-family: 'Courier Prime', monospace;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 400;
   color: #A3B899;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
   transform: translateY(12px);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -604,13 +603,13 @@
 }
 
 .admin-preview-card .project-title {
-  font-family: 'Anton', 'Archivo Black', sans-serif;
-  font-size: clamp(20px, 2.2vw, 28px);
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(17px, 1.8vw, 22px);
+  font-weight: 700;
   color: #EAE6DF;
-  text-transform: uppercase;
-  line-height: 1.05;
-  letter-spacing: 0.01em;
-  margin-bottom: 10px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
   transform: translateY(16px);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
 }

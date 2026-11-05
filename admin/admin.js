@@ -543,6 +543,17 @@
     mobileView: 'library'
   });
 
+  const dedupeProjects = (projects) => {
+    if (!Array.isArray(projects)) return [];
+    const seen = new Set();
+    return projects.filter((p) => {
+      const key = p && (p.id || p.mediaSrc);
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
   const loadState = () => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -551,7 +562,7 @@
       return {
         ...defaultState(),
         ...parsed,
-        projects: Array.isArray(parsed.projects) && parsed.projects.length ? parsed.projects : deepClone(gallerySeed),
+        projects: Array.isArray(parsed.projects) && parsed.projects.length ? dedupeProjects(parsed.projects) : deepClone(gallerySeed),
         selectedId: parsed.selectedId || gallerySeed[0]?.id || '',
         search: parsed.search || '',
         mediaFilter: parsed.mediaFilter || 'all',
@@ -609,18 +620,18 @@
       }
 
       latestLiveData = data;
-      state.projects = deepClone(data);
-      state.selectedId = data[0]?.id || '';
+      state.projects = dedupeProjects(deepClone(data));
+      state.selectedId = state.projects[0]?.id || '';
       persistState();
       markSaved();
       hideSyncBanner();
       renderAll();
 
-      if (publishStatus) publishStatus.textContent = `✓ Synced with live site (${data.length} projects loaded).`;
+      if (publishStatus) publishStatus.textContent = `✓ Synced with live site (${state.projects.length} projects loaded).`;
       showProgressBanner({
         title: '✓ Synced with Live Site',
         progress: 100,
-        detail: `Successfully loaded all ${data.length} projects currently live on your site!`,
+        detail: `Successfully loaded all ${state.projects.length} projects currently live on your site!`,
         isBusy: false,
         isSuccess: true
       });
@@ -642,8 +653,8 @@
 
       // If local state is still the default seed or empty, automatically sync to live!
       if (isSeedState(state.projects)) {
-        state.projects = deepClone(data);
-        state.selectedId = data[0]?.id || '';
+        state.projects = dedupeProjects(deepClone(data));
+        state.selectedId = state.projects[0]?.id || '';
         persistState();
         markSaved();
         renderAll();
@@ -799,7 +810,10 @@
       const currentNum = i + 1;
       const pct = Math.round((i / total) * 90) + 5;
       const nameStem = trimFileNameExt(file.name);
-      const folderSlug = slugifySegment(nameStem || `media-${Date.now()}-${i}`) || `media-${Date.now()}-${i}`;
+      let folderSlug = slugifySegment(nameStem || `media-${Date.now()}-${i}`) || `media-${Date.now()}-${i}`;
+      if (state.projects.some((p) => p.id === folderSlug) || newProjects.some((p) => p.id === folderSlug)) {
+        folderSlug = `${folderSlug}-${Date.now().toString(36)}`;
+      }
       const isVideo = String(file.type || '').toLowerCase().startsWith('video/') || /\.(mp4|webm|mov)$/i.test(file.name);
 
       let mediaSrcPath = `gallery/${folderSlug}/${file.name}`;
@@ -890,11 +904,12 @@
 
   const writeCurrentProject = (updater) => {
     const currentId = state.selectedId;
-    const current = state.projects.find((p) => p.id === currentId);
-    if (!current) return null;
+    const currentIndex = state.projects.findIndex((p) => p.id === currentId);
+    if (currentIndex === -1) return null;
 
+    const current = state.projects[currentIndex];
     const updated = updater(deepClone(current));
-    state.projects = state.projects.map((p) => (p.id === currentId ? updated : p));
+    state.projects[currentIndex] = updated;
     state.selectedId = updated.id;
     persistState();
     markUnsaved();
@@ -1634,7 +1649,13 @@
 
     const commit = () => {
       const updated = writeCurrentProject((item) => {
-        item.id = slugifySegment(idInput.value) || item.id;
+        const nextId = slugifySegment(idInput.value);
+        if (nextId) {
+          const isTaken = state.projects.some((p) => p.id === nextId && p.id !== state.selectedId);
+          if (!isTaken) {
+            item.id = nextId;
+          }
+        }
         item.title = titleInput.value.trim();
         item.kicker = kickerInput.value.trim();
         item.mediaType = mediaTypeSelect.value;

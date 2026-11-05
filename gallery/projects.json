@@ -140,26 +140,6 @@
     "tags": []
   },
   {
-    "id": "hookem-with-cleaning-arm",
-    "title": "Surgical Cleaning Robot",
-    "kicker": "hero lab",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_2575/img_2575-media-1793313698213.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "tactus-better",
-    "title": "Vibrotactile feedback wearable",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2468/img_2468-media-1791594434766.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
     "id": "buck-converter",
     "title": "Buck converter class project",
     "kicker": "",

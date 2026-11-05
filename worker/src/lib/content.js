@@ -56,24 +56,34 @@ const serializeBlogPosts = (posts) => `window.BLOG_POSTS = ${JSON.stringify(post
 const normalizeProjects = (projects) => {
   if (!Array.isArray(projects)) throw new Error('Gallery projects must be an array');
 
-  return projects.map((project) => {
-    if (!project || typeof project !== 'object') throw new Error('Each gallery project must be an object');
-    if (!String(project.id || '').trim()) throw new Error('Each project needs an id');
+  const seen = new Set();
+  const normalized = [];
 
-    return {
-      id: String(project.id).trim(),
+  for (const project of projects) {
+    if (!project || typeof project !== 'object') throw new Error('Each gallery project must be an object');
+    const id = String(project.id || '').trim();
+    if (!id) throw new Error('Each project needs an id');
+    const mediaSrc = String(project.mediaSrc || '').trim();
+    if (seen.has(id) || (mediaSrc && seen.has(mediaSrc))) continue;
+    seen.add(id);
+    if (mediaSrc) seen.add(mediaSrc);
+
+    normalized.push({
+      id,
       title: String(project.title || '').trim(),
       kicker: String(project.kicker || '').trim(),
       description: String(project.description || '').trim(),
       link: String(project.link || project.url || '').trim(),
       mediaType: String(project.mediaType || 'image').toLowerCase() === 'video' ? 'video' : 'image',
-      mediaSrc: String(project.mediaSrc || '').trim(),
+      mediaSrc,
       posterSrc: String(project.posterSrc || '').trim(),
       tags: Array.isArray(project.tags)
         ? project.tags.map((tag) => String(tag).trim()).filter(Boolean)
         : normalizeTags(project.tags)
-    };
-  });
+    });
+  }
+
+  return normalized;
 };
 
 const serializeProjects = (projects) => `${JSON.stringify(projects, null, 2)}\n`;

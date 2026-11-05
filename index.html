@@ -212,11 +212,10 @@
     .project-kicker {
       font-family: 'Courier Prime', monospace;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 400;
       color: #A3B899;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
       transform: translateY(12px);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -225,13 +224,13 @@
       transform: translateY(0);
     }
     .project-title {
-      font-family: 'Anton', 'Archivo Black', sans-serif;
-      font-size: clamp(26px, 2.6vw, 40px);
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(20px, 2.1vw, 28px);
+      font-weight: 700;
       color: #EAE6DF;
-      text-transform: uppercase;
-      line-height: 1.05;
-      letter-spacing: 0.01em;
-      margin-bottom: 12px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
       transform: translateY(16px);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
     }
@@ -582,7 +581,15 @@
           const projects = await res.json();
           if (!Array.isArray(projects) || !projects.length) return;
 
-          const htmlArticles = projects.map((p, idx) => {
+          const seen = new Set();
+          const uniqueProjects = projects.filter((p) => {
+            const key = p && (p.id || p.mediaSrc);
+            if (!key || seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+
+          const htmlArticles = uniqueProjects.map((p, idx) => {
             const isVideo = p.mediaType === 'video' || /\.(mp4|webm|mov)$/i.test(p.mediaSrc || '');
             const hasOverlay = Boolean(
               (p.kicker && p.kicker.trim()) ||
