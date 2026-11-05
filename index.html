@@ -194,62 +194,61 @@
     }
     .project-overlay {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 0%, transparent 45%, rgba(13, 20, 14, 0.4) 70%, rgba(13, 20, 14, 0.92) 100%);
-      padding: clamp(24px, 3.5vw, 40px);
+      bottom: clamp(12px, 2vw, 18px);
+      left: clamp(12px, 2vw, 18px);
+      max-width: calc(100% - clamp(24px, 4vw, 36px));
+      width: fit-content;
+      background: rgba(13, 20, 14, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(220, 215, 206, 0.35);
+      border-radius: 0;
+      padding: 10px 16px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      gap: 3px;
       opacity: 0;
-      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
       z-index: 2;
       pointer-events: none;
     }
     .project-card:hover .project-overlay,
     .project-card.is-tapped .project-overlay {
       opacity: 1;
+      transform: translateY(0);
+    }
+    .project-card.has-link:hover .project-overlay {
+      background: rgba(13, 20, 14, 0.72);
+      border-color: rgba(220, 215, 206, 0.6);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
     }
     .project-kicker {
       font-family: 'Courier Prime', monospace;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 400;
       color: #A3B899;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-      transform: translateY(12px);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .project-card:hover .project-kicker,
-    .project-card.is-tapped .project-kicker {
-      transform: translateY(0);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+      line-height: 1.2;
     }
     .project-title {
       font-family: 'Courier Prime', monospace;
-      font-size: clamp(20px, 2.1vw, 28px);
+      font-size: clamp(13px, 1.25vw, 16px);
       font-weight: 700;
       color: #EAE6DF;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-      margin-bottom: 10px;
-      transform: translateY(16px);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
-    }
-    .project-card:hover .project-title,
-    .project-card.is-tapped .project-title {
-      transform: translateY(0);
+      line-height: 1.35;
+      letter-spacing: 0.03em;
+      margin: 0;
     }
     .project-description {
       font-family: 'Courier Prime', monospace;
-      font-size: clamp(13px, 1.1vw, 15px);
+      font-size: clamp(11px, 1vw, 13px);
       color: #DCD7CE;
-      line-height: 1.5;
-      opacity: 0.9;
-      transform: translateY(20px);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
-    }
-    .project-card:hover .project-description,
-    .project-card.is-tapped .project-description {
-      transform: translateY(0);
+      line-height: 1.45;
+      opacity: 0.85;
+      margin-top: 3px;
     }
 
     /* ─── ABOUT SECTION (WARM PARCHMENT BACKGROUND) ─── */
