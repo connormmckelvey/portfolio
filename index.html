@@ -195,15 +195,15 @@
     .project-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(13, 20, 14, 0.45) 0%, rgba(13, 20, 14, 0.92) 100%);
-      backdrop-filter: blur(6px);
-      padding: clamp(28px, 4vw, 44px);
+      background: linear-gradient(180deg, transparent 0%, transparent 45%, rgba(13, 20, 14, 0.4) 70%, rgba(13, 20, 14, 0.92) 100%);
+      padding: clamp(24px, 3.5vw, 40px);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       opacity: 0;
       transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 2;
+      pointer-events: none;
     }
     .project-card:hover .project-overlay,
     .project-card.is-tapped .project-overlay {

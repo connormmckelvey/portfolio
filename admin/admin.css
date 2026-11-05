@@ -572,8 +572,7 @@
 .admin-preview-card .project-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(13, 20, 14, 0.45) 0%, rgba(13, 20, 14, 0.92) 100%);
-  backdrop-filter: blur(6px);
+  background: linear-gradient(180deg, transparent 0%, transparent 45%, rgba(13, 20, 14, 0.4) 70%, rgba(13, 20, 14, 0.92) 100%);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -581,6 +580,7 @@
   opacity: 0;
   transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 2;
+  pointer-events: none;
 }
 
 .admin-preview-card.is-hovered .project-overlay {
