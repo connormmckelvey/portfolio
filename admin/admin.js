@@ -1348,7 +1348,9 @@
 
       const note = document.createElement('div');
       note.className = 'admin-item-note';
-      note.textContent = item.description || (item.mediaSrc ? `Src: ${item.mediaSrc}` : 'No description');
+      const shortSrc = item.mediaSrc ? (item.mediaSrc.split('/').pop() || item.mediaSrc) : '';
+      note.textContent = item.description || (shortSrc ? `File: ${shortSrc}` : 'No description');
+      note.title = item.description || item.mediaSrc || '';
 
       const tags = document.createElement('div');
       tags.className = 'admin-tag-row';
@@ -1578,14 +1580,6 @@
     const orderControls = document.createElement('div');
     orderControls.className = 'admin-order-controls';
 
-    const topBtn = document.createElement('button');
-    topBtn.type = 'button';
-    topBtn.className = 'admin-btn admin-btn-small';
-    topBtn.textContent = '⤒ first';
-    topBtn.title = 'Move to first spot in gallery (#1)';
-    topBtn.disabled = currentIndex <= 0;
-    topBtn.addEventListener('click', () => moveProjectToEdge(project.id, 'top'));
-
     const upBtn = document.createElement('button');
     upBtn.type = 'button';
     upBtn.className = 'admin-btn admin-btn-small';
@@ -1602,18 +1596,10 @@
     downBtn.disabled = currentIndex === -1 || currentIndex >= totalCount - 1;
     downBtn.addEventListener('click', () => moveProjectIndex(currentIndex, currentIndex + 1));
 
-    const bottomBtn = document.createElement('button');
-    bottomBtn.type = 'button';
-    bottomBtn.className = 'admin-btn admin-btn-small';
-    bottomBtn.textContent = '⤓ last';
-    bottomBtn.title = 'Move to last spot in gallery';
-    bottomBtn.disabled = currentIndex === -1 || currentIndex >= totalCount - 1;
-    bottomBtn.addEventListener('click', () => moveProjectToEdge(project.id, 'bottom'));
-
     const jumpWrap = document.createElement('label');
     jumpWrap.className = 'admin-order-jump-wrap';
     const jumpLabel = document.createElement('span');
-    jumpLabel.textContent = 'jump to:';
+    jumpLabel.textContent = 'jump:';
     const jumpSelect = document.createElement('select');
     jumpSelect.className = 'admin-order-select';
     jumpSelect.title = 'Jump this project to any position';
@@ -1639,7 +1625,7 @@
     visualBtn.title = 'Open full visual gallery reorganizer';
     visualBtn.addEventListener('click', openReorderModal);
 
-    orderControls.append(topBtn, upBtn, downBtn, bottomBtn, jumpWrap, visualBtn);
+    orderControls.append(upBtn, downBtn, jumpWrap, visualBtn);
     orderBar.append(orderSummary, orderControls);
 
     uploadPanel.replaceChildren(uploadWidget);
