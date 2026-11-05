@@ -1,8 +1,8 @@
 [
   {
     "id": "hookem-with-cleaning-arm",
-    "title": "",
-    "kicker": "",
+    "title": "Surgical Cleaning Robot",
+    "kicker": "hero lab",
     "description": "",
     "mediaType": "image",
     "mediaSrc": "gallery/img_2575/img_2575-media-1793313698213.jpg",
@@ -10,18 +10,18 @@
     "tags": []
   },
   {
-    "id": "onedof-hapkit",
-    "title": "",
-    "kicker": "",
+    "id": "2dof-hapkit",
+    "title": "Haptic Education Device",
+    "kicker": "hero lab",
     "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/img_2208/img_2208-media-1793313702620.jpg",
+    "mediaSrc": "images/gallery/img_2149/img_2149-media-1791594495612.jpg",
     "posterSrc": "",
     "tags": []
   },
   {
     "id": "tactus-better",
-    "title": "",
+    "title": "Vibrotactile feedback wearable",
     "kicker": "",
     "description": "",
     "mediaType": "image",
@@ -30,8 +30,18 @@
     "tags": []
   },
   {
+    "id": "emg-r2-board",
+    "title": "Muscle activation sensing wearable",
+    "kicker": "hero lab",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "images/gallery/img_2519/img_2519-media-1791594420891.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
     "id": "joshua-tree",
-    "title": "",
+    "title": "joshua tree NP",
     "kicker": "",
     "description": "",
     "mediaType": "image",
@@ -40,18 +50,8 @@
     "tags": []
   },
   {
-    "id": "robo-rumble",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_6853/img_6853-media-1793313716476.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
     "id": "roboticshonors-bday",
-    "title": "",
+    "title": "Robotics Honors Friends",
     "kicker": "",
     "description": "",
     "mediaType": "image",
@@ -60,38 +60,8 @@
     "tags": []
   },
   {
-    "id": "buck-converter",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_1417/img_1417-media-1793313726775.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "isle-royale",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_6755/img_6755-media-1793313736354.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "monkey-bridge",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_0875/img_0875-media-1793313738605.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
     "id": "france",
-    "title": "",
+    "title": "France Trip",
     "kicker": "",
     "description": "",
     "mediaType": "image",
@@ -100,68 +70,8 @@
     "tags": []
   },
   {
-    "id": "hookem-with-cleaning-arm",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "gallery/img_2575/img_2575-media-1793313698213.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "emg-r2-board",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2519/img_2519-media-1791594420891.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "tactus-better",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2468/img_2468-media-1791594434766.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "world-cup",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2191/img_2191-media-1791594477503.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "2dof-hapkit",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/img_2149/img_2149-media-1791594495612.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
-    "id": "robotics-llc",
-    "title": "",
-    "kicker": "",
-    "description": "",
-    "mediaType": "image",
-    "mediaSrc": "images/gallery/img_0705/img_0705-media-1791594590980.jpg",
-    "posterSrc": "",
-    "tags": []
-  },
-  {
     "id": "fpga",
-    "title": "",
+    "title": "FPGA Development",
     "kicker": "",
     "description": "",
     "mediaType": "image",
@@ -170,18 +80,93 @@
     "tags": []
   },
   {
-    "id": "vibrotactile-band",
-    "title": "Vibrotactile Motion Feedback Band",
-    "kicker": "Human Enabled Robotics Lab",
-    "description": "Modular haptic band system with custom 3cm x 5cm PCB, integrated IMU tracking, directional motor pods, and 1ms low-latency wireless protocol.",
+    "id": "robotics-llc",
+    "title": "Robotics Honors Formal",
+    "kicker": "",
+    "description": "",
     "mediaType": "image",
-    "mediaSrc": "gallery/vibrotactile-band/image.jpg",
+    "mediaSrc": "images/gallery/img_0705/img_0705-media-1791594590980.jpg",
     "posterSrc": "",
-    "tags": [
-      "Haptics",
-      "PCB",
-      "Firmware",
-      "C++"
-    ]
+    "tags": []
+  },
+  {
+    "id": "robo-rumble",
+    "title": "Combat Robotics",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_6853/img_6853-media-1793313716476.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "world-cup",
+    "title": "Cape Verde World Cup Game",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "images/gallery/img_2191/img_2191-media-1791594477503.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "isle-royale",
+    "title": "Isle Royale NP",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_6755/img_6755-media-1793313736354.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "onedof-hapkit",
+    "title": "Longhorn Hapkit",
+    "kicker": "hero lab",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_2208/img_2208-media-1793313702620.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "monkey-bridge",
+    "title": "Pioneering bridge",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_0875/img_0875-media-1793313738605.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "hookem-with-cleaning-arm",
+    "title": "Surgical Cleaning Robot",
+    "kicker": "hero lab",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_2575/img_2575-media-1793313698213.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "tactus-better",
+    "title": "Vibrotactile feedback wearable",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "images/gallery/img_2468/img_2468-media-1791594434766.jpg",
+    "posterSrc": "",
+    "tags": []
+  },
+  {
+    "id": "buck-converter",
+    "title": "Buck converter class project",
+    "kicker": "",
+    "description": "",
+    "mediaType": "image",
+    "mediaSrc": "gallery/img_1417/img_1417-media-1793313726775.jpg",
+    "posterSrc": "",
+    "tags": []
   }
 ]
