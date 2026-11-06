@@ -155,15 +155,21 @@
     }
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 36px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
       max-width: 1300px;
       margin: 0 auto;
     }
-    @media (max-width: 860px) {
+    @media (max-width: 1024px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px;
+      }
+    }
+    @media (max-width: 640px) {
       .projects-grid {
         grid-template-columns: 1fr;
-        gap: 28px;
+        gap: 20px;
       }
     }
     .project-card {
@@ -176,6 +182,14 @@
       display: block;
       text-decoration: none;
       color: inherit;
+      border: 1px solid rgba(220, 215, 206, 0.35);
+      border-radius: 0;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .project-card:hover,
+    .project-card.is-tapped {
+      border-color: #DCD7CE;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
     .project-card.has-link {
       cursor: pointer;
@@ -617,7 +631,7 @@
         </video>${overlayHtml}
       </${tag}>`;
             } else {
-              const loadingAttr = idx < 2 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
+              const loadingAttr = idx < 3 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
               return `      <${tag} class="${cardClass}"${linkAttrs}>
         <img src="${p.mediaSrc}" alt="${p.title || 'Project image'}" class="project-img" ${loadingAttr} decoding="async" onerror="this.closest('.project-card')?.remove()" />${overlayHtml}
       </${tag}>`;

@@ -552,8 +552,14 @@
   overflow: hidden;
   background: #1A2E23;
   box-sizing: border-box;
-  border-radius: 4px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(220, 215, 206, 0.35);
+  border-radius: 0;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.admin-preview-card.project-card.is-hovered {
+  border-color: #DCD7CE;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .admin-preview-card .project-img,
