@@ -400,18 +400,15 @@
       margin: 0;
     }
     .project-back-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
+      margin-top: auto;
       padding-top: 8px;
       border-top: 1px dashed rgba(26, 46, 35, 0.2);
-    }
-    .project-back-tag {
       font-family: 'Courier Prime', monospace;
-      font-size: 10.5px;
+      font-size: 11px;
       color: #3B5242;
       letter-spacing: 0.03em;
+      line-height: 1.45;
+      margin-bottom: 0;
     }
     .project-back-link {
       font-family: 'Courier Prime', monospace;
@@ -640,22 +637,18 @@
           <div class="project-card-front">
             <img src="gallery/img_2575/img_2575-media-1793313698213.jpg" alt="Surgical Cleaning Robot" class="project-img" loading="eager" fetchpriority="high" decoding="async" onerror="this.closest('.project-card')?.remove()" />
             <div class="project-overlay">
-              <p class="project-kicker">hero lab</p>
+              <p class="project-kicker">hero lab · 2025</p>
               <h2 class="project-title">Surgical Cleaning Robot</h2>
             </div>
           </div>
           <div class="project-card-back">
             <div class="project-back-header">
-              <span class="project-back-kicker">hero lab</span>
+              <span class="project-back-kicker">hero lab · 2025</span>
             </div>
             <div class="project-back-body">
               <h3 class="project-back-title">Surgical Cleaning Robot</h3>
               <p class="project-back-desc">Autonomous operating room cleaning robotic arm developed at HERO Lab, Texas Robotics, designed for sterile environments and medical tool sanitation.</p>
-              <div class="project-back-tags">
-                <span class="project-back-tag">#robotics</span>
-                <span class="project-back-tag">#ros2</span>
-                <span class="project-back-tag">#hero-lab</span>
-              </div>
+              <p class="project-back-tags">Robotics, ROS2, HERO Lab</p>
             </div>
           </div>
         </div>
@@ -665,22 +658,18 @@
           <div class="project-card-front">
             <img src="images/gallery/img_2149/img_2149-media-1791594495612.jpg" alt="Haptic Education Device" class="project-img" loading="eager" fetchpriority="high" decoding="async" />
             <div class="project-overlay">
-              <p class="project-kicker">hero lab</p>
+              <p class="project-kicker">hero lab · 2025</p>
               <h2 class="project-title">Haptic Education Device</h2>
             </div>
           </div>
           <div class="project-card-back">
             <div class="project-back-header">
-              <span class="project-back-kicker">hero lab</span>
+              <span class="project-back-kicker">hero lab · 2025</span>
             </div>
             <div class="project-back-body">
               <h3 class="project-back-title">Haptic Education Device</h3>
               <p class="project-back-desc">2-DOF educational haptic device demonstrating force feedback and virtual physics. Features custom serial communication protocol and 100Hz real-time control loop.</p>
-              <div class="project-back-tags">
-                <span class="project-back-tag">#haptics</span>
-                <span class="project-back-tag">#firmware</span>
-                <span class="project-back-tag">#c++</span>
-              </div>
+              <p class="project-back-tags">Haptics, Firmware, C++</p>
             </div>
           </div>
         </div>
@@ -690,22 +679,18 @@
           <div class="project-card-front">
             <img src="images/gallery/img_2468/img_2468-media-1791594434766.jpg" alt="Vibrotactile Feedback Wearable" class="project-img" loading="eager" fetchpriority="high" decoding="async" />
             <div class="project-overlay">
-              <p class="project-kicker">hero lab</p>
+              <p class="project-kicker">hero lab · 2025</p>
               <h2 class="project-title">Vibrotactile Feedback Wearable</h2>
             </div>
           </div>
           <div class="project-card-back">
             <div class="project-back-header">
-              <span class="project-back-kicker">hero lab</span>
+              <span class="project-back-kicker">hero lab · 2025</span>
             </div>
             <div class="project-back-body">
               <h3 class="project-back-title">Vibrotactile Feedback Wearable</h3>
               <p class="project-back-desc">Low-cost wearable band system providing directional haptic feedback for large motor skill learning. Built with custom PCB and sub-millisecond wireless communication.</p>
-              <div class="project-back-tags">
-                <span class="project-back-tag">#wearables</span>
-                <span class="project-back-tag">#pcb-design</span>
-                <span class="project-back-tag">#haptics</span>
-              </div>
+              <p class="project-back-tags">Wearables, PCB Design, Haptics</p>
             </div>
           </div>
         </div>
@@ -852,6 +837,8 @@
             const isVideo = p.mediaType === 'video' || /\.(mp4|webm|mov)$/i.test(p.mediaSrc || '');
             const title = (p.title || '').trim();
             const kicker = (p.kicker || '').trim();
+            const date = (p.date || '').trim();
+            const kickerDate = kicker && date ? `${kicker} · ${date}` : (kicker || date);
             const desc = (p.description || '').trim();
             const link = (p.link || '').trim();
             const tags = Array.isArray(p.tags) ? p.tags.filter(Boolean) : [];
@@ -865,16 +852,16 @@
 
             const frontOverlayHtml = `
         <div class="project-overlay">
-          ${kicker ? `<p class="project-kicker">${kicker}</p>` : ''}
+          ${kickerDate ? `<p class="project-kicker">${kickerDate}</p>` : ''}
           ${title ? `<h2 class="project-title">${title}</h2>` : ''}
         </div>`;
 
-            const tagsHtml = tags.length
-              ? `\n          <div class="project-back-tags">\n            ${tags.map((t) => `<span class="project-back-tag">#${t.toLowerCase().replace(/\s+/g, '-')}</span>`).join('')}\n          </div>`
-              : '';
-
             const linkHtml = link
               ? `\n          <a href="${link}" target="_blank" rel="noopener noreferrer" class="project-back-link" onclick="event.stopPropagation()">→ view project ↗</a>`
+              : '';
+
+            const tagsHtml = tags.length
+              ? `\n          <p class="project-back-tags">${tags.join(', ')}</p>`
               : '';
 
             return `      <article class="project-card" tabindex="0" role="button" aria-expanded="false" aria-label="Click to flip ${title || 'project'}">
@@ -884,11 +871,11 @@ ${mediaHtml}${frontOverlayHtml}
           </div>
           <div class="project-card-back">
             <div class="project-back-header">
-              <span class="project-back-kicker">${kicker || 'FIELD NOTE'}</span>
+              <span class="project-back-kicker">${kickerDate || 'FIELD NOTE'}</span>
             </div>
             <div class="project-back-body">
               <h3 class="project-back-title">${title || 'Project'}</h3>
-              <p class="project-back-desc">${desc || 'No entry details recorded yet.'}</p>${tagsHtml}${linkHtml}
+              <p class="project-back-desc">${desc || 'No entry details recorded yet.'}</p>${linkHtml}${tagsHtml}
             </div>
           </div>
         </div>
