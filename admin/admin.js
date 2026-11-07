@@ -50,12 +50,14 @@
   const reorderReverseBtn = document.querySelector('[data-reorder-reverse]');
   const reorderSortTitleBtn = document.querySelector('[data-reorder-sort-title]');
   const reorderSortIdBtn = document.querySelector('[data-reorder-sort-id]');
+  const reorderSortDateBtn = document.querySelector('[data-reorder-sort-date]');
   let activeReorderDragId = null;
   const saveBtn = document.querySelector('[data-save-draft]');
   const exportJsonBtn = document.querySelector('[data-export-json]');
   const exportHtmlBtn = document.querySelector('[data-export-html]');
   const publishBtn = document.querySelector('[data-publish]');
   const toggleOverlayBtn = document.querySelector('[data-toggle-overlay]');
+  const toggleFlipBtn = document.querySelector('[data-toggle-flip]');
 
   const searchInput = document.querySelector('[data-search]');
   const listRoot = document.querySelector('[data-content-list]');
@@ -88,6 +90,7 @@
       id: 'img_0705',
       title: '',
       kicker: '',
+      date: '2025',
       description: '',
       link: '',
       mediaType: 'image',
@@ -99,6 +102,7 @@
       id: 'img_2149',
       title: '',
       kicker: '',
+      date: '2025',
       description: '',
       link: '',
       mediaType: 'image',
@@ -110,6 +114,7 @@
       id: 'img_2191',
       title: '',
       kicker: '',
+      date: '2025',
       description: '',
       link: '',
       mediaType: 'image',
@@ -121,6 +126,7 @@
       id: 'img_2468',
       title: '',
       kicker: '',
+      date: '2025',
       description: '',
       link: '',
       mediaType: 'image',
@@ -132,6 +138,7 @@
       id: 'img_2519',
       title: '',
       kicker: '',
+      date: '2025',
       description: '',
       link: '',
       mediaType: 'image',
@@ -143,6 +150,7 @@
       id: 'img_2546',
       title: '',
       kicker: '',
+      date: '2025',
       description: '',
       link: '',
       mediaType: 'image',
@@ -154,6 +162,7 @@
       id: 'img_2610',
       title: '',
       kicker: '',
+      date: '2025',
       description: '',
       link: '',
       mediaType: 'image',
@@ -165,6 +174,7 @@
       id: 'img_2620',
       title: '',
       kicker: '',
+      date: '2025',
       description: '',
       link: '',
       mediaType: 'image',
@@ -540,6 +550,7 @@
     search: '',
     mediaFilter: 'all',
     previewHover: true,
+    previewFlipped: false,
     mobileView: 'library'
   });
 
@@ -551,7 +562,10 @@
       if (!key || seen.has(key)) return false;
       seen.add(key);
       return true;
-    });
+    }).map((p) => ({
+      ...p,
+      date: p && p.date ? String(p.date).trim() : ''
+    }));
   };
 
   const loadState = () => {
@@ -567,6 +581,7 @@
         search: parsed.search || '',
         mediaFilter: parsed.mediaFilter || 'all',
         previewHover: parsed.previewHover !== false,
+        previewFlipped: Boolean(parsed.previewFlipped),
         mobileView: parsed.mobileView || 'library'
       };
     } catch {
@@ -782,6 +797,7 @@
     id: `project-${Date.now()}`,
     title: '',
     kicker: '',
+    date: new Date().getFullYear().toString(),
     description: '',
     link: '',
     mediaType: 'image',
@@ -851,6 +867,7 @@
         id: folderSlug,
         title: '',
         kicker: '',
+        date: new Date().getFullYear().toString(),
         description: '',
         link: '',
         mediaType: isVideo ? 'video' : 'image',
@@ -1072,6 +1089,25 @@
     }
   };
 
+  const sortProjectsByDate = (newestFirst = true) => {
+    if (state.projects.length <= 1) return;
+    state.projects.sort((a, b) => {
+      const dateA = String(a.date || '').trim();
+      const dateB = String(b.date || '').trim();
+      if (!dateA && !dateB) return 0;
+      if (!dateA) return 1;
+      if (!dateB) return -1;
+      const cmp = dateA.localeCompare(dateB, undefined, { numeric: true });
+      return newestFirst ? -cmp : cmp;
+    });
+    persistState();
+    markUnsaved();
+    renderAll();
+    if (reorderModal && !reorderModal.hidden) {
+      renderReorderGrid();
+    }
+  };
+
   const openReorderModal = () => {
     if (!reorderModal) return;
     reorderModal.hidden = false;
@@ -1099,7 +1135,7 @@
       .map((p, idx) => ({ project: p, globalIdx: idx }))
       .filter(({ project }) => {
         if (!query) return true;
-        const haystack = `${project.title || ''} ${project.id || ''} ${project.kicker || ''} ${project.description || ''}`.toLowerCase();
+        const haystack = `${project.title || ''} ${project.id || ''} ${project.kicker || ''} ${project.date || ''} ${project.description || ''} ${(project.tags || []).join(' ')}`.toLowerCase();
         return haystack.includes(query);
       });
 
@@ -1169,8 +1205,9 @@
 
       const titleEl = document.createElement('div');
       titleEl.className = 'admin-reorder-title';
-      titleEl.textContent = project.title || project.id;
-      titleEl.title = project.title ? `${project.title} (${project.id})` : project.id;
+      const dateBadge = project.date ? ` [${project.date}]` : '';
+      titleEl.textContent = (project.title || project.id) + dateBadge;
+      titleEl.title = project.title ? `${project.title}${dateBadge} (${project.id})` : `${project.id}${dateBadge}`;
 
       const actions = document.createElement('div');
       actions.className = 'admin-reorder-actions';
@@ -1357,9 +1394,10 @@
 
       top.append(pos, title, badge);
 
+      const kickerDate = [item.kicker, item.date].filter(Boolean).join(' · ');
       const kicker = document.createElement('div');
       kicker.className = 'admin-item-meta';
-      kicker.textContent = item.kicker || (item.title ? item.id : 'Image-only project');
+      kicker.textContent = kickerDate || (item.title ? item.id : 'Image-only project');
 
       const note = document.createElement('div');
       note.className = 'admin-item-note';
@@ -1502,6 +1540,8 @@
     const idInput = makeInput(project.id);
     const titleInput = makeInput(project.title);
     const kickerInput = makeInput(project.kicker);
+    const dateInput = makeInput(project.date || '');
+    dateInput.placeholder = 'e.g. 2025';
     const linkInput = makeInput(project.link || '');
     linkInput.placeholder = 'https://... (opens in new tab on click)';
     const mediaTypeSelect = makeSelect([
@@ -1517,26 +1557,26 @@
       field('project id (folder slug)', idInput),
       field('project title (optional)', titleInput),
       field('kicker / organization (optional)', kickerInput),
+      field('date / year (optional)', dateInput),
       field('project link / destination URL (optional, opens in new tab)', linkInput),
       field('media type', mediaTypeSelect),
       field('media source file (image or video)', mediaSrcInput),
       field('poster image source (video fallback - optional)', posterSrcInput),
       field('tags (optional, comma-separated)', tagsInput),
-      field('project description (optional)', descTextarea)
+      field('project description / journal entry (optional)', descTextarea)
     ];
 
     fields[0].classList.add('full');
     fields[1].classList.add('full');
-    fields[2].classList.add('full');
-    fields[3].classList.add('full');
-    fields[5].classList.add('full');
+    fields[4].classList.add('full');
     fields[6].classList.add('full');
     fields[7].classList.add('full');
     fields[8].classList.add('full');
+    fields[9].classList.add('full');
 
     const note = document.createElement('div');
     note.className = 'admin-note';
-    note.textContent = 'All text fields (Title, Kicker, Description, Tags, Link) are optional. If left blank, the project displays as a clean 1:1 image or video gallery tile on the site.';
+    note.textContent = 'All text fields (Title, Kicker, Date, Description, Tags, Link) are optional. If left blank, the project displays as a clean 1:1 image or video gallery tile on the site.';
 
     const uploadPanel = document.createElement('div');
     uploadPanel.className = 'admin-section';
@@ -1658,6 +1698,7 @@
         }
         item.title = titleInput.value.trim();
         item.kicker = kickerInput.value.trim();
+        item.date = dateInput.value.trim();
         item.mediaType = mediaTypeSelect.value;
         item.mediaSrc = normalizeAssetPath(mediaSrcInput.value.trim());
         item.posterSrc = normalizeAssetPath(posterSrcInput.value.trim());
@@ -1674,7 +1715,7 @@
       renderPreview();
     };
 
-    [idInput, titleInput, kickerInput, linkInput, mediaTypeSelect, mediaSrcInput, posterSrcInput, tagsInput, descTextarea]
+    [idInput, titleInput, kickerInput, dateInput, linkInput, mediaTypeSelect, mediaSrcInput, posterSrcInput, tagsInput, descTextarea]
       .forEach((input) => {
         input.addEventListener('input', commit);
         input.addEventListener('change', commit);
@@ -1700,12 +1741,31 @@
       return;
     }
 
-    const wrapper = document.createElement('article');
-    wrapper.className = `admin-preview-card project-card ${state.previewHover ? 'is-hovered' : ''}`;
+    const kicker = (project.kicker || '').trim();
+    const date = (project.date || '').trim();
+    const kickerDate = kicker && date ? `${kicker} · ${date}` : (kicker || date);
+    const title = (project.title || '').trim();
+    const desc = (project.description || '').trim();
+    const link = (project.link || '').trim();
+    const tags = Array.isArray(project.tags) ? project.tags.filter(Boolean) : normalizeTags(project.tags);
+
+    const card = document.createElement('article');
+    card.className = `admin-preview-card project-card ${state.previewHover ? 'is-hovered' : ''} ${state.previewFlipped ? 'is-flipped' : ''}`;
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-expanded', state.previewFlipped ? 'true' : 'false');
+    card.setAttribute('aria-label', `Preview: click to flip ${title || 'project'}`);
+
+    const inner = document.createElement('div');
+    inner.className = 'project-card-inner';
+
+    // FRONT FACE
+    const front = document.createElement('div');
+    front.className = 'project-card-front';
 
     const mediaSrc = previewAssetPath(project.mediaSrc);
     const posterSrc = previewAssetPath(project.posterSrc);
-    const isVideo = project.mediaType === 'video' || /\.(mp4|webm|mov)$/i.test(project.mediaSrc);
+    const isVideo = project.mediaType === 'video' || /\.(mp4|webm|mov)$/i.test(project.mediaSrc || '');
 
     if (isVideo) {
       const video = document.createElement('video');
@@ -1723,60 +1783,107 @@
 
       const fallbackImg = document.createElement('img');
       fallbackImg.src = posterSrc || mediaSrc;
-      fallbackImg.alt = project.title || 'Project preview';
+      fallbackImg.alt = title || 'Project preview';
       fallbackImg.className = 'project-img';
       video.append(fallbackImg);
 
-      wrapper.append(video);
+      front.append(video);
     } else {
       const img = document.createElement('img');
       img.className = 'project-img';
       img.src = mediaSrc || '';
-      img.alt = project.title || 'Project image';
-      wrapper.append(img);
+      img.alt = title || 'Project image';
+      front.append(img);
     }
 
-    const hasOverlayText = Boolean(
-      (project.kicker && project.kicker.trim()) ||
-      (project.title && project.title.trim()) ||
-      (project.description && project.description.trim())
-    );
-
-    if (hasOverlayText) {
+    if (kickerDate || title) {
       const overlay = document.createElement('div');
       overlay.className = 'project-overlay';
 
-      if (project.kicker && project.kicker.trim()) {
-        const kicker = document.createElement('p');
-        kicker.className = 'project-kicker';
-        kicker.textContent = project.kicker.trim();
-        overlay.append(kicker);
+      if (kickerDate) {
+        const kEl = document.createElement('p');
+        kEl.className = 'project-kicker';
+        kEl.textContent = kickerDate;
+        overlay.append(kEl);
       }
 
-      if (project.title && project.title.trim()) {
-        const title = document.createElement('h2');
-        title.className = 'project-title';
-        title.textContent = project.title.trim();
-        overlay.append(title);
+      if (title) {
+        const tEl = document.createElement('h2');
+        tEl.className = 'project-title';
+        tEl.textContent = title;
+        overlay.append(tEl);
       }
 
-      if (project.description && project.description.trim()) {
-        const desc = document.createElement('p');
-        desc.className = 'project-description';
-        desc.textContent = project.description.trim();
-        overlay.append(desc);
-      }
-
-      wrapper.append(overlay);
+      front.append(overlay);
     }
 
-    wrapper.addEventListener('click', () => {
-      state.previewHover = !state.previewHover;
-      persistState();
-      renderPreview();
+    // BACK FACE (DARK TAN JOURNAL ENTRY)
+    const back = document.createElement('div');
+    back.className = 'project-card-back';
+
+    const backHeader = document.createElement('div');
+    backHeader.className = 'project-back-header';
+
+    const backKicker = document.createElement('span');
+    backKicker.className = 'project-back-kicker';
+    backKicker.textContent = kickerDate || 'FIELD NOTE';
+    backHeader.append(backKicker);
+
+    const backBody = document.createElement('div');
+    backBody.className = 'project-back-body';
+
+    const backTitle = document.createElement('h3');
+    backTitle.className = 'project-back-title';
+    backTitle.textContent = title || 'Project';
+    backBody.append(backTitle);
+
+    const backDesc = document.createElement('p');
+    backDesc.className = 'project-back-desc';
+    backDesc.textContent = desc || 'No entry details recorded yet.';
+    backBody.append(backDesc);
+
+    if (link) {
+      const backLink = document.createElement('a');
+      backLink.href = link;
+      backLink.target = '_blank';
+      backLink.rel = 'noopener noreferrer';
+      backLink.className = 'project-back-link';
+      backLink.textContent = '→ view project ↗';
+      backLink.addEventListener('click', (e) => e.stopPropagation());
+      backBody.append(backLink);
+    }
+
+    if (tags.length) {
+      const backTags = document.createElement('p');
+      backTags.className = 'project-back-tags';
+      backTags.textContent = tags.join(', ');
+      backBody.append(backTags);
+    }
+
+    back.append(backHeader, backBody);
+    inner.append(front, back);
+    card.append(inner);
+
+    const toggleFlip = () => {
+      state.previewFlipped = !state.previewFlipped;
+      card.classList.toggle('is-flipped', state.previewFlipped);
+      card.setAttribute('aria-expanded', state.previewFlipped ? 'true' : 'false');
+    };
+
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+      toggleFlip();
     });
 
-    previewCard.replaceChildren(wrapper);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (e.target.closest('a')) return;
+        e.preventDefault();
+        toggleFlip();
+      }
+    });
+
+    previewCard.replaceChildren(card);
 
     let testBar = previewCard.parentElement.querySelector('.admin-preview-link-bar');
     if (!testBar) {
@@ -1825,39 +1932,53 @@
   };
 
   const exportProjectsHtml = () => {
-    const htmlArticles = state.projects.map((p) => {
-      const isVideo = p.mediaType === 'video';
-      const hasOverlay = Boolean(
-        (p.kicker && p.kicker.trim()) ||
-        (p.title && p.title.trim()) ||
-        (p.description && p.description.trim())
-      );
-      const hasLink = Boolean(p.link && p.link.trim());
-      const tag = hasLink ? 'a' : 'article';
-      const linkAttrs = hasLink ? ` href="${p.link.trim()}" target="_blank" rel="noopener noreferrer"` : '';
-      const cardClass = hasLink ? 'project-card has-link' : 'project-card is-static';
+    const htmlArticles = state.projects.map((p, idx) => {
+      const isVideo = p.mediaType === 'video' || /\.(mp4|webm|mov)$/i.test(p.mediaSrc || '');
+      const title = (p.title || '').trim();
+      const kicker = (p.kicker || '').trim();
+      const date = (p.date || '').trim();
+      const kickerDate = kicker && date ? `${kicker} · ${date}` : (kicker || date);
+      const desc = (p.description || '').trim();
+      const link = (p.link || '').trim();
+      const tags = Array.isArray(p.tags) ? p.tags.filter(Boolean) : normalizeTags(p.tags);
 
-      let overlayHtml = '';
-      if (hasOverlay) {
-        const parts = [];
-        if (p.kicker && p.kicker.trim()) parts.push(`          <p class="project-kicker">${p.kicker.trim()}</p>`);
-        if (p.title && p.title.trim()) parts.push(`          <h2 class="project-title">${p.title.trim()}</h2>`);
-        if (p.description && p.description.trim()) parts.push(`          <p class="project-description">${p.description.trim()}</p>`);
-        overlayHtml = `\n        <div class="project-overlay">\n${parts.join('\n')}\n        </div>`;
-      }
-
-      if (isVideo) {
-        return `      <${tag} class="${cardClass}"${linkAttrs}>
-        <video class="project-img" autoplay loop muted playsinline${p.posterSrc ? ` poster="${p.posterSrc}"` : ''}>
+      const mediaHtml = isVideo
+        ? `        <video class="project-img" autoplay loop muted playsinline preload="metadata"${p.posterSrc ? ` poster="${p.posterSrc}"` : ''}>
           <source src="${p.mediaSrc}" type="video/mp4" />
-          <img src="${p.posterSrc || p.mediaSrc}" alt="${p.title || 'Project video'}" class="project-img" />
-        </video>${overlayHtml}
-      </${tag}>`;
-      } else {
-        return `      <${tag} class="${cardClass}"${linkAttrs}>
-        <img src="${p.mediaSrc}" alt="${p.title || 'Project image'}" class="project-img" />${overlayHtml}
-      </${tag}>`;
-      }
+          <img src="${p.posterSrc || p.mediaSrc}" alt="${title || 'Project video'}" class="project-img" loading="lazy" decoding="async" />
+        </video>`
+        : `        <img src="${p.mediaSrc}" alt="${title || 'Project image'}" class="project-img" ${idx < 3 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" onerror="this.closest('.project-card')?.remove()" />`;
+
+      const frontOverlayHtml = `
+        <div class="project-overlay">
+          ${kickerDate ? `<p class="project-kicker">${kickerDate}</p>` : ''}
+          ${title ? `<h2 class="project-title">${title}</h2>` : ''}
+        </div>`;
+
+      const linkHtml = link
+        ? `\n          <a href="${link}" target="_blank" rel="noopener noreferrer" class="project-back-link" onclick="event.stopPropagation()">→ view project ↗</a>`
+        : '';
+
+      const tagsHtml = tags.length
+        ? `\n          <p class="project-back-tags">${tags.join(', ')}</p>`
+        : '';
+
+      return `      <article class="project-card" tabindex="0" role="button" aria-expanded="false" aria-label="Click to flip ${title || 'project'}">
+        <div class="project-card-inner">
+          <div class="project-card-front">
+${mediaHtml}${frontOverlayHtml}
+          </div>
+          <div class="project-card-back">
+            <div class="project-back-header">
+              <span class="project-back-kicker">${kickerDate || 'FIELD NOTE'}</span>
+            </div>
+            <div class="project-back-body">
+              <h3 class="project-back-title">${title || 'Project'}</h3>
+              <p class="project-back-desc">${desc || 'No entry details recorded yet.'}</p>${linkHtml}${tagsHtml}
+            </div>
+          </div>
+        </div>
+      </article>`;
     }).join('\n\n');
 
     const fullSnippet = `<!-- GALLERY PROJECTS GRID -->\n<div class="projects-grid">\n${htmlArticles}\n</div>`;
@@ -2048,6 +2169,7 @@
   });
 
   reorderReverseBtn?.addEventListener('click', reverseAllProjects);
+  reorderSortDateBtn?.addEventListener('click', () => sortProjectsByDate(true));
   reorderSortTitleBtn?.addEventListener('click', () => sortProjectsAlphabetical(true));
   reorderSortIdBtn?.addEventListener('click', () => sortProjectsAlphabetical(false));
   reorderSearch?.addEventListener('input', renderReorderGrid);
@@ -2077,6 +2199,12 @@
 
   toggleOverlayBtn?.addEventListener('click', () => {
     state.previewHover = !state.previewHover;
+    persistState();
+    renderPreview();
+  });
+
+  toggleFlipBtn?.addEventListener('click', () => {
+    state.previewFlipped = !state.previewFlipped;
     persistState();
     renderPreview();
   });

@@ -161,12 +161,14 @@
                 <h2>1:1 Card Output</h2>
               </div>
               <div class="admin-mini-actions">
-                <button class="admin-btn admin-btn-small" type="button" data-toggle-overlay>toggle hover view</button>
+                <button class="admin-btn admin-btn-small" type="button" data-toggle-flip title="Flip preview card between front and back journal entry">flip card ↻</button>
+                <button class="admin-btn admin-btn-small" type="button" data-toggle-overlay title="Toggle front slide-up title overlay">toggle hover view</button>
               </div>
             </div>
             <div class="admin-preview-stage">
               <div class="admin-preview-card" data-preview-card></div>
             </div>
+            <p class="admin-preview-hint">💡 Click card or use "flip card ↻" to preview back journal entry. Hover over image to test front title slide-up.</p>
             <div class="admin-log">
               <p class="admin-label">publish status</p>
               <p data-publish-status>Idle.</p>
@@ -192,6 +194,7 @@
             <div class="admin-reorder-toolbar">
               <div class="admin-reorder-tools-left">
                 <span class="admin-reorder-label">quick sort:</span>
+                <button type="button" class="admin-btn admin-btn-small" data-reorder-sort-date title="Sort newest to oldest by date">sort by date (newest)</button>
                 <button type="button" class="admin-btn admin-btn-small" data-reorder-reverse title="Reverse current sequence">⇄ reverse sequence</button>
                 <button type="button" class="admin-btn admin-btn-small" data-reorder-sort-title title="Sort alphabetically by title">sort A–Z (title)</button>
                 <button type="button" class="admin-btn admin-btn-small" data-reorder-sort-id title="Sort alphabetically by project id">sort by id</button>
